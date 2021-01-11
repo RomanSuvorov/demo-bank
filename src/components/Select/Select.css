@@ -1,0 +1,50 @@
+.select {
+    display: flex;
+    align-items: center;
+    position: relative;
+    transition: all .4s ease;
+    cursor: pointer;
+}
+
+.select_selected {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.select_selected__placeholder {}
+
+.select_icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.select_list {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: var(--color-background-light);
+    backdrop-filter: blur(50px);
+    border-radius: 0 0 10px 10px;
+    width: 100%;
+    min-width: 60px;
+    overflow-y: auto;
+    transition: all .4s ease;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.select_option {
+    display: flex;
+    justify-content: flex-start;
+    padding: 6px 15px
+}
+
+.select_option__selected {
+    background-color: var(--color-background-light);
+}

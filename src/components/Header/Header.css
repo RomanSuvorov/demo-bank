@@ -1,0 +1,125 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    max-width: inherit;
+    height: var(--side-header);
+    background-color: inherit;
+    padding: 28px 20px 28px;
+}
+
+.header_menu,
+.header_language {
+    display: flex;
+    width: 35px;
+    height: 35px;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-background);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.header_menu.active svg path {
+    fill: var(--color-active);
+}
+
+.header_logoBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: unset;
+    padding-left: 0;
+    cursor: default;
+}
+
+.header_logoBox__logo {
+    display: flex;
+    align-items: center;
+    padding-right: 0;
+    padding-bottom: 2px;
+}
+
+.header_logoBox__slogan {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    user-select: none;
+}
+
+.header_logoBox__slogan span {
+    font-family: var(--font-saira);
+    font-size: 8px;
+    font-weight: 600;
+    line-height: 10px;
+    text-transform: uppercase;
+    color: #6A6A6A;
+}
+
+.header_contacts {
+    display: none;
+}
+
+.header_language__arrow {
+    display: none;
+}
+
+@media (min-width: 1024px) {
+    .header {
+        justify-content: inherit;
+        background-color: var(--color-background);
+        padding: 0 24px;
+    }
+
+    .header_menu,
+    .header_language {
+        width: inherit;
+        height: inherit;
+        border-radius: unset;
+        background-color: inherit;
+    }
+
+    .header_logoBox {
+        align-items: unset;
+        flex-direction: row;
+        flex: 1;
+        padding-left: 40px;
+    }
+
+    .header_logoBox__logo {
+        padding-right: 32px;
+        padding-bottom: 0;
+    }
+
+    .header_logoBox__slogan {
+        flex-direction: column;
+    }
+
+    .header_contacts {
+        display: flex;
+        flex-direction: row;
+        padding-right: 32px;
+    }
+
+    .header_contacts__item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 18px;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        box-shadow: -1px -1px 3px rgba(255, 255, 255, 0.1), 5px 5px 10px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+    }
+
+    .header_contacts__item:last-child {
+        margin-right: 0;
+    }
+
+    .header_language__arrow {
+        display: block;
+        padding-left: 12px;
+    }
+}

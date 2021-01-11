@@ -1,0 +1,20 @@
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    height: inherit;
+    width: var(--size-sidebar-collapsed);
+    padding: 36px 0;
+    background-color: var(--color-background);
+    overflow-y: auto;
+    transition: width .3s;
+}
+
+.sidebar.expanded {
+    width: var(--size-sidebar-expanded);
+}
+
+@media screen and (max-width: 1023px) {
+    .sidebar {
+        display: none;
+    }
+}
