@@ -42,7 +42,8 @@
 .select_option {
     display: flex;
     justify-content: flex-start;
-    padding: 6px 15px
+    padding: 6px 15px;
+    border-bottom: 1px solid var(--color-background-light);
 }
 
 .select_option__selected {

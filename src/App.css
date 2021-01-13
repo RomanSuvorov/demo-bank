@@ -7,6 +7,7 @@
     --dmb-green: 119, 193, 144;
     --dmb-app: 23, 27, 31;
     --dmb-background: 34, 39, 45;
+    --dmb-black: 0, 0, 0;
 
     --color-app: rgba(var(--dmb-app), 1); /* background of the app */
     --color-background: rgba(var(--dmb-background), 1); /* background of blocks */
@@ -15,14 +16,17 @@
     --color-primaryText: rgba(var(--dmb-white), 1); /* titles, main text of a block */
     --color-secondaryText: rgba(var(--dmb-white), 0.5); /* subtitles, descriptions or other statistics information */
     --color-green: rgba(var(--dmb-green), 1); /* important points in a chart */
+    --color-overlay: rgba(var(--dmb-black), 0.6);
 
     /* fonts */
     --font-saira: 'Saira', sans-serif;
 
     /* scales */
+    --size-sidebar-expanded-mobile: 260px;
     --size-sidebar-expanded: 200px;
     --size-sidebar-collapsed: 76px;
     --side-header: 44px;
+    --side-header-mobile: 65px;
 
     /* media query */
     --mq-mobile-sm-min: 320px;
@@ -92,4 +96,26 @@ html {
 
 * {
     box-sizing: inherit;
+}
+
+#root {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+html .demobank_svg path {
+    fill: var(--color-primaryText);
+}
+
+html a {
+    color: var(--color-active);
+    font-size: 14px;
+}
+
+html span,
+html p {
+    font-size: 14px;
 }

@@ -1,0 +1,28 @@
+.overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: transparent;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .3s, visibility .3s;
+    cursor: pointer;
+}
+
+.overlay.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+.overlay.withBackground {
+    background-color: var(--color-overlay);
+}
+
+@media screen and (min-width: 1024px) {
+    .overlay.forMobileOnly {
+        visibility: hidden;
+        opacity: 0;
+    }
+}

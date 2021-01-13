@@ -1,3 +1,3 @@
-import { languageOpts } from './opts';
+import { languageOpts, sidebarOpts } from './lists';
 
-export { languageOpts };
+export { languageOpts, sidebarOpts };
