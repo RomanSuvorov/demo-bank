@@ -1,11 +1,15 @@
 import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+
 import './App.css';
 
 import { Layout } from './delegate';
 
 function App() {
   return (
-    <Layout />
+    <Router>
+      <Layout />
+    </Router>
   );
 }
 

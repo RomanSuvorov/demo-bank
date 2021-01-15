@@ -1,20 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Link, useLocation } from 'react-router-dom';
 
 import { sidebarOpts } from '../../constants';
 import { CloseIcon } from '../../constants/icons';
 import './Sidebar.css';
 
 function Sidebar({ show, onClose }) {
-  const activeItem = 'exchange';
+  const location = useLocation();
+  let [isMobile, changeIsMobile] = useState(window.innerWidth < 1024)
 
-  const handleRouteTo = (e) => {
-    const { dataset } = e.target;
-
-    if (dataset && !dataset.linkto) {
-      console.log('linkTo', dataset.linkto);
-    }
-  };
+  useEffect(() => {
+    window.addEventListener(
+      "resize",
+      () => changeIsMobile(window.innerWidth < 1024),
+      );
+  });
 
   return (
     <div className={`sidebar${show ? ' expanded' : ' collapsed'}`}>
@@ -29,16 +30,16 @@ function Sidebar({ show, onClose }) {
       <div className={"sidebar_container"}>
         <div className={"sidebar_list"}>
           {
-            sidebarOpts.map(({ key, value, text, Icon }) => (
-              <div
-                className={`sidebar_list__item ${activeItem === value ? 'active' : ''}`}
-                data-linkto={value}
+            sidebarOpts.map(({ key, path, text, Icon }) => (
+              <Link
+                className={`sidebar_list__item ${location.pathname.match(path) ? 'active' : ''}`}
                 key={key}
-                onClick={handleRouteTo}
+                to={path}
+                onClick={isMobile ? onClose : () => {}}
               >
                 <Icon className={"sidebar_list__icon"}/>
                 <span className={"sidebar_list__text"}>{text}</span>
-              </div>
+              </Link>
             ))
           }
         </div>

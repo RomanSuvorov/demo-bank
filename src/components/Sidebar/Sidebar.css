@@ -64,6 +64,7 @@
     align-items: center;
     height: 41px;
     padding: 0 18px;
+    text-decoration: none;
     cursor: pointer;
 }
 
@@ -72,8 +73,8 @@
     height: 16px;
 }
 
-.sidebar_list__item:hover,
-.sidebar_list__item.active {
+.sidebar_list__item:hover .sidebar_list__text,
+.sidebar_list__item.active .sidebar_list__text {
     color: var(--color-active);
 }
 

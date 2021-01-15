@@ -7,6 +7,7 @@ import {
   FaqIcon,
   ContactIcon,
 } from './icons';
+import { routes } from './routes';
 
 const languageOpts = [
   {
@@ -25,26 +26,26 @@ const languageOpts = [
 
 const sidebarOpts = [
   {
-    key: 'exchange',
-    value: 'exchange',
+    key: routes.EXCHANGE.key,
+    path: routes.EXCHANGE.path,
     text: 'Обмен',
     Icon: ExchangeIcon,
   },
   {
-    key: 'review',
-    value: 'review',
+    key: routes.REVIEW.key,
+    path: routes.REVIEW.path,
     text: 'Отзывы',
     Icon: ReviewIcon,
   },
   {
-    key: 'faq',
-    value: 'faq',
+    key: routes.FAQ.key,
+    path: routes.FAQ.path,
     text: 'FAQ',
     Icon: FaqIcon,
   },
   {
-    key: 'contact',
-    value: 'contact',
+    key: routes.FAQ.key + 1,
+    path: routes.FAQ.path,
     text: 'Контакты',
     Icon: ContactIcon,
   },
