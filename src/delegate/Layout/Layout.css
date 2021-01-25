@@ -23,15 +23,16 @@
 
 .layout_content {
     margin: 50px auto 18px;
-    padding: 0 12px;
+    padding: 0 20px;
     max-width: var(--content-width);
     transition: max-width .3s;
+    width: 100%;
 }
 
 @media screen and (min-width: 1024px) {
     .layout_content {
         margin: 32px auto;
-        padding: 0 18px;
+        padding: 0 16px;
     }
 
     .layout_content.sidebarExpanded {

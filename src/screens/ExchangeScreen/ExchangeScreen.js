@@ -1,8 +1,13 @@
 import React from 'react';
 
+import { ExchangeBlock } from '../../components/Exchange';
+import './ExchangeScreen.css';
+
 function ExchangeScreen() {
   return (
-    <div>ExchangeScreen</div>
+    <div className={"exchangeScreen"}>
+      <ExchangeBlock />
+    </div>
   );
 }
 

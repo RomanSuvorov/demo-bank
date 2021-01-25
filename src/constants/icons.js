@@ -121,13 +121,29 @@ function TelegramIcon({ className }) {
   );
 }
 
-function RussianFlagIcon({ className, id }) {
+function RussianLangIcon({ className, id }) {
   return (
     <svg id={id} className={className} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M0 3.33319V7.7776V12.2221V16.6665H20V12.2221V7.7776V3.33319H0Z" fill="white"/>
       <path d="M20 3.33331H0V16.6668H20V3.33331Z" fill="#0052B4"/>
       <path d="M20 3.33331H0V7.77766H20V3.33331Z" fill="white"/>
       <path d="M20 12.222H0V16.6664H20V12.222Z" fill="#D80027"/>
+    </svg>
+  );
+}
+
+function UkrainianFlagIcon({ className }) {
+  return (
+    <svg
+      width={18}
+      height={18}
+      viewBox="0 0 18 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      <path d="M9 18A9 9 0 109 0a9 9 0 000 18z" fill="#FFDA44" />
+      <path d="M0 9a9 9 0 0118 0" fill="#338AF3" />
     </svg>
   );
 }
@@ -309,13 +325,36 @@ function CloseIcon({ className }) {
   )
 }
 
+function DirectionIcon({ className }) {
+  return (
+    <svg
+      width={12}
+      height={12}
+      viewBox="0 0 12 12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      <g clipPath="url(#prefix__clip0)" fill="#fff" fillOpacity={0.3}>
+        <path d="M.546 9.273h9.592L8.342 11.07a.545.545 0 00.771.772l2.728-2.728a.545.545 0 000-.77L9.113 5.614a.544.544 0 00-.77 0 .545.545 0 000 .771l1.795 1.796H.546a.545.545 0 000 1.091zM2.887 6.386a.545.545 0 00.771-.772L1.862 3.818h9.592a.545.545 0 100-1.09H1.862L3.658.93a.545.545 0 10-.77-.771L.16 2.887a.545.545 0 000 .771l2.727 2.728z" />
+      </g>
+      <defs>
+        <clipPath id="prefix__clip0">
+          <path fill="#fff" transform="rotate(-180 6 6)" d="M0 0h12v12H0z" />
+        </clipPath>
+      </defs>
+    </svg>
+  )
+}
+
 export {
   BurgerMenuIcon,
   Logo,
   FacebookIcon,
   ViberIcon,
   TelegramIcon,
-  RussianFlagIcon,
+  RussianLangIcon,
+  UkrainianFlagIcon,
   ExchangeIcon,
   ReviewIcon,
   FaqIcon,
@@ -331,4 +370,5 @@ export {
   GalleryArrowRightIcon,
   GalleryArrowLeftIcon,
   CloseIcon,
+  DirectionIcon,
 };

@@ -16,6 +16,7 @@
     --color-active: rgba(var(--dmb-orange), 1); /* background of buttons, link, active or important text, other elements */
     --color-primaryText: rgba(var(--dmb-white), 1); /* titles, main text of a block */
     --color-secondaryText: rgba(var(--dmb-white), 0.5); /* subtitles, descriptions or other statistics information */
+    --color-placeholder: rgba(var(--dmb-white), 0.2); /* input placeholder */
     --color-green: rgba(var(--dmb-green), 1); /* important points in a chart */
     --color-overlay: rgba(var(--dmb-black), 0.6);
 

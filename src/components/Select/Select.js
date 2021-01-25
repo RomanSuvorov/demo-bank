@@ -12,14 +12,14 @@ function Option({ selected, id, value, text, Icon, onClick }) {
       onClick={() => isSelected ? {} : onClick(value)}
     >
       {Icon && <Icon id={id} />}
-      <span>{text ? text : ''}</span>
+      <span className={`select_option_text ${Icon ? 'withIcon' : ''}`}>{text ? text : ''}</span>
     </div>
   );
 }
 
-function DropdownList({ value, options, onChoose }) {
+function DropdownList({ show, value, options, onChoose }) {
   return (
-    <div className="select_list">
+    <div className={`select_list ${show ? 'show' : ''}`}>
       {
         options.map(option => (
           <Option
@@ -38,6 +38,7 @@ function DropdownList({ value, options, onChoose }) {
 }
 
 function Select({
+  className,
   value,
   placeholder,
   options,
@@ -67,7 +68,7 @@ function Select({
   return (
     <div
       ref={selectRef}
-      className={`select ${showSelectList ? "show" : ""}`}
+      className={`select ${className ? className : ''} ${showSelectList ? "show" : ""}`}
       onClick={() => setSelectListVisibility(!showSelectList)}
     >
       <div className="select_selected">
@@ -75,7 +76,7 @@ function Select({
           initialOpt ? (
             <>
               {initialOpt.Icon && <initialOpt.Icon />}
-              <span>{initialOpt.text && initialOpt.text}</span>
+              <span className={`select_selected__text ${initialOpt.Icon ? 'withIcon' : ''}`}>{initialOpt.text && initialOpt.text}</span>
             </>
           ) : (
             <span className={"select_selected__placeholder"}>{placeholder}</span>
@@ -85,15 +86,12 @@ function Select({
       <div className="select_icon">
         {showSelectList ? <ArrowSmallUpIcon /> : <ArrowSmallDownIcon />}
       </div>
-      {
-        showSelectList && (
-          <DropdownList
-            value={value}
-            options={options}
-            onChoose={handleChooseOption}
-          />
-        )
-      }
+      <DropdownList
+        show={showSelectList}
+        value={value}
+        options={options}
+        onChoose={handleChooseOption}
+      />
     </div>
   )
 }

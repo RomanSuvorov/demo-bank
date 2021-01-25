@@ -44,7 +44,7 @@ function Header({
       </div>
       <Select
         className={"header_language"}
-        value={"rus"}
+        value={"ru"}
         options={languageOpts}
         onChange={onChangeLang}
       />
