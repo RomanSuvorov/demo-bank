@@ -1,4 +1,4 @@
-import { languageOpts, sidebarOpts, countryOpts, exchangeCryptoOpts, exchangeMethodOpts } from './lists';
+import { languageOpts, sidebarOpts, countryOpts } from './lists';
 import { routes, routesList } from './routes';
 
 const cnst = {
@@ -11,8 +11,6 @@ export {
   languageOpts,
   sidebarOpts,
   countryOpts,
-  exchangeCryptoOpts,
-  exchangeMethodOpts,
   routes,
   routesList,
 };

@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 import { ArrowSmallDownIcon, ArrowSmallUpIcon } from '../../constants/icons';
 import './Select.css';
 
-function Option({ selected, id, value, text, Icon, onClick }) {
+function Option({ selected, id, value, text, Icon, withAlt, onClick }) {
   const isSelected = selected === value;
   return (
     <div
+      title={(withAlt && text) ? text : null}
       className={`select_option${isSelected ? " select_option__selected" : ""}`}
       onClick={() => isSelected ? {} : onClick(value)}
     >
@@ -17,7 +18,7 @@ function Option({ selected, id, value, text, Icon, onClick }) {
   );
 }
 
-function DropdownList({ show, value, options, onChoose }) {
+function DropdownList({ show, value, options, withAlt, onChoose }) {
   return (
     <div className={`select_list ${show ? 'show' : ''}`}>
       {
@@ -29,6 +30,7 @@ function DropdownList({ show, value, options, onChoose }) {
             value={option.value}
             text={option.text}
             Icon={option.Icon}
+            withAlt={withAlt}
             onClick={onChoose}
           />
         ))
@@ -43,6 +45,7 @@ function Select({
   placeholder,
   options,
   disable,
+  withAlt = true,
   onChange,
 }) {
   const selectRef = useRef(null);
@@ -71,7 +74,10 @@ function Select({
       className={`select ${className ? className : ''} ${showSelectList ? "show" : ""}`}
       onClick={() => setSelectListVisibility(!showSelectList)}
     >
-      <div className="select_selected">
+      <div
+        className="select_selected"
+        title={(withAlt && initialOpt && initialOpt.text) ? initialOpt.text : null}
+      >
         {
           initialOpt ? (
             <>
@@ -90,6 +96,7 @@ function Select({
         show={showSelectList}
         value={value}
         options={options}
+        withAlt={withAlt}
         onChoose={handleChooseOption}
       />
     </div>

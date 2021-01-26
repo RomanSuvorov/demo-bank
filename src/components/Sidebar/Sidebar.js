@@ -64,9 +64,4 @@ Sidebar.propTypes = {
   onClose: PropTypes.func,
 };
 
-Sidebar.defaultProps = {
-  show: false,
-  onClose: () => {},
-};
-
 export { Sidebar };

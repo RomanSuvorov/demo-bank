@@ -13,6 +13,7 @@ import { languageOpts } from '../../constants';
 import './Header.css';
 
 function Header({
+  lang,
   showSidebar,
   onChangeSidebar,
   onChangeLang,
@@ -44,7 +45,7 @@ function Header({
       </div>
       <Select
         className={"header_language"}
-        value={"ru"}
+        value={lang}
         options={languageOpts}
         onChange={onChangeLang}
       />
@@ -53,13 +54,10 @@ function Header({
 }
 
 Header.propTypes = {
+  lang: PropTypes.string,
+  showSidebar: PropTypes.bool,
   onChangeSidebar: PropTypes.func,
   onChangeLang: PropTypes.func,
-};
-
-Header.defaultProps = {
-  onChangeSidebar: () => {},
-  onChangeLang: () => {},
 };
 
 export { Header };

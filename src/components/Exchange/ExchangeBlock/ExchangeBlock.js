@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { FirstStep } from '../ExchangeFirstStep/Exchange.FirstStep';
 import { SecondStep } from '../ExchangeSecondStep/Exchange.SecondStep';
@@ -7,6 +8,7 @@ import { StatusStep } from '../ExchangeStatusStep/Exchange.StatusStep';
 import { FinishStep } from '../ExchangeFinishStep/Exchange.FinishStep';
 import { Select } from '../..';
 import { countryOpts } from '../../../constants';
+import Types from '../../../store/exchange/types';
 import './ExchangeBlock.css';
 
 const exchangeState = {
@@ -33,19 +35,19 @@ const exchangeState = {
 };
 
 function ExchangeBlock() {
+  const { countryPercent } = useSelector(state => state.exchange);
+  const dispatch = useDispatch();
   const step = exchangeState.FIRST_STEP.value;
   const Component = exchangeState[step].Component;
 
-  const handleChangeCountry = (value) => {
-    console.log(value);
-  }
+  const handleChangeCountry = value => dispatch({ type: Types.CHANGE_COUNTRY_PERCENT, payload: { country: value }});
 
   return (
     <div className="exchangeBlock">
       <div className={"exchangeBlock_header"}>
         <Select
           className={"exchangeBlock_header__select"}
-          value={"ua"}
+          value={countryPercent}
           options={countryOpts}
           onChange={handleChangeCountry}
         />

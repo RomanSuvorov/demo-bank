@@ -11,8 +11,16 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    flex: 0 0 60px;
+    flex: 0 0 77px;
     padding: 8px 6px;
+}
+
+.firstStep_row.title {
+    margin-bottom: 24px;
+}
+
+.firstStep_row.select {
+    margin-bottom: 42px;
 }
 
 .firstStep_row.title span {
@@ -22,7 +30,6 @@
 .firstStep_form__input .input_field {
     min-width: 0;
     width: 100%;
-    max-width: 110px;
 }
 
 .firstStep_direction__icon {
@@ -51,10 +58,36 @@
 .firstStep_row__left,
 .firstStep_row__right {
     flex: 1;
+    max-width: calc((100% - 60px)/2);
+}
+
+.firstStep_row .select,
+.firstStep_row .select {
+    height: 30px;
+    padding: 0 12px;
+    box-shadow: -4px -4px 5px rgba(255, 255, 255, 0.03), 4px 4px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+}
+
+.firstStep_row .select .select_selected__text {
+    color: var(--color-primaryText);
+    font-weight: 700;
+}
+
+.firstStep_row .select .select_list {
+    border-radius: 5px;
 }
 
 @media screen and (min-width: 1024px) {
-    .firstStep_form__input .input_field {
-        max-width: 146px;
+    .firstStep_row__center {
+        flex: 0 0 60px;
+    }
+
+    .firstStep_row.title {
+        margin-bottom: 36px;
+    }
+
+    .firstStep_row.select {
+        margin-bottom: 24px;
     }
 }

@@ -1,24 +1,28 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { cnst, exchangeCryptoOpts, exchangeMethodOpts } from '../../../constants';
+import { cnst } from '../../../constants';
 import { Select } from '../..';
 import './Exchange.FirstStep.css';
 
-function SelectorsRow() {
-  const [firstSelect, changeFirstSelect] = useState('btc');
-  const [secondSelect, changeSecondSelect] = useState('btc');
-
-  const DIRECTION = cnst.CRYPTO_GIVE;
+function SelectorsRow({
+  direction,
+  giveSelected,
+  getSelected,
+  methodList,
+  cryptoList,
+  chooseGiveOption,
+  chooseGetOption,
+}) {
   let workObject = {}, keys = [], conditionKeys = [];
 
-  if (DIRECTION === cnst.CRYPTO_GIVE) {
-    workObject = exchangeCryptoOpts;
-    keys = Object.keys(exchangeCryptoOpts);
-    conditionKeys = Object.keys(exchangeMethodOpts);
-  } else if (DIRECTION === cnst.CRYPTO_GET) {
-    workObject = exchangeMethodOpts;
-    keys = Object.keys(exchangeMethodOpts);
-    conditionKeys = Object.keys(exchangeCryptoOpts);
+  if (direction === cnst.CRYPTO_GIVE) {
+    workObject = cryptoList;
+    keys = Object.keys(cryptoList);
+    conditionKeys = Object.keys(methodList);
+  } else if (direction === cnst.CRYPTO_GET) {
+    workObject = methodList;
+    keys = Object.keys(methodList);
+    conditionKeys = Object.keys(cryptoList);
   }
 
   const getFirstSelect = () => {
@@ -46,15 +50,15 @@ function SelectorsRow() {
   const getSecondSelect = () => {
     let options = [];
 
-    if (workObject[firstSelect] && workObject[firstSelect].method) {
+    if (workObject[giveSelected] && workObject[giveSelected].method) {
       options = conditionKeys.reduce((result, condKey) => {
         if (
-          workObject[firstSelect].method[condKey]
-          && typeof workObject[firstSelect].method[condKey] === 'object'
-          && workObject[firstSelect].method[condKey].list
-          && workObject[firstSelect].method[condKey].list.length > 0
+          workObject[giveSelected].method[condKey]
+          && typeof workObject[giveSelected].method[condKey] === 'object'
+          && workObject[giveSelected].method[condKey].list
+          && workObject[giveSelected].method[condKey].list.length > 0
         ) {
-          result.push(workObject[firstSelect].method[condKey]);
+          result.push(workObject[giveSelected].method[condKey]);
         }
 
         return result;
@@ -68,15 +72,16 @@ function SelectorsRow() {
     <div className={"firstStep_row select"}>
       <Select
         className={"firstStep_row__left"}
-        value={firstSelect}
+        value={giveSelected}
         options={getFirstSelect()}
-        onChange={changeFirstSelect}
+        onChange={chooseGiveOption}
       />
       <div className={"firstStep_row__center"} />
       <Select
         className={"firstStep_row__right"}
+        value={getSelected}
         options={getSecondSelect()}
-        onChange={changeSecondSelect}
+        onChange={chooseGetOption}
       />
     </div>
   );

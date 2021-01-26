@@ -1,31 +1,34 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { Header, Sidebar, Overlay } from '../../components';
 import { Router } from '../Router';
+import Types from '../../store/app/types';
 import './Layout.css';
 
 function Layout() {
-  const [showSide, toggleShowSide] = useState(true);
+  const { showSidebar, lang } = useSelector(state => state.app);
+  const dispatch = useDispatch();
 
-  const handleChangeLang = (value) => {
-    console.log(value);
-  };
+  const handleChangeSidebar = () => dispatch({ type: Types.TOGGLE_SIDEBAR });
 
-  const handleChangeSidebar = () => {
-    toggleShowSide(!showSide);
-  };
+  const handleChangeLang = value => dispatch({ type: Types.CHANGE_LANGUAGE, payload: value });
 
   return (
     <div className={"layout"}>
       <Header
-        showSidebar={showSide}
+        lang={lang}
+        showSidebar={showSidebar}
         onChangeSidebar={handleChangeSidebar}
         onChangeLang={handleChangeLang}
       />
       <div className={"layout_container"}>
-        <Sidebar show={showSide} onClose={handleChangeSidebar} />
+        <Sidebar
+          show={showSidebar}
+          onClose={handleChangeSidebar}
+        />
         <div className={"layout_wrapper"}>
-          <div className={`layout_content${showSide ? ' sidebarExpanded' : ''}`}>
+          <div className={`layout_content${showSidebar ? ' sidebarExpanded' : ''}`}>
             <Router />
           </div>
         </div>
@@ -34,7 +37,7 @@ function Layout() {
       {/* Overlay is needed for mobile version */}
       <Overlay
         forMobileOnly={true}
-        show={showSide}
+        show={showSidebar}
         onClick={handleChangeSidebar}
       />
     </div>

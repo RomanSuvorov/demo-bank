@@ -123,11 +123,105 @@ function TelegramIcon({ className }) {
 
 function RussianLangIcon({ className, id }) {
   return (
-    <svg id={id} className={className} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 3.33319V7.7776V12.2221V16.6665H20V12.2221V7.7776V3.33319H0Z" fill="white"/>
-      <path d="M20 3.33331H0V16.6668H20V3.33331Z" fill="#0052B4"/>
-      <path d="M20 3.33331H0V7.77766H20V3.33331Z" fill="white"/>
-      <path d="M20 12.222H0V16.6664H20V12.222Z" fill="#D80027"/>
+      <svg id={id} className={className} width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <path fill="#f0f0f0" d="M0 85.33v341.332h512V85.33z" />
+        <path fill="#0052b4" d="M0 85.333h512V426.67H0z" />
+        <path fill="#f0f0f0" d="M0 85.333h512v113.775H0z" />
+        <path fill="#d80027" d="M0 312.884h512v113.775H0z" />
+      </svg>
+    );
+}
+
+function GreatBritainLangIcon({ className }) {
+  return (
+    <svg className={className} width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+      <path fill="#f0f0f0" d="M0 85.333h512V426.67H0z" />
+      <path
+        fill="#d80027"
+        d="M288 85.33h-64v138.666H0v64h224v138.666h64V287.996h224v-64H288z"
+      />
+      <g fill="#0052b4">
+        <path d="M393.785 315.358L512 381.034v-65.676zM311.652 315.358L512 426.662v-31.474l-143.693-79.83zM458.634 426.662l-146.982-81.664v81.664z" />
+      </g>
+      <path
+        fill="#f0f0f0"
+        d="M311.652 315.358L512 426.662v-31.474l-143.693-79.83z"
+      />
+      <path
+        fill="#d80027"
+        d="M311.652 315.358L512 426.662v-31.474l-143.693-79.83z"
+      />
+      <g fill="#0052b4">
+        <path d="M90.341 315.356L0 365.546v-50.19zM200.348 329.51v97.151H25.491z" />
+      </g>
+      <path
+        fill="#d80027"
+        d="M143.693 315.358L0 395.188v31.474l200.348-111.304z"
+      />
+      <g fill="#0052b4">
+        <path d="M118.215 196.634L0 130.958v65.676zM200.348 196.634L0 85.33v31.474l143.693 79.83zM53.366 85.33l146.982 81.664V85.33z" />
+      </g>
+      <path fill="#f0f0f0" d="M200.348 196.634L0 85.33v31.474l143.693 79.83z" />
+      <path fill="#d80027" d="M200.348 196.634L0 85.33v31.474l143.693 79.83z" />
+      <g fill="#0052b4">
+        <path d="M421.659 196.636L512 146.446v50.19zM311.652 182.482V85.331h174.857z" />
+      </g>
+      <path
+        fill="#d80027"
+        d="M368.307 196.634L512 116.804V85.33L311.652 196.634z"
+      />
+    </svg>
+  );
+}
+
+function UkrainianLangIcon({ className }) {
+  return (
+    <svg className={className} width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+      <path fill="#ffda44" d="M0 85.337h512v341.326H0z" />
+      <path fill="#338af3" d="M0 85.337h512V256H0z" />
+    </svg>
+  )
+}
+
+function RussianFlagIcon({ className }) {
+  return (
+    <svg
+      width={18}
+      height={18}
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 512 512"
+    >
+      <circle cx={256} cy={256} r={256} fill="#f0f0f0" />
+      <path
+        d="M496.077 345.043C506.368 317.31 512 287.314 512 256s-5.632-61.31-15.923-89.043H15.923C5.633 194.69 0 224.686 0 256s5.633 61.31 15.923 89.043L256 367.304l240.077-22.261z"
+        fill="#0052b4"
+      />
+      <path
+        d="M256 512c110.071 0 203.906-69.472 240.077-166.957H15.923C52.094 442.528 145.929 512 256 512z"
+        fill="#d80027"
+      />
+    </svg>
+  );
+}
+
+function GreatBritainFlagIcon({ className }) {
+  return (
+    <svg
+      width={18}
+      height={18}
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 512 512"
+    >
+      <circle cx={256} cy={256} r={256} fill="#f0f0f0" />
+      <g fill="#0052b4">
+        <path d="M52.92 100.142c-20.109 26.163-35.272 56.318-44.101 89.077h133.178L52.92 100.142zM503.181 189.219c-8.829-32.758-23.993-62.913-44.101-89.076l-89.075 89.076h133.176zM8.819 322.784c8.83 32.758 23.993 62.913 44.101 89.075l89.074-89.075H8.819zM411.858 52.921c-26.163-20.109-56.317-35.272-89.076-44.102v133.177l89.076-89.075zM100.142 459.079c26.163 20.109 56.318 35.272 89.076 44.102V370.005l-89.076 89.074zM189.217 8.819c-32.758 8.83-62.913 23.993-89.075 44.101l89.075 89.075V8.819zM322.783 503.181c32.758-8.83 62.913-23.993 89.075-44.101l-89.075-89.075v133.176zM370.005 322.784l89.075 89.076c20.108-26.162 35.272-56.318 44.101-89.076H370.005z" />
+      </g>
+      <g fill="#d80027">
+        <path d="M509.833 222.609H289.392V2.167A258.556 258.556 0 00256 0c-11.319 0-22.461.744-33.391 2.167v220.441H2.167A258.556 258.556 0 000 256c0 11.319.744 22.461 2.167 33.391h220.441v220.442a258.35 258.35 0 0066.783 0V289.392h220.442A258.533 258.533 0 00512 256c0-11.317-.744-22.461-2.167-33.391z" />
+        <path d="M322.783 322.784L437.019 437.02a256.636 256.636 0 0015.048-16.435l-97.802-97.802h-31.482v.001zM189.217 322.784h-.002L74.98 437.019a256.636 256.636 0 0016.435 15.048l97.802-97.804v-31.479zM189.217 189.219v-.002L74.981 74.98a256.636 256.636 0 00-15.048 16.435l97.803 97.803h31.481zM322.783 189.219L437.02 74.981a256.328 256.328 0 00-16.435-15.047l-97.802 97.803v31.482z" />
+      </g>
     </svg>
   );
 }
@@ -137,13 +231,15 @@ function UkrainianFlagIcon({ className }) {
     <svg
       width={18}
       height={18}
-      viewBox="0 0 18 18"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
       className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 512 512"
     >
-      <path d="M9 18A9 9 0 109 0a9 9 0 000 18z" fill="#FFDA44" />
-      <path d="M0 9a9 9 0 0118 0" fill="#338AF3" />
+      <circle cx={256} cy={256} r={256} fill="#ffda44" />
+      <path
+        d="M0 256C0 114.616 114.616 0 256 0s256 114.616 256 256"
+        fill="#338af3"
+      />
     </svg>
   );
 }
@@ -354,6 +450,10 @@ export {
   ViberIcon,
   TelegramIcon,
   RussianLangIcon,
+  GreatBritainLangIcon,
+  UkrainianLangIcon,
+  RussianFlagIcon,
+  GreatBritainFlagIcon,
   UkrainianFlagIcon,
   ExchangeIcon,
   ReviewIcon,
