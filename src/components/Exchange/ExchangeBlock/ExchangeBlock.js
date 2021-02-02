@@ -4,51 +4,55 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FirstStep } from '../ExchangeFirstStep/Exchange.FirstStep';
 import { SecondStep } from '../ExchangeSecondStep/Exchange.SecondStep';
 import { ThirdStep } from '../ExchangeThirdStep/Exchange.ThirdStep';
-import { StatusStep } from '../ExchangeStatusStep/Exchange.StatusStep';
 import { FinishStep } from '../ExchangeFinishStep/Exchange.FinishStep';
 import { Select } from '../..';
-import { countryOpts } from '../../../constants';
+import { exchangeStepList } from '../../../constants';
 import Types from '../../../store/exchange/types';
 import './ExchangeBlock.css';
 
-const exchangeState = {
-  FIRST_STEP: {
-    value: 'FIRST_STEP',
-    Component: FirstStep,
-  },
-  SECOND_STEP: {
-    value: 'FIRST_STEP',
-    Component: SecondStep,
-  },
-  THIRD_STEP: {
-    value: 'THIRD_STEP',
-    Component:ThirdStep,
-  },
-  STATUS_STEP: {
-    value: 'STATUS_STEP',
-    Component: StatusStep,
-  },
-  FINISH_STEP: {
-    value: 'FINISH_STEP',
-    Component: FinishStep,
-  },
-};
-
 function ExchangeBlock() {
-  const { countryPercent } = useSelector(state => state.exchange);
+  const { step, countryList, countrySelected, buyPercent, sellPercent } = useSelector(state => state.exchange);
   const dispatch = useDispatch();
-  const step = exchangeState.FIRST_STEP.value;
-  const Component = exchangeState[step].Component;
 
-  const handleChangeCountry = value => dispatch({ type: Types.CHANGE_COUNTRY_PERCENT, payload: { country: value }});
+  const getStep = () => {
+    const componentData = exchangeStepList.find(item => item.index === step);
+
+    if (componentData) {
+      let Component;
+
+      switch (componentData.Component) {
+        case 'FirstStep':
+          Component = FirstStep;
+          break;
+        case 'SecondStep':
+          Component = SecondStep;
+          break;
+        case 'ThirdStep':
+          Component = ThirdStep;
+          break;
+        case 'FinishStep':
+          Component = FinishStep;
+          break;
+        default:
+          Component = FirstStep;
+          break;
+      }
+
+      return <Component />;
+    } else {
+      return <div />;
+    }
+  };
+
+  const handleChangeCountry = value => dispatch({ type: Types.CHANGE_COUNTRY_PERCENT, payload: value });
 
   return (
     <div className="exchangeBlock">
       <div className={"exchangeBlock_header"}>
         <Select
           className={"exchangeBlock_header__select"}
-          value={countryPercent}
-          options={countryOpts}
+          value={countrySelected}
+          options={countryList}
           onChange={handleChangeCountry}
         />
         <div className="exchangeBlock_header__item">
@@ -56,7 +60,7 @@ function ExchangeBlock() {
             <span>Покупка</span>
           </div>
           <div className="exchangeBlock_header__value">
-            <span>0.1%</span>
+            <span>{buyPercent}%</span>
           </div>
         </div>
         <div className="exchangeBlock_header__item">
@@ -64,12 +68,12 @@ function ExchangeBlock() {
             <span>Продажа</span>
           </div>
           <div className="exchangeBlock_header__value">
-            <span>1.1%</span>
+            <span>{sellPercent}%</span>
           </div>
         </div>
       </div>
       <div className={"exchangeBlock_content"}>
-        <Component />
+        {getStep()}
       </div>
     </div>
   );

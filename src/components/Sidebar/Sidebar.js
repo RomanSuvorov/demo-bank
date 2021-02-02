@@ -6,16 +6,8 @@ import { sidebarOpts } from '../../constants';
 import { CloseIcon } from '../../constants/icons';
 import './Sidebar.css';
 
-function Sidebar({ show, onClose }) {
+function Sidebar({ show, isMobile, onClose }) {
   const location = useLocation();
-  let [isMobile, changeIsMobile] = useState(window.innerWidth < 1024)
-
-  useEffect(() => {
-    window.addEventListener(
-      "resize",
-      () => changeIsMobile(window.innerWidth < 1024),
-      );
-  });
 
   return (
     <div className={`sidebar${show ? ' expanded' : ' collapsed'}`}>

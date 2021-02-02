@@ -47,3 +47,30 @@ function _configureStore(reducers) {
     composeEnhancers(applyMiddleware(ReduxPromise, thunk, createLogger)),
   );
 }
+
+export function validateValue({ value, rules }) {
+  let isValid = false, errorText = '';
+  if (!rules || (rules && !rules.length)) return { isValid: true, errorText };
+
+  rules.some(rule => {
+    switch (rule.name) {
+      case 'required':
+        isValid = !!(value && !isNaN(value));
+        break;
+      case 'minNumber':
+        isValid = (value >= rule.value);
+        break;
+      case 'maxNumber':
+        isValid = (value <= rule.value);
+        break;
+    }
+
+    if (!isValid) {
+      errorText = rule.text;
+    }
+
+    return !isValid;
+  });
+
+  return { isValid, errorText };
+}

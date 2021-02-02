@@ -19,19 +19,19 @@ const languageOpts = [
     key: 'russian',
     value: 'ru',
     text: '',
-    Icon: RussianLangIcon
+    iconUrl: 'https://i.ibb.co/R49XXgB/russia-lang.png'
   },
   {
     key: 'ukrainian',
     value: 'uk',
     text: '',
-    Icon: UkrainianLangIcon,
+    iconUrl: 'https://i.ibb.co/6wqtCb8/ukraine-lang.png',
   },
   {
     key: 'english',
     value: 'en',
     text: '',
-    Icon: GreatBritainLangIcon,
+    iconUrl: 'https://i.ibb.co/xhxNjHr/united-kingdom-lang.png',
   },
 ];
 
@@ -67,19 +67,38 @@ const countryOpts = [
     key: 'russian_federation',
     value: 'RU',
     text: 'Российская Федерация',
-    Icon: RussianFlagIcon,
+    iconUrl: 'https://i.ibb.co/pfxdGWd/russia.png',
   },
   {
     key: 'ukraine',
     value: 'UA',
     text: 'Украина',
-    Icon: UkrainianFlagIcon,
+    iconUrl: 'https://i.ibb.co/ByNPx0T/ukraine.png',
   },
   {
     key: 'great_britain',
     value: 'GB',
     text: 'Великобритания',
-    Icon: GreatBritainFlagIcon,
+    iconUrl: 'https://i.ibb.co/xzWsdKK/united-kingdom.png',
+  },
+];
+
+const exchangeStepList = [
+  {
+    index: 1,
+    Component: 'FirstStep',
+  },
+  {
+    index: 2,
+    Component: 'SecondStep',
+  },
+  {
+    index: 3,
+    Component: 'ThirdStep',
+  },
+  {
+    index: 4,
+    Component: 'FinishStep',
   },
 ];
 
@@ -87,4 +106,5 @@ export {
   languageOpts,
   sidebarOpts,
   countryOpts,
+  exchangeStepList,
 };

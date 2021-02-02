@@ -26,5 +26,19 @@
 
 .input_field:focus {
     box-shadow: inset -4px -4px 12px rgba(var(--dmb-orange), 0.7), inset 4px 4px 15px rgba(0, 0, 0, 0.5);
+}
 
+.input_error {
+    margin: 6px 0 0 6px;
+}
+
+.input_error__text {
+    color: var(--color-error);
+    font-size: 8px;
+}
+
+.input_field__error,
+.input_field__error:focus {
+    color: var(--color-error);
+    box-shadow: inset -4px -4px 12px rgba(var(--dmb-red), 0.7), inset 4px 4px 15px rgba(0, 0, 0, 0.5);
 }

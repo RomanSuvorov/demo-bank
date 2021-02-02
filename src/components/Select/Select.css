@@ -24,7 +24,7 @@
     white-space: nowrap;
 }
 
-.select_option_text {
+.select_option__text {
     font-weight: 700;
     font-size: 12px;
     overflow: hidden;
@@ -32,8 +32,14 @@
     white-space: nowrap;
 }
 
+.select_selected__logoImg {
+    width: 18px;
+    height: 18px;
+    object-fit: cover;
+}
+
 .select_selected__text.withIcon,
-.select_option_text.withIcon {
+.select_option__text.withIcon {
     padding-left: 12px;
 }
 
@@ -85,6 +91,12 @@
 
 .select_option svg {
     min-width: 18px;
+}
+
+.select_option_logoImg {
+    width: 18px;
+    height: 18px;
+    object-fit: cover;
 }
 
 .select_option__selected {

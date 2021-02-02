@@ -1,0 +1,12 @@
+.help {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15px;
+    height: 15px;
+    user-select: none;
+}
+
+.help svg path {
+    fill: var(--color-active);
+}

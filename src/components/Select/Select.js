@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { ArrowSmallDownIcon, ArrowSmallUpIcon } from '../../constants/icons';
 import './Select.css';
 
-function Option({ selected, id, value, text, Icon, withAlt, onClick }) {
+function Option({ selected, id, value, text, Icon, iconUrl, withAlt, onClick }) {
   const isSelected = selected === value;
   return (
     <div
@@ -13,7 +13,8 @@ function Option({ selected, id, value, text, Icon, withAlt, onClick }) {
       onClick={() => isSelected ? {} : onClick(value)}
     >
       {Icon && <Icon id={id} />}
-      <span className={`select_option_text ${Icon ? 'withIcon' : ''}`}>{text ? text : ''}</span>
+      {iconUrl && <img className={"select_option_logoImg"} src={iconUrl} alt={value} />}
+      <span className={`select_option__text ${(Icon || iconUrl) ? 'withIcon' : ''}`}>{text ? text : ''}</span>
     </div>
   );
 }
@@ -30,6 +31,7 @@ function DropdownList({ show, value, options, withAlt, onChoose }) {
             value={option.value}
             text={option.text}
             Icon={option.Icon}
+            iconUrl={option.iconUrl}
             withAlt={withAlt}
             onClick={onChoose}
           />
@@ -82,7 +84,8 @@ function Select({
           initialOpt ? (
             <>
               {initialOpt.Icon && <initialOpt.Icon />}
-              <span className={`select_selected__text ${initialOpt.Icon ? 'withIcon' : ''}`}>{initialOpt.text && initialOpt.text}</span>
+              {initialOpt.iconUrl && <img className={"select_selected__logoImg"} src={initialOpt.iconUrl} alt={initialOpt.value} />}
+              <span className={`select_selected__text ${initialOpt.Icon || initialOpt.iconUrl ? 'withIcon' : ''}`}>{initialOpt.text && initialOpt.text}</span>
             </>
           ) : (
             <span className={"select_selected__placeholder"}>{placeholder}</span>
@@ -112,6 +115,7 @@ Select.propTypes = {
       value: PropTypes.string,
       text: PropTypes.string,
       Icon: PropTypes.any,
+      iconUrl: PropTypes.any,
     }),
   ),
   disable: PropTypes.bool,
