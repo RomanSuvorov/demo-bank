@@ -3,7 +3,7 @@
     flex-direction: column;
     flex: 1;
     min-width: 280px;
-    height: 498px;
+    height: 519px;
     max-width: 388px;
 }
 
@@ -22,10 +22,15 @@
     align-items: center;
     width: calc((100% - 126px) / 2);
     padding: 0 12px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    box-shadow: inset 0 6px 6px -6px transparent, 0 4px 16px rgba(0, 0, 0, 0.25);
     border-radius: 15px 15px 0 0;
     background-color: var(--color-background);
     position: relative;
+    transition: box-shadow .3s;
+}
+
+.exchangeBlock_header__item.active {
+    box-shadow: inset 0 6px 6px -6px var(--color-active), 0 4px 16px rgba(0, 0, 0, 0.25);
 }
 
 .exchangeBlock_header__title span {
@@ -86,6 +91,10 @@
 }
 
 @media screen and (min-width: 1024px) {
+    .exchangeBlock {
+        height: 498px;;
+    }
+
     .exchangeBlock_content {
         padding: 24px 18px 24px;
     }

@@ -7,6 +7,7 @@ import { Button } from './Button/Button';
 import { Tooltip } from './Tooltip/Tooltip';
 import { HelpSign } from './HelpSign/HelpSign';
 import { Loading} from './Loading/Loading';
+import { Checkbox } from './Checkbox/Checkbox';
 
 export {
   Header,
@@ -18,4 +19,5 @@ export {
   Tooltip,
   HelpSign,
   Loading,
+  Checkbox,
 };

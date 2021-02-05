@@ -36,19 +36,11 @@ function FirstStep() {
 
   const handleChooseGetOption = value => dispatch({ type: Types.CHOSE_GET_OPTION, payload: value });
 
-  const handleChangeGiveAmount = value => {
-    if (Number(value) || value === '') {
-      dispatch({ type: Types.CHANGE_GIVE_AMOUNT, payload: value });
-    }
-  };
+  const handleChangeGiveAmount = value => dispatch({ type: Types.CHANGE_GIVE_AMOUNT, payload: value });
 
-  const handleChangeGetAmount = value => {
-    if (Number(value) || value === '') {
-      dispatch({type: Types.CHANGE_GET_AMOUNT, payload: value});
-    }
-  };
+  const handleChangeGetAmount = value => dispatch({ type: Types.CHANGE_GET_AMOUNT, payload: value });
 
-  const handleChooseFromVariantList = value => dispatch({ type: Types.CHOOSE_VARIANT_OPTION, payload: value })
+  const handleChooseFromVariantList = value => dispatch({ type: Types.CHOOSE_VARIANT_OPTION, payload: value });
 
   const handleSubmit = () => dispatch({ type: Types.NEXT_STEP });
 
@@ -89,11 +81,15 @@ function FirstStep() {
       </div>
 
       <div className={"firstStep_row form"}>
-        <form className={"firstStep_row__left firstStep_form"}>
+        <form
+          className={"firstStep_row__left firstStep_form"}
+          onSubmit={e => e.preventDefault()}
+        >
           <Input
             className={"firstStep_form__input"}
-            type="text"
+            type={"number"}
             value={giveAmount}
+            min={0}
             error={giveError}
             placeholder={direction === cnst.CRYPTO_SELL ? '0.00000000' : '0.000'}
             onChange={handleChangeGiveAmount}
@@ -110,8 +106,9 @@ function FirstStep() {
         <form className={"firstStep_row__left firstStep_form"}>
           <Input
             className={"firstStep_form__input"}
-            type="text"
+            type={"number"}
             value={getAmount}
+            min={0}
             placeholder={direction === cnst.CRYPTO_SELL ? '0.000' : '0.00000000'}
             onChange={handleChangeGetAmount}
           />

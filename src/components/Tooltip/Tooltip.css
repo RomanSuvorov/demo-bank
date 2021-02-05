@@ -75,7 +75,7 @@
     max-width: 280px;
 }
 
-.tooltip_text {
+.tooltip .tooltip_text {
     font-size: 10px;
     color: var(--color-primaryText);
 }

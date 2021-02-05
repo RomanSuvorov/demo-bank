@@ -1,3 +1,66 @@
 .secondStep {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
 
+.secondStep_title {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 18px;
+}
+
+.secondStep_title span {
+    color: var(--color-active);
+}
+
+.secondStep_tooltip {
+    margin-left: 12px;
+}
+
+.secondStep_select {
+    height: 34px;
+    width: 100%;
+    max-width: 215px;
+    background-color: var(--color-background-light);
+    border-radius: 5px;
+    padding: 0 12px;
+    margin-bottom: 24px;
+}
+
+.secondStep_input .input_field {
+    width: 100%;
+    text-align: center;
+}
+
+.secondStep_selectors {
+    display: flex;
+    justify-content: space-between;
+}
+
+.secondStep_selectors .secondStep_select {
+    max-width: calc((100% / 2) - 12px);
+}
+
+.secondStep_selectors .secondStep_select.country {
+    margin-right: 6px;
+}
+
+.secondStep_selectors .secondStep_select.city {
+    margin-left: 6px;
+}
+
+.secondStep_checkbox__toggle {
+    text-decoration: underline;
+}
+
+.secondStep_checkbox__toggle:hover {
+    color: var(--color-active);
+}
+
+.secondStep_buttonBox {
+    display: flex;
+    flex: 1;
+    justify-content: space-around;
+    align-items: flex-end;
 }

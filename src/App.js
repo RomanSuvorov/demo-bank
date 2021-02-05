@@ -10,9 +10,9 @@ import { Layout } from './delegate';
 
 const store = createReduxStore(reducers);
 
-store.subscribe(() => {
-  _saveState(store.getState());
-});
+// store.subscribe(() => {
+//   _saveState(store.getState());
+// });
 
 function App() {
   return (

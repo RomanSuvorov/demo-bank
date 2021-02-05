@@ -70,11 +70,17 @@ function Select({
     onChange(value);
   }
 
+  const handleClick = () => {
+    if (disable) return;
+
+    setSelectListVisibility(!showSelectList)
+  }
+
   return (
     <div
       ref={selectRef}
-      className={`select ${className ? className : ''} ${showSelectList ? "show" : ""}`}
-      onClick={() => setSelectListVisibility(!showSelectList)}
+      className={`select ${className ? className : ''} ${showSelectList ? "show" : ""} ${disable ? 'disable' : ''}`}
+      onClick={handleClick}
     >
       <div
         className="select_selected"

@@ -508,6 +508,43 @@ const dataFromServer = [
   },
 ];
 
+const deliverList = [
+  {
+    key: 'russian_federation',
+    value: 'russian_federation',
+    text: 'Российская Федерация',
+    cityList: [
+      {
+        key: 'moscow',
+        value: 'moscow',
+        text: 'Москва',
+      },
+      {
+        key: 'st_petersburg',
+        value: 'st_petersburg',
+        text: 'Санкт-Петербург',
+      },
+    ],
+  },
+  {
+    key: 'ukraine',
+    value: 'ukraine',
+    text: 'Украина',
+    cityList: [
+      {
+        key: 'kyiv',
+        value: 'kyiv',
+        text: 'Киев',
+      },
+      {
+        key: 'kharkov',
+        value: 'kharkov',
+        text: 'Харков',
+      },
+    ]
+  },
+];
+
 const prepareSelectors = (direction) => {
   const giveList = dataFromServer.filter(item => (direction === cnst.CRYPTO_SELL) ? item.isCrypto : !item.isCrypto);
   const getList = giveList[0].method;
@@ -532,21 +569,44 @@ const initialStore = {
   buyPercent: '-1.0',
   sellPercent: '+1.0',
 
+  // 1st step
   direction: cnst.CRYPTO_SELL,
-  exchangeData: [],
   giveList: [],
   getList: [],
   variantList: [],
   giveSelected: {},
   getSelected:  {},
   variantSelected: {},
-
   giveAmount: null,
   giveError: null,
   getAmount: null,
 
+
+  // 2nd step
+  cardValue: null,
+  walletValue: null,
+  accountValue: null,
+  cardError: null,
+  walletError: null,
+  accountError: null,
+  deliverValue: false,
+  privacyValue: false,
+  forgetInputsValue: true,
+  deliverCountryList: [],
+  deliverCityList: [],
+  deliverCountrySelected: null,
+  deliverCitySelected: null,
+
+  // 3rd step
+  transferData: null,
+  transactionStatus: 'await',
+
+  // finish step
+
+  // navigation
   step: exchangeStepList[0].index,
 
+  // state of process
   loading: false,
   error: undefined,
 };
@@ -556,9 +616,6 @@ const reducer = {
     // country
     draft.countryList = countryOpts;
     draft.countrySelected = countryOpts[0].value;
-
-    // exchange data
-    draft.exchangeData = dataFromServer;
 
     const { giveList, getList, variantList } = prepareSelectors(draft.direction);
     // first select
@@ -572,6 +629,22 @@ const reducer = {
     // third select
     draft.variantList = variantList;
     draft.variantSelected = variantList[0];
+
+    // deliver data
+    draft.deliverCountryList = deliverList;
+
+    const localUserData = JSON.parse(localStorage.getItem('user_data'));
+    if (localUserData) {
+      draft.forgetInputsValue = false;
+      draft.cardValue = localUserData.cardValue;
+      draft.walletValue = localUserData.walletValue;
+      draft.accountValue = localUserData.accountValue;
+      draft.deliverCountrySelected = localUserData.deliverCountrySelected;
+      if (localUserData.deliverCountrySelected) {
+        draft.deliverCityList = draft.deliverCountryList.find(country => country.value === localUserData.deliverCountrySelected.value).cityList;
+      }
+      draft.deliverCitySelected = localUserData.deliverCitySelected;
+    }
   },
 
   [Types.CHANGE_COUNTRY_PERCENT]: (draft, payload) => {
@@ -602,16 +675,16 @@ const reducer = {
   },
 
   [Types.CHOSE_GIVE_OPTION]: (draft, payload) => {
-    const giveSelected = draft.giveList.filter(item => item.value === payload);
-    draft.giveSelected = giveSelected[0];
+    const giveSelected = draft.giveList.find(item => item.value === payload);
+    draft.giveSelected = giveSelected;
 
-    draft.getList = giveSelected[0].method;
-    draft.getSelected = giveSelected[0].method[0];
+    draft.getList = giveSelected.method;
+    draft.getSelected = giveSelected.method[0];
 
-    draft.variantList = giveSelected[0].method[0].variants;
-    draft.variantSelected = giveSelected[0].method[0].variants[0];
+    draft.variantList = giveSelected.method[0].variants;
+    draft.variantSelected = giveSelected.method[0].variants[0];
 
-    if (draft.variantSelected) {
+    if (draft.variantSelected && draft.giveAmount) {
       const { isValid, errorText } = validateValue({ value: draft.giveError, rules: draft.variantSelected.rules });
 
       if (draft.giveError && isValid) {
@@ -623,13 +696,13 @@ const reducer = {
   },
 
   [Types.CHOSE_GET_OPTION]: (draft, payload) => {
-    const getSelected = draft.getList.filter(item => item.value === payload);
-    draft.getSelected = getSelected[0];
+    const getSelected = draft.getList.find(item => item.value === payload);
+    draft.getSelected = getSelected;
 
-    draft.variantList = getSelected[0].variants;
-    draft.variantSelected = getSelected[0].variants[0];
+    draft.variantList = getSelected.variants;
+    draft.variantSelected = getSelected.variants[0];
 
-    if (draft.variantSelected) {
+    if (draft.variantSelected && draft.giveAmount) {
       const { isValid, errorText } = validateValue({ value: draft.giveError, rules: draft.variantSelected.rules });
 
       if (draft.giveError && isValid) {
@@ -641,10 +714,10 @@ const reducer = {
   },
 
   [Types.CHOOSE_VARIANT_OPTION]: (draft, payload) => {
-    draft.variantSelected = draft.variantList.filter(item => item.value === payload)[0];
+    draft.variantSelected = draft.variantList.find(item => item.value === payload);
 
-    if (draft.variantSelected) {
-      const { isValid, errorText } = validateValue({ value: draft.giveError, rules: draft.variantSelected.rules });
+    if (draft.variantSelected && draft.giveAmount) {
+      const { isValid, errorText } = validateValue({ value: draft.giveAmount, rules: draft.variantSelected.rules });
 
       if (draft.giveError && isValid) {
         draft.giveError = null;
@@ -656,7 +729,6 @@ const reducer = {
 
   [Types.CHANGE_GIVE_AMOUNT]: (draft, payload) => {
     draft.giveAmount = payload;
-    const { isValid, errorText } = validateValue({ value: payload, rules: draft.variantSelected.rules });
 
     if (draft.direction === cnst.CRYPTO_SELL) {
       draft.getAmount = getAmount((payload * price), draft.sellPercent, 3);
@@ -664,14 +736,9 @@ const reducer = {
       draft.getAmount = getAmount((payload / price), draft.buyPercent, 8);
     }
 
-    if (draft.giveError && isValid) {
-      draft.giveError = null;
-    } else {
-      draft.giveError = errorText;
-    }
+    const { isValid, errorText } = validateValue({ value: payload, rules: draft.variantSelected.rules });
+    draft.giveError = isValid ? null : errorText;
   },
-
-  [Types.CHANGE_GIVE_AMOUNT_ERROR]: (draft, payload) => draft.giveError = payload,
 
   [Types.CHANGE_GET_AMOUNT]: (draft, payload) => {
     draft.getAmount = payload;
@@ -684,17 +751,159 @@ const reducer = {
     }
 
     draft.giveAmount = giveAmount;
-    const { isValid, errorText } = validateValue({ value: giveAmount, rules: draft.variantSelected.rules });
 
-    if (draft.giveError && isValid) {
-      draft.giveError = null;
-    } else {
-      draft.giveError = errorText;
-    }
+    const { isValid, errorText } = validateValue({ value: giveAmount, rules: draft.variantSelected.rules });
+    draft.giveError = isValid ? null : errorText;
+  },
+
+  [Types.CHANGE_CARD_VALUE]: (draft, payload) => draft.cardValue = payload,
+
+  [Types.CHANGE_WALLET_VALUE]: (draft, payload) => draft.walletValue = payload,
+
+  [Types.CHANGE_ACCOUNT_VALUE]: (draft, payload) => draft.accountValue = payload,
+
+  [Types.CHANGE_DELIVER_COUNTY_OPTION]: (draft, payload) => {
+    const deliverCountrySelected = draft.deliverCountryList.find(country => country.value === payload);
+    draft.deliverCountrySelected = deliverCountrySelected;
+
+    draft.deliverCityList = deliverCountrySelected.cityList;
+    draft.deliverCitySelected = null;
+  },
+
+  [Types.CHANGE_DELIVER_CITY_OPTION]: (draft, payload) => draft.deliverCitySelected = draft.deliverCityList.find(city => city.value === payload),
+
+  [Types.CHANGE_DELIVER_VALUE]: (draft, payload) => draft.deliverValue = payload,
+
+  [Types.CHANGE_PRIVACY_VALUE]: (draft, payload) => draft.privacyValue = payload,
+
+  [Types.CHANGE_REMEMBER_VALUE]: (draft, payload) => {
+    draft.forgetInputsValue = payload;
   },
 
   [Types.NEXT_STEP]: draft => {
-    draft.step = draft.step + 1;
+    const currentStep = draft.step;
+
+    if (currentStep === 2) {
+      const { isValid: isAccountValid, errorText: accountErrorText } = validateValue({
+        value: draft.accountValue,
+        rules: [
+          {
+            name: 'required',
+            text: 'Field is required',
+          },
+          {
+            name: 'isPhoneOrAccount',
+            text: 'Incorrect phone number or account',
+          },
+        ],
+      });
+
+      const cardRules = [
+        {
+          name: 'required',
+          text: 'Field is required',
+        },
+        {
+          name: 'isCard',
+          text: `Incorrect card number`
+        },
+      ];
+      const walletRules = [
+        {
+          name: 'required',
+          text: 'Field is required',
+        },
+        {
+          name: 'isWallet',
+          text: `Incorrect wallet address`
+        },
+      ]
+      const { isValid: isInputValid, errorText: inputErrorText } = validateValue({
+        value: draft.direction === cnst.CRYPTO_SELL ? draft.cardValue : draft.walletValue,
+        rules: draft.direction === cnst.CRYPTO_SELL ? cardRules : walletRules,
+      });
+
+      if (isAccountValid && isInputValid) {
+        draft.accountError = null;
+        if (draft.direction === cnst.CRYPTO_SELL) {
+          draft.cardError = null;
+        } else {
+          draft.walletError = null;
+        }
+        draft.step = currentStep + 1;
+
+        let localUserData = JSON.parse(localStorage.getItem('user_data'));
+        if (draft.forgetInputsValue && localUserData) {
+          if (draft.direction === cnst.CRYPTO_SELL) {
+            if (draft.getSelected.value === 'cash') {
+              delete localUserData.deliverCountrySelected;
+              delete localUserData.deliverCitySelected;
+            }
+            delete localUserData.cardValue;
+          } else {
+            if (draft.giveSelected.value === 'cash') {
+              delete localUserData.deliverCountrySelected;
+              delete localUserData.deliverCitySelected;
+            }
+            delete localUserData.walletValue;
+          }
+
+          delete localUserData.accountValue;
+        } else {
+          localUserData = {
+            ...localUserData,
+            accountValue: draft.accountValue,
+
+          };
+
+          if (draft.direction === cnst.CRYPTO_SELL) {
+            if (draft.getSelected.value === 'cash') {
+              localUserData.deliverCountrySelected = draft.deliverCountrySelected;
+              localUserData.deliverCitySelected = draft.deliverCitySelected;
+            }
+            localUserData.cardValue = draft.cardValue;
+          } else {
+            if (draft.giveSelected.value === 'cash') {
+              localUserData.deliverCountrySelected = draft.deliverCountrySelected;
+              localUserData.deliverCitySelected = draft.deliverCitySelected;
+            }
+            localUserData.walletValue = draft.walletValue;
+          }
+        }
+
+        localStorage.setItem('user_data', JSON.stringify(localUserData));
+      } else {
+        draft.accountError = accountErrorText;
+        if (draft.direction === cnst.CRYPTO_SELL) {
+          draft.cardError = inputErrorText;
+        } else {
+          draft.walletError = inputErrorText;
+        }
+      }
+    } else {
+      draft.step = currentStep + 1;
+    }
+  },
+
+  [Types.PREVIOUS_STEP]: draft => {
+    const currentStep = draft.step;
+    if (currentStep === 1) return;
+
+    if (currentStep === 2) {
+      if (draft.forgetInputsValue) {
+        draft.cardValue = null;
+        draft.accountValue = null;
+        draft.accountError = null;
+        draft.cardError = null;
+        draft.walletValue = null;
+        draft.walletError = null;
+        draft.deliverCountrySelected = null;
+        draft.deliverCountryList = [];
+        draft.deliverCitySelected = null;
+      }
+    }
+
+    draft.step = currentStep - 1;
   },
 };
 

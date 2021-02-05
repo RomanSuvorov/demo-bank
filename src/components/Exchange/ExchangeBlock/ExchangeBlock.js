@@ -6,12 +6,19 @@ import { SecondStep } from '../ExchangeSecondStep/Exchange.SecondStep';
 import { ThirdStep } from '../ExchangeThirdStep/Exchange.ThirdStep';
 import { FinishStep } from '../ExchangeFinishStep/Exchange.FinishStep';
 import { Select } from '../..';
-import { exchangeStepList } from '../../../constants';
+import { cnst, exchangeStepList } from '../../../constants';
 import Types from '../../../store/exchange/types';
 import './ExchangeBlock.css';
 
 function ExchangeBlock() {
-  const { step, countryList, countrySelected, buyPercent, sellPercent } = useSelector(state => state.exchange);
+  const {
+    direction,
+    step,
+    countryList,
+    countrySelected,
+    buyPercent,
+    sellPercent
+  } = useSelector(state => state.exchange);
   const dispatch = useDispatch();
 
   const getStep = () => {
@@ -55,7 +62,7 @@ function ExchangeBlock() {
           options={countryList}
           onChange={handleChangeCountry}
         />
-        <div className="exchangeBlock_header__item">
+        <div className={`exchangeBlock_header__item ${direction === cnst.CRYPTO_BUY ? 'active' : ''}`}>
           <div className="exchangeBlock_header__title">
             <span>Покупка</span>
           </div>
@@ -63,7 +70,7 @@ function ExchangeBlock() {
             <span>{buyPercent}%</span>
           </div>
         </div>
-        <div className="exchangeBlock_header__item">
+        <div className={`exchangeBlock_header__item ${direction === cnst.CRYPTO_SELL ? 'active' : ''}`}>
           <div className="exchangeBlock_header__title">
             <span>Продажа</span>
           </div>

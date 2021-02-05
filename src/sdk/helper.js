@@ -43,25 +43,70 @@ function _configureStore(reducers) {
 
   return createStore(
     combineReducers({ ...reducers }),
-    _loadState(),
+    // _loadState(),
+    undefined,
     composeEnhancers(applyMiddleware(ReduxPromise, thunk, createLogger)),
   );
 }
 
-export function validateValue({ value, rules }) {
-  let isValid = false, errorText = '';
+export function validateValue({ value, rules, address }) {
+  let isValid = false, errorText = null;
   if (!rules || (rules && !rules.length)) return { isValid: true, errorText };
 
   rules.some(rule => {
     switch (rule.name) {
       case 'required':
-        isValid = !!(value && !isNaN(value));
+        isValid = !!(value);
         break;
       case 'minNumber':
         isValid = (value >= rule.value);
         break;
       case 'maxNumber':
         isValid = (value <= rule.value);
+        break;
+      case 'isCard':
+        const americanExpressReg = /^(?:3[47][0-9]{13})$/;
+        const visaReg = /^(?:4[0-9]{12}(?:[0-9]{3})?)$/;
+        const masterCardReg = /^(?:5[1-5][0-9]{14})$/;
+        const discoverReg = /^(?:6(?:011|5[0-9][0-9])[0-9]{12})$/;
+        isValid = !!(value.match(americanExpressReg) || value.match(visaReg) || value.match(masterCardReg) || value.match(discoverReg));
+        break;
+      case 'isWallet':
+        // let walletReg;
+        // switch (address) {
+        //   case 'btc':
+        //     walletReg = /^&/;
+        //     break;
+        //   case 'bch':
+        //     walletReg = /^&/;
+        //     break;
+        //   case 'xrp':
+        //     walletReg = /^&/;
+        //     break;
+        //   case 'ltc':
+        //     walletReg = /^&/;
+        //     break;
+        //   case 'usdt':
+        //     walletReg = /^&/;
+        //     break;
+        //   case 'usdt_trc20':
+        //     walletReg = /^&/;
+        //     break;
+        //   case 'usdt_erc20':
+        //     walletReg = /^&/;
+        //     break;
+        //   case 'eth':
+        //     walletReg = /^&/;
+        //     break;
+        // }
+        //
+        // isValid = !!(value.match(walletReg));
+        isValid = true;
+        break;
+      case 'isPhoneOrAccount':
+        const phoneReg = /^\+?(\d{10,})$/;
+        const accountReg = /^@(\w{5,32})$/;
+        isValid = !!(value.match(phoneReg) || value.match(accountReg));
         break;
     }
 

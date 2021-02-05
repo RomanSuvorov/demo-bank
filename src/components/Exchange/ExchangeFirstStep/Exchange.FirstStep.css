@@ -63,7 +63,6 @@
     max-width: calc((100% - 72px)/2);
 }
 
-.firstStep_row .select,
 .firstStep_row .select {
     height: 30px;
     padding: 0 12px;
@@ -74,10 +73,15 @@
 .firstStep_row .select .select_selected__text {
     color: var(--color-primaryText);
     font-weight: 700;
+    font-size: 14px;
 }
 
 .firstStep_row .select .select_list {
     border-radius: 5px;
+}
+
+.firstStep_row .select .select_list .select_option__text {
+    font-weight: 700;
 }
 
 .firstStep_selectBox__tooltip {
