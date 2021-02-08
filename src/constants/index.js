@@ -1,16 +1,23 @@
-import { languageOpts, sidebarOpts, countryOpts, exchangeStepList } from './lists';
+import { languageOpts, sidebarOpts, exchangeStepList } from './lists';
 import { routes, routesList } from './routes';
 
-const cnst = {
+const exchangeDirection = {
   CRYPTO_SELL: 'CRYPTO_SELL', // buy or sell
   CRYPTO_BUY: 'CRYPTO_BUY',
+};
+
+const exchangeStream = {
+  SELL_BY_CASH: 'SELL_BY_CASH',
+  SELL_BY_CARD: 'SELL_BY_CARD',
+  BUY_BY_CASH: 'BUY_BY_CASH',
+  BUY_BY_CARD: 'BUY_BY_CARD'
 }
 
 export {
-  cnst,
+  exchangeDirection,
+  exchangeStream,
   languageOpts,
   sidebarOpts,
-  countryOpts,
   exchangeStepList,
   routes,
   routesList,

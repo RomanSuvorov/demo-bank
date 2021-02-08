@@ -9,16 +9,15 @@ import { Checkbox } from '../..';
 import { Button } from '../..';
 import ExchangeTypes from '../../../store/exchange/types';
 import AppTypes from '../../../store/app/types';
-import { cnst } from '../../../constants';
+import { exchangeDirection, exchangeStream } from '../../../constants';
 import './Exchange.SecondStep.css';
 
 function SecondStep() {
   const {
     loading,
     error,
+    streamExchange,
     direction,
-    giveSelected,
-    getSelected,
     variantList,
     variantSelected,
     cardValue,
@@ -36,22 +35,18 @@ function SecondStep() {
     forgetInputsValue,
   } = useSelector(state => state.exchange);
   const { isMobile } = useSelector(state => state.app);
-  const isCardMode = !!((direction === cnst.CRYPTO_SELL && getSelected.value === 'card') || (direction === cnst.CRYPTO_BUY && giveSelected.value === 'card'));
+  const isCardMode = !!((streamExchange === exchangeStream.SELL_BY_CARD) || (streamExchange === exchangeStream.BUY_BY_CARD));
   const dispatch = useDispatch();
   let sendDisable;
 
-  if (direction === cnst.CRYPTO_SELL) {
-    if (isCardMode) {
-      sendDisable = !cardValue || !accountValue || !privacyValue;
-    } else {
-      sendDisable = !deliverCountrySelected || !deliverCitySelected || !accountValue || !privacyValue;
-    }
-  } else {
-    if (isCardMode) {
-      sendDisable = !walletValue || !accountValue || !privacyValue;
-    } else {
-      sendDisable = !walletValue || !deliverCountrySelected || !deliverCitySelected || !accountValue || !privacyValue;
-    }
+  if (streamExchange === exchangeStream.SELL_BY_CARD) {
+    sendDisable = !cardValue || !accountValue || !privacyValue;
+  } else if (streamExchange === exchangeStream.SELL_BY_CASH) {
+    sendDisable = !deliverCountrySelected || !deliverCitySelected || !accountValue || !privacyValue;
+  } else if (streamExchange === exchangeStream.BUY_BY_CARD) {
+    sendDisable = !walletValue || !accountValue || !privacyValue;
+  } else if (streamExchange === exchangeStream.BUY_BY_CASH) {
+    sendDisable = !walletValue || !deliverCountrySelected || !deliverCitySelected || !accountValue || !privacyValue;
   }
 
   const handleChooseFromVariantList = value => dispatch({ type: ExchangeTypes.CHOOSE_VARIANT_OPTION, payload: value });
@@ -82,7 +77,7 @@ function SecondStep() {
   const handleSend = () => dispatch({ type: ExchangeTypes.NEXT_STEP });
 
   const getInputs = () => {
-    if (direction === cnst.CRYPTO_BUY) {
+    if (direction === exchangeDirection.CRYPTO_BUY) {
       return (
         <Input
           className={"secondStep_input"}
@@ -98,7 +93,7 @@ function SecondStep() {
       );
     }
 
-    if (direction === cnst.CRYPTO_SELL) {
+    if (direction === exchangeDirection.CRYPTO_SELL) {
       if (isCardMode) {
         return (
           <Input

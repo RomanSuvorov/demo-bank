@@ -7,7 +7,7 @@ import { Button } from '../..';
 import { Tooltip } from '../..';
 import { HelpSign } from '../..';
 import { Loading } from '../..';
-import { cnst } from '../../../constants';
+import { exchangeDirection } from '../../../constants';
 import { DirectionIcon } from '../../../constants/icons';
 import Types from '../../../store/exchange/types';
 import './Exchange.FirstStep.css';
@@ -91,7 +91,7 @@ function FirstStep() {
             value={giveAmount}
             min={0}
             error={giveError}
-            placeholder={direction === cnst.CRYPTO_SELL ? '0.00000000' : '0.000'}
+            placeholder={direction === exchangeDirection.CRYPTO_SELL ? '0.00000000' : '0.000'}
             onChange={handleChangeGiveAmount}
           />
         </form>
@@ -109,7 +109,7 @@ function FirstStep() {
             type={"number"}
             value={getAmount}
             min={0}
-            placeholder={direction === cnst.CRYPTO_SELL ? '0.000' : '0.00000000'}
+            placeholder={direction === exchangeDirection.CRYPTO_SELL ? '0.000' : '0.00000000'}
             onChange={handleChangeGetAmount}
           />
         </form>
