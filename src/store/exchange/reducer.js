@@ -1,6 +1,6 @@
 import Types from './types';
 import { createReducer, getSelectorsData, validateValue } from '../../sdk/helper'
-import { exchangeDirection, exchangeStepList, exchangeStream } from '../../constants';
+import { exchangeDirection, exchangeStepList, exchangeStream, transactionProcess } from '../../constants';
 
 const getAmount = (action, percent, fractionDigits) => {
   return (action + ((action * (+percent)) / 100)).toFixed(fractionDigits);
@@ -45,8 +45,9 @@ const initialStore = {
   deliverCitySelected: null,
 
   // 3rd step
-  transferData: null,
-  transactionStatus: 'await',
+  // transactionData: "36CBFBE9E63178BA0360B9B8AD986A70",
+  transactionData: "0000   0000   0000   0000",
+  transactionStatus: transactionProcess.AWAITING,
 
   // finish step
 
@@ -326,7 +327,7 @@ const reducer = {
         }
 
 
-        if (draft.streamExchange === exchangeStream.SELL_BY_CASH) {
+        if (draft.streamExchange === exchangeStream.BUY_BY_CASH) {
           draft.step = currentStep + 2;
         } else {
           draft.step = currentStep + 1;

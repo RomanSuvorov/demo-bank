@@ -6,7 +6,7 @@ import { Input } from './Input/Input';
 import { Button } from './Button/Button';
 import { Tooltip } from './Tooltip/Tooltip';
 import { HelpSign } from './HelpSign/HelpSign';
-import { Loading} from './Loading/Loading';
+import { Loading, LoaderBall } from './Loading/Loading';
 import { Checkbox } from './Checkbox/Checkbox';
 
 export {
@@ -19,5 +19,6 @@ export {
   Tooltip,
   HelpSign,
   Loading,
+  LoaderBall,
   Checkbox,
 };

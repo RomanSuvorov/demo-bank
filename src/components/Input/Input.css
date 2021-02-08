@@ -19,6 +19,11 @@
     outline: none;
     border: none;
     transition: box-shadow .3s;
+    text-overflow: ellipsis;
+}
+
+.input_field.withIcon {
+    padding-right: 42px;
 }
 
 /* Chrome, Safari, Edge, Opera */
@@ -61,6 +66,25 @@
 .input_error__text {
     color: var(--color-error);
     font-size: 8px;
+}
+
+.input_icon {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom: 50%;
+    right: 12px;
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+}
+
+.input_icon:hover svg path {
+    fill: var(--color-active);
+}
+
+.input_icon.withLabel {
+    bottom: calc(50% - 20px);
 }
 
 .input_field__error,

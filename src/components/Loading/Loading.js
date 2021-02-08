@@ -25,4 +25,19 @@ function Loading({ text }) {
   );
 }
 
-export { Loading };
+function LoaderBall() {
+  return (
+    <div className={"loader"}>
+      <div className="loader_item" />
+      <div className="loader_item" />
+      <div className="loader_item" />
+      <div className="loader_item" />
+      <div className="loader_item" />
+      <div className="loader_item" />
+      <div className="loader_item" />
+      <div className="loader_item" />
+    </div>
+  )
+}
+
+export { Loading, LoaderBall };

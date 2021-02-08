@@ -1,3 +1,103 @@
 .thirdStep {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
 
+.thirdStep_title {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 54px;
+}
+
+.thirdStep_title span {
+    color: var(--color-active);
+}
+
+.thirdStep_tooltip {
+    margin-left: 12px;
+}
+
+.thirdStep_input {
+    margin-bottom: 42px;
+}
+
+.thirdStep_input .input_field {
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+}
+
+.thirdStep_input.copied .input_icon svg path {
+    fill: var(--color-green);
+}
+
+.thirdStep_transaction {
+    display: flex;
+    flex-direction: column;
+}
+
+.thirdStep_transaction__title {
+    margin-bottom: 8px;
+}
+
+.thirdStep_transaction__title span,
+.thirdStep_process__title span {
+    font-size: 12px;
+}
+
+.thirdStep_transaction__process {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.thirdStep_process__title span {
+    color: var(--color-primaryText);
+}
+
+.thirdStep_process__icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 6px auto;
+    width: 43px;
+    height: 43px;
+}
+
+.thirdStep_process__icon > div:not(.loader) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+}
+
+.thirdStep_process__icon svg {
+    max-width: 24px;
+    height: 24px;
+}
+
+.thirdStep_process__icon svg path {
+    fill: var(--color-primaryText);
+}
+
+.thirdStep_successfulBox {
+    background-color: var(--color-green);
+}
+
+.thirdStep_canceledBox {
+    background-color: var(--color-error);
+}
+
+.thirdStep_process__subtitle span {
+    font-size: 10px;
+    color: var(--color-placeholder);
+}
+
+span.thirdStep_process__timeLeft {
+    color: var(--color-secondaryText);
 }

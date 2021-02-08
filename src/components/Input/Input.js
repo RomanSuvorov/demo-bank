@@ -2,7 +2,20 @@ import React from 'react';
 
 import './Input.css';
 
-function Input({ className, label, name, type, value, error, placeholder, onChange, ...props }) {
+function Input({
+  className,
+  label,
+  name,
+  type,
+  value,
+  error,
+  placeholder,
+  onChange,
+  Icon,
+  iconHandler,
+  readOnly = false,
+  ...props
+}) {
   return (
     <div className={`input ${className}`}>
       {
@@ -16,14 +29,22 @@ function Input({ className, label, name, type, value, error, placeholder, onChan
         )
       }
       <input
-        className={`input_field ${error ? 'input_field__error' : ''}`}
+        className={`input_field ${error ? 'input_field__error' : ''} ${Icon ? 'withIcon' : ''}`}
         id={name}
         value={value ? value : ''}
         placeholder={placeholder}
         type={type}
+        readOnly={readOnly}
         onChange={e => onChange(e.target.value)}
         {...props}
       />
+      {
+        Icon && (
+          <div className={`input_icon ${label ? 'withLabel' : ''}`} onClick={iconHandler}>
+            <Icon />
+          </div>
+        )
+      }
       {
         error && (
           <div className={"input_error"}>
