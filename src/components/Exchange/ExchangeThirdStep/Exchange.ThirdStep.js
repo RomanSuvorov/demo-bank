@@ -6,8 +6,11 @@ import { Tooltip } from '../..';
 import { HelpSign } from '../..';
 import { Input } from '../..';
 import { LoaderBall } from '../..';
+import { Button } from '../..';
 import { CopyIcon, ErrorIcon, SuccessIcon } from '../../../constants/icons';
 import { exchangeStream, transactionProcess } from '../../../constants';
+import ExchangeTypes from '../../../store/exchange/types';
+import { preventSendingByUser } from '../../../store/exchange/actions';
 import './Exchange.ThirdStep.css';
 
 function ThirdStep() {
@@ -21,33 +24,42 @@ function ThirdStep() {
   const { isMobile } = useSelector(state => state.app);
   const dispatch = useDispatch();
 
-  const [timeLeft, setTimeLeft] = useState(1000 * 60 * 30);
+  const [timeLeft, setTimeLeft] = useState(60 * 30);
   useEffect(() => {
-    let timer;
+    let timer, timeout;
 
     const _startTimer = () => {
       timer = setInterval(() => {
-        if (timeLeft <= 0) {
+        if (timeLeft === 0) {
           clearInterval(timer);
+          dispatch({ type: ExchangeTypes.CHANGE_TRANSACTION_STATUS, payload: transactionProcess.CANCELED });
           return;
         }
-        setTimeLeft(timeLeft => timeLeft - 1000);
+        setTimeLeft(timeLeft => timeLeft - 1);
       }, 1000);
     };
 
     switch (transactionStatus) {
       case transactionProcess.AWAITING:
+        console.log('1', timeLeft);
         _startTimer();
         break;
       case transactionProcess.SUCCESSFUL:
         clearInterval(timer);
+        timeout = setTimeout(() => {
+          dispatch({ type: ExchangeTypes.NEXT_STEP });
+          dispatch({ type: ExchangeTypes.THROW_TO_DEFAULT });
+        }, 3000);
         break;
       case transactionProcess.CANCELED:
         clearInterval(timer);
         break;
     }
 
-    return () => clearInterval(timer);
+    return () => {
+      clearInterval(timer);
+      clearInterval(timeout);
+    }
   }, [transactionStatus, timeLeft]);
 
   const [title, setTitle] = useState('');
@@ -74,6 +86,11 @@ function ThirdStep() {
   const [isCopied, setCopied] = useClipboard(inputValue);
 
   const handleCopySystemData = () => setCopied();
+
+  const handleGoBack = async () => {
+    await dispatch(preventSendingByUser());
+    dispatch({ type: ExchangeTypes.PREVIOUS_STEP });
+  };
 
   const getProcessBlock = () => {
     let title = '', Component = <div />;
@@ -114,7 +131,7 @@ function ThirdStep() {
               <div className={"thirdStep_process__subtitle"}>
                 <span>Время ожидания:&nbsp;</span>
                 <span className={"thirdStep_process__timeLeft"}>
-                  {parseInt((timeLeft / (1000 * 60)) % 60, 10)}
+                  {parseInt((timeLeft / 60) % 60, 10)}
                   &nbsp;min
                 </span>
               </div>
@@ -148,6 +165,25 @@ function ThirdStep() {
         iconHandler={handleCopySystemData}
       />
       {getProcessBlock()}
+
+      <div className="thirdStep_fixPrice">
+        <span>
+          *Курс фиксируется в момент поступления средств на адрес кошелька
+        </span>
+      </div>
+
+      {
+        (transactionStatus !== transactionProcess.SUCCESSFUL) && (
+          <div className={"thirdStep_buttonBox"}>
+            <Button
+              className={"thirdStep_button"}
+              onClick={handleGoBack}
+            >
+              Отмена
+            </Button>
+          </div>
+        )
+      }
     </div>
   );
 }

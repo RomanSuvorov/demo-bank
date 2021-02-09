@@ -581,4 +581,8 @@ export const loadInitialData = () => async (dispatch, getState) => {
   } finally {
     dispatch({ type: Types.LOAD_DATA_FINISH });
   }
-}
+};
+
+export const preventSendingByUser = () => async (dispatch) => {
+  // TODO: send to bot that user prevent sending money for system;
+};

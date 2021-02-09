@@ -7,7 +7,7 @@
 .thirdStep_title {
     display: flex;
     flex-direction: row;
-    margin-bottom: 54px;
+    margin-bottom: 36px;
 }
 
 .thirdStep_title span {
@@ -19,7 +19,7 @@
 }
 
 .thirdStep_input {
-    margin-bottom: 42px;
+    margin-bottom: 36px;
 }
 
 .thirdStep_input .input_field {
@@ -35,6 +35,7 @@
 .thirdStep_transaction {
     display: flex;
     flex-direction: column;
+    margin-bottom: 24px;
 }
 
 .thirdStep_transaction__title {
@@ -100,4 +101,22 @@
 
 span.thirdStep_process__timeLeft {
     color: var(--color-secondaryText);
+}
+
+.thirdStep_fixPrice {
+    max-width: 65%;
+    text-align: center;
+    margin: 0 auto 6px;
+}
+
+.thirdStep_fixPrice span {
+    color: rgba(var(--dmb-white), 0.3);
+    font-size: 10px;
+}
+
+.thirdStep_buttonBox {
+    display: flex;
+    flex: 1;
+    justify-content: space-around;
+    align-items: flex-end;
 }

@@ -28,7 +28,6 @@ const initialStore = {
   giveError: null,
   getAmount: null,
 
-
   // 2nd step
   cardValue: null,
   walletValue: null,
@@ -267,6 +266,10 @@ const reducer = {
     draft.forgetInputsValue = payload;
   },
 
+  [Types.CHANGE_TRANSACTION_STATUS]: (draft, payload) => {
+    draft.transactionStatus = payload;
+  },
+
   [Types.NEXT_STEP]: draft => {
     const currentStep = draft.step;
 
@@ -405,6 +408,34 @@ const reducer = {
     }
 
     draft.step = currentStep - 1;
+  },
+
+  [Types.THROW_TO_DEFAULT]: draft => {
+    draft.countrySelected = draft.countryList[0].value;
+    draft.sellPercent = draft.countryList[0].sellPercent;
+    draft.buyPercent = draft.countryList[0].buyPercent;
+    draft.direction = initialStore.direction;
+    draft.streamExchange = initialStore.streamExchange;
+    const giveList = draft.exchangeData(item => item.isCrypto);
+    draft.giveList = giveList;
+    const {
+      giveSelected,
+      getList,
+      getSelected,
+      variantList,
+      variantSelected,
+    } = getSelectorsData(giveList, undefined, 1);
+    draft.giveSelected = giveSelected;
+    draft.getList = getList;
+    draft.getSelected = getSelected;
+    draft.variantList = variantList;
+    draft.variantSelected = variantSelected;
+    draft.giveAmount = initialStore.giveAmount;
+    draft.giveError = initialStore.giveError;
+    draft.getAmount = initialStore.getAmount;
+    draft.loading = initialStore.loading;
+    draft.error = initialStore.error;
+    draft.step = initialStore.step;
   },
 };
 
