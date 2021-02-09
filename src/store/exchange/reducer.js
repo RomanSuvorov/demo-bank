@@ -16,7 +16,7 @@ const initialStore = {
 
   // 1st step
   direction: exchangeDirection.CRYPTO_SELL,
-  streamExchange: exchangeStream.SELL_BY_CARD,
+  streamExchange: null,
   exchangeData: [],
   giveList: [],
   getList: [],
@@ -52,7 +52,7 @@ const initialStore = {
 
   // navigation
   step: exchangeStepList[0].index,
-
+  showFinishStep: false,
   // state of process
   loading: false,
   error: undefined,
@@ -338,17 +338,15 @@ const reducer = {
 
         let localUserData = JSON.parse(localStorage.getItem('second_step'));
         if (draft.forgetInputsValue && localUserData) {
+          if ((draft.streamExchange === exchangeStream.SELL_BY_CASH) || (draft.streamExchange === exchangeStream.BUY_BY_CASH)) {
+            delete localUserData.deliverCountrySelected;
+            delete localUserData.deliverCitySelected;
+            delete localUserData.deliverValue;
+          }
+
           if (draft.direction === exchangeDirection.CRYPTO_SELL) {
-            if (draft.streamExchange === exchangeStream.SELL_BY_CASH) {
-              delete localUserData.deliverCountrySelected;
-              delete localUserData.deliverCitySelected;
-            }
             delete localUserData.cardValue;
           } else {
-            if (draft.streamExchange === exchangeStream.BUY_BY_CASH) {
-              delete localUserData.deliverCountrySelected;
-              delete localUserData.deliverCitySelected;
-            }
             delete localUserData.walletValue;
           }
 
@@ -359,17 +357,15 @@ const reducer = {
             accountValue: draft.accountValue,
           };
 
+          if ((draft.streamExchange === exchangeStream.SELL_BY_CASH) || (draft.streamExchange === exchangeStream.BUY_BY_CASH)) {
+            localUserData.deliverCountrySelected = draft.deliverCountrySelected;
+            localUserData.deliverCitySelected = draft.deliverCitySelected;
+            localUserData.deliverValue = draft.deliverValue;
+          }
+
           if (draft.direction === exchangeDirection.CRYPTO_SELL) {
-            if (draft.streamExchange === exchangeStream.SELL_BY_CASH) {
-              localUserData.deliverCountrySelected = draft.deliverCountrySelected;
-              localUserData.deliverCitySelected = draft.deliverCitySelected;
-            }
             localUserData.cardValue = draft.cardValue;
           } else {
-            if (draft.streamExchange === exchangeStream.BUY_BY_CASH) {
-              localUserData.deliverCountrySelected = draft.deliverCountrySelected;
-              localUserData.deliverCitySelected = draft.deliverCitySelected;
-            }
             localUserData.walletValue = draft.walletValue;
           }
         }
@@ -410,13 +406,13 @@ const reducer = {
     draft.step = currentStep - 1;
   },
 
-  [Types.THROW_TO_DEFAULT]: draft => {
+  [Types.RESET_EXCHANGE]: draft => {
     draft.countrySelected = draft.countryList[0].value;
     draft.sellPercent = draft.countryList[0].sellPercent;
     draft.buyPercent = draft.countryList[0].buyPercent;
     draft.direction = initialStore.direction;
-    draft.streamExchange = initialStore.streamExchange;
-    const giveList = draft.exchangeData(item => item.isCrypto);
+
+    const giveList = draft.exchangeData.filter(item => item.isCrypto);
     draft.giveList = giveList;
     const {
       giveSelected,
@@ -436,6 +432,41 @@ const reducer = {
     draft.loading = initialStore.loading;
     draft.error = initialStore.error;
     draft.step = initialStore.step;
+
+    let streamExchange;
+    if (initialStore.direction === exchangeDirection.CRYPTO_SELL) {
+      streamExchange = getList[0].value === 'cash' ? exchangeStream.SELL_BY_CASH : exchangeStream.SELL_BY_CARD;
+    } else if (initialStore.direction === exchangeDirection.CRYPTO_BUY) {
+      streamExchange = giveList[0].value === 'cash' ? exchangeStream.BUY_BY_CASH : exchangeStream.BUY_BY_CARD;
+    }
+    draft.streamExchange = streamExchange;
+
+    draft.transactionStatus = initialStore.transactionStatus;
+    draft.privacyValue = initialStore.privacyValue;
+
+    const localUserData = JSON.parse(localStorage.getItem('second_step'));
+    if (localUserData) {
+      draft.forgetInputsValue = localUserData.forgetInputsValue;
+      draft.cardValue = localUserData.cardValue;
+      draft.walletValue = localUserData.walletValue;
+      draft.accountValue = localUserData.accountValue;
+      draft.deliverCountrySelected = localUserData.deliverCountrySelected;
+      draft.deliverCitySelected = localUserData.deliverCitySelected;
+      draft.deliverValue = localUserData.deliverValue;
+    } else {
+      draft.forgetInputsValue = initialStore.forgetInputsValue;
+      draft.cardValue = initialStore.cardValue;
+      draft.walletValue = initialStore.walletValue;
+      draft.accountValue = initialStore.accountValue;
+      draft.deliverCountrySelected = initialStore.deliverCountrySelected;
+      draft.deliverCitySelected = initialStore.deliverCitySelected;
+      draft.deliverValue = initialStore.deliverValue;
+      draft.showFinishStep = initialStore.showFinishStep;
+    }
+  },
+
+  [Types.FINISH_STEP]: (draft, payload) => {
+    draft.showFinishStep = payload;
   },
 };
 

@@ -41,14 +41,12 @@ function ThirdStep() {
 
     switch (transactionStatus) {
       case transactionProcess.AWAITING:
-        console.log('1', timeLeft);
         _startTimer();
         break;
       case transactionProcess.SUCCESSFUL:
         clearInterval(timer);
         timeout = setTimeout(() => {
-          dispatch({ type: ExchangeTypes.NEXT_STEP });
-          dispatch({ type: ExchangeTypes.THROW_TO_DEFAULT });
+          dispatch({ type: ExchangeTypes.FINISH_STEP, payload: true });
         }, 3000);
         break;
       case transactionProcess.CANCELED:
@@ -139,7 +137,7 @@ function ThirdStep() {
           }
         </div>
       </div>
-    )
+    );
   };
 
   return (

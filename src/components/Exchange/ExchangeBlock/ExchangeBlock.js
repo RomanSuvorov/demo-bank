@@ -17,7 +17,7 @@ function ExchangeBlock() {
     countryList,
     countrySelected,
     buyPercent,
-    sellPercent
+    sellPercent,
   } = useSelector(state => state.exchange);
   const dispatch = useDispatch();
 
@@ -36,9 +36,6 @@ function ExchangeBlock() {
           break;
         case 'ThirdStep':
           Component = ThirdStep;
-          break;
-        case 'FinishStep':
-          Component = FinishStep;
           break;
         default:
           Component = FirstStep;
@@ -81,6 +78,7 @@ function ExchangeBlock() {
       </div>
       <div className={"exchangeBlock_content"}>
         {getStep()}
+        <FinishStep />
       </div>
     </div>
   );

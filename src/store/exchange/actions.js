@@ -555,6 +555,7 @@ export const loadInitialData = () => async (dispatch, getState) => {
         dataFromLS.accountValue = localUserData.accountValue;
         dataFromLS.deliverCountrySelected = localUserData.deliverCountrySelected;
         dataFromLS.deliverCitySelected = localUserData.deliverCitySelected;
+        dataFromLS.deliverValue = localUserData.deliverValue;
       }
 
     const result = {

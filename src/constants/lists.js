@@ -75,10 +75,6 @@ const exchangeStepList = [
     index: 3,
     Component: 'ThirdStep',
   },
-  {
-    index: 4,
-    Component: 'FinishStep',
-  },
 ];
 
 export {
