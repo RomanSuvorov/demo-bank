@@ -102,6 +102,8 @@
     justify-content: center;
     width: 100%;
     padding-bottom: 54px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .sidebar_review__text {
