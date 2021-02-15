@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import useClipboard from "react-use-clipboard";
 
 import { Tooltip } from '../..';
@@ -15,14 +16,13 @@ import './Exchange.ThirdStep.css';
 
 function ThirdStep() {
   const {
-    loading,
-    error,
     streamExchange,
     transactionData,
     transactionStatus,
   } = useSelector(state => state.exchange);
   const { isMobile } = useSelector(state => state.app);
   const dispatch = useDispatch();
+  const { t } = useTranslation('exchange');
 
   const [timeLeft, setTimeLeft] = useState(60 * 30);
   useEffect(() => {

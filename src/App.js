@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 
@@ -7,6 +7,7 @@ import reducers from './store';
 import './App.css';
 
 import { Layout } from './delegate';
+import { Loading } from './components';
 
 const store = createReduxStore(reducers);
 
@@ -18,7 +19,9 @@ function App() {
   return (
     <Provider store={store}>
       <Router>
-        <Layout />
+        <Suspense fallback={<Loading />}>
+          <Layout />
+        </Suspense>
       </Router>
     </Provider>
   );

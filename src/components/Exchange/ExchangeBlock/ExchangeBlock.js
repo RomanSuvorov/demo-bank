@@ -1,10 +1,12 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { FirstStep } from '../ExchangeFirstStep/Exchange.FirstStep';
 import { SecondStep } from '../ExchangeSecondStep/Exchange.SecondStep';
 import { ThirdStep } from '../ExchangeThirdStep/Exchange.ThirdStep';
 import { FinishStep } from '../ExchangeFinishStep/Exchange.FinishStep';
+import { Loading } from '../..';
 import { Select } from '../..';
 import { exchangeDirection, exchangeStepList } from '../../../constants';
 import Types from '../../../store/exchange/types';
@@ -12,6 +14,8 @@ import './ExchangeBlock.css';
 
 function ExchangeBlock() {
   const {
+    error,
+    loading,
     direction,
     step,
     countryList,
@@ -20,6 +24,7 @@ function ExchangeBlock() {
     sellPercent,
   } = useSelector(state => state.exchange);
   const dispatch = useDispatch();
+  const { t } = useTranslation('exchange');
 
   const getStep = () => {
     const componentData = exchangeStepList.find(item => item.index === step);
@@ -61,7 +66,7 @@ function ExchangeBlock() {
         />
         <div className={`exchangeBlock_header__item ${direction === exchangeDirection.CRYPTO_BUY ? 'active' : ''}`}>
           <div className="exchangeBlock_header__title">
-            <span>Покупка</span>
+            <span>{t('Header.Buy')}</span>
           </div>
           <div className="exchangeBlock_header__value">
             <span>{buyPercent}%</span>
@@ -69,7 +74,7 @@ function ExchangeBlock() {
         </div>
         <div className={`exchangeBlock_header__item ${direction === exchangeDirection.CRYPTO_SELL ? 'active' : ''}`}>
           <div className="exchangeBlock_header__title">
-            <span>Продажа</span>
+            <span>{t('Header.Sell')}</span>
           </div>
           <div className="exchangeBlock_header__value">
             <span>{sellPercent}%</span>
@@ -77,7 +82,7 @@ function ExchangeBlock() {
         </div>
       </div>
       <div className={"exchangeBlock_content"}>
-        {getStep()}
+        {loading ? <Loading text={"Loading data..."} /> : getStep()}
         <FinishStep />
       </div>
     </div>

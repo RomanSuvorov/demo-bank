@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { exchangeStream } from '../../../constants';
 import ExchangeTypes from '../../../store/exchange/types';
@@ -8,6 +9,7 @@ import './Exchange.FinishStep.css';
 function FinishStep() {
   const { streamExchange, showFinishStep } = useSelector(state => state.exchange);
   const dispatch = useDispatch();
+  const { t } = useTranslation('exchange');
   const title = 'Заявка обработана!';
   let description = '';
 

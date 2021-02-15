@@ -21,7 +21,7 @@
 .exchangeBlock_header__item {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     width: calc((100% - 126px) / 2);
     padding: 0 12px;

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { Header, Sidebar, Overlay } from '../../components';
 import { Router } from '../Router';
@@ -7,8 +8,9 @@ import Types from '../../store/app/types';
 import './Layout.css';
 
 function Layout() {
-  const { showSidebar, lang, isMobile } = useSelector(state => state.app);
+  const { showSidebar, isMobile } = useSelector(state => state.app);
   const dispatch = useDispatch();
+  const { i18n } = useTranslation();
 
   useEffect(() => {
     changeWindowSize();
@@ -21,12 +23,12 @@ function Layout() {
 
   const handleChangeSidebar = () => dispatch({ type: Types.TOGGLE_SIDEBAR });
 
-  const handleChangeLang = value => dispatch({ type: Types.CHANGE_LANGUAGE, payload: value });
+  const handleChangeLang = value => i18n.changeLanguage(value);
 
   return (
     <div className={"layout"}>
       <Header
-        lang={lang}
+        lang={i18n.language}
         showSidebar={showSidebar}
         onChangeSidebar={handleChangeSidebar}
         onChangeLang={handleChangeLang}

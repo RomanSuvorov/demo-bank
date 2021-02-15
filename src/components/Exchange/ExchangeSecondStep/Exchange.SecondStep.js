@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { Tooltip } from '../..';
 import { HelpSign } from '../..';
@@ -14,8 +15,6 @@ import './Exchange.SecondStep.css';
 
 function SecondStep() {
   const {
-    loading,
-    error,
     streamExchange,
     direction,
     variantList,
@@ -37,6 +36,7 @@ function SecondStep() {
   const { isMobile } = useSelector(state => state.app);
   const isCardMode = !!((streamExchange === exchangeStream.SELL_BY_CARD) || (streamExchange === exchangeStream.BUY_BY_CARD));
   const dispatch = useDispatch();
+  const { t } = useTranslation('exchange');
   let sendDisable;
 
   if (streamExchange === exchangeStream.SELL_BY_CARD) {

@@ -1,12 +1,12 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { Select } from '../..';
 import { Input } from '../..';
 import { Button } from '../..';
 import { Tooltip } from '../..';
 import { HelpSign } from '../..';
-import { Loading } from '../..';
 import { exchangeDirection } from '../../../constants';
 import { DirectionIcon } from '../../../constants/icons';
 import Types from '../../../store/exchange/types';
@@ -14,8 +14,6 @@ import './Exchange.FirstStep.css';
 
 function FirstStep() {
   const {
-    loading,
-    error,
     direction,
     giveList,
     getList,
@@ -29,6 +27,7 @@ function FirstStep() {
   } = useSelector(state => state.exchange);
   const { isMobile } = useSelector(state => state.app);
   const dispatch = useDispatch();
+  const { t } = useTranslation('exchange');
 
   const handleChangeExchangeDirection = () => dispatch({ type: Types.CHANGE_DIRECTION });
 
@@ -44,23 +43,15 @@ function FirstStep() {
 
   const handleSubmit = () => dispatch({ type: Types.NEXT_STEP });
 
-  if (loading) {
-    return (
-      <div className="firstStep">
-        <Loading text={"Loading data..."} />
-      </div>
-    );
-  }
-
   return (
     <div className="firstStep">
       <div className={"firstStep_row title"}>
         <div className={"firstStep_row__left"}>
-          <span>Отдаете</span>
+          <span>{t('FirstStep.Give')}</span>
         </div>
         <div className={"firstStep_row__center"} />
         <div className={"firstStep_row__right"}>
-          <span>Получаете</span>
+          <span>{t('FirstStep.Get')}</span>
         </div>
       </div>
 
@@ -136,10 +127,10 @@ function FirstStep() {
       <div className={"firstStep_buttonBox"}>
         <Button
           className={"firstStep_button"}
-          disabled={giveError || error || !giveAmount || !getAmount}
+          disabled={giveError || !giveAmount || !getAmount}
           onClick={handleSubmit}
         >
-          Обменять
+          {t('FirstStep.Exchange')}
         </Button>
       </div>
     </div>
