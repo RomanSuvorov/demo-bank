@@ -1,4 +1,7 @@
 .overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -24,5 +27,9 @@
     .overlay.forMobileOnly {
         visibility: hidden;
         opacity: 0;
+    }
+
+    .overlay {
+        z-index: 1;
     }
 }

@@ -17,6 +17,9 @@ const routes = {
     key: 'FAQ',
     path: '/faq',
   },
+  CONTACTS: {
+    key: 'CONTACTS',
+  },
 };
 
 const routesList = [

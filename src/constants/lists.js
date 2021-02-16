@@ -1,17 +1,11 @@
 import React from 'react';
 
 import {
-  RussianLangIcon,
-  GreatBritainLangIcon,
-  UkrainianLangIcon,
-  RussianFlagIcon,
-  GreatBritainFlagIcon,
-  UkrainianFlagIcon,
   ExchangeIcon,
   ReviewIcon,
   FaqIcon,
   ContactIcon,
-} from './icons';
+} from '../assets/icons';
 import { routes } from './routes';
 
 const languageOpts = [
@@ -55,8 +49,7 @@ const sidebarOpts = [
     Icon: FaqIcon,
   },
   {
-    key: routes.FAQ.key + 1,
-    path: routes.FAQ.path,
+    key: routes.CONTACTS.key,
     text: 'Контакты',
     Icon: ContactIcon,
   },

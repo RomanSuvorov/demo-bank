@@ -1,11 +1,11 @@
 {
-  "Header": {
-    "Buy": "Buy",
-    "Sell": "Sell"
+  "header": {
+    "buy": "Buy",
+    "sell": "Sell"
   },
-  "FirstStep": {
-    "Give": "Give",
-    "Get": "Get",
-    "Exchange": "Exchange"
+  "firstStep": {
+    "give": "Give",
+    "get": "Get",
+    "exchange": "Exchange"
   }
 }

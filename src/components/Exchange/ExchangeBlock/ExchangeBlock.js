@@ -66,7 +66,7 @@ function ExchangeBlock() {
         />
         <div className={`exchangeBlock_header__item ${direction === exchangeDirection.CRYPTO_BUY ? 'active' : ''}`}>
           <div className="exchangeBlock_header__title">
-            <span>{t('Header.Buy')}</span>
+            <span>{t('header.buy')}</span>
           </div>
           <div className="exchangeBlock_header__value">
             <span>{buyPercent}%</span>
@@ -74,7 +74,7 @@ function ExchangeBlock() {
         </div>
         <div className={`exchangeBlock_header__item ${direction === exchangeDirection.CRYPTO_SELL ? 'active' : ''}`}>
           <div className="exchangeBlock_header__title">
-            <span>{t('Header.Sell')}</span>
+            <span>{t('header.sell')}</span>
           </div>
           <div className="exchangeBlock_header__value">
             <span>{sellPercent}%</span>

@@ -7,7 +7,7 @@ import {
   FacebookIcon,
   ViberIcon,
   TelegramIcon,
-} from '../../constants/icons';
+} from '../../assets/icons';
 import { Select } from '../Select/Select';
 import { languageOpts } from '../../constants';
 import './Header.css';

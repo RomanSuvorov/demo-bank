@@ -1,3 +1,7 @@
 {
-
+  "contacts": {
+    "title": "To contact us, use the most convenient contacts for you:",
+    "phoneDescr": "(It is preferable to write to the messenger Viber, Telegram)",
+    "descr": "You can also contact us via the chat in the lower right corner of our website."
+  }
 }

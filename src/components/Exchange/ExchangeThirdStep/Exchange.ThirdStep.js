@@ -8,7 +8,7 @@ import { HelpSign } from '../..';
 import { Input } from '../..';
 import { LoaderBall } from '../..';
 import { Button } from '../..';
-import { CopyIcon, ErrorIcon, SuccessIcon } from '../../../constants/icons';
+import { CopyIcon, ErrorIcon, SuccessIcon } from '../../../assets/icons';
 import { exchangeStream, transactionProcess } from '../../../constants';
 import ExchangeTypes from '../../../store/exchange/types';
 import { preventSendingByUser } from '../../../store/exchange/actions';

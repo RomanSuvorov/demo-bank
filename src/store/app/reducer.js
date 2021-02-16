@@ -7,7 +7,12 @@ const initialStore = {
 };
 
 const reducer = {
-  [Types.CHANGE_WINDOW_SIZE]: (draft, payload) => draft.isMobile = payload,
+  [Types.CHANGE_WINDOW_SIZE]: (draft, payload) => {
+    if (!draft.isMobile && payload && draft.showSidebar) {
+      draft.showSidebar = false;
+    }
+    draft.isMobile = payload;
+  },
 
   [Types.TOGGLE_SIDEBAR]: draft => draft.showSidebar = !draft.showSidebar,
 };

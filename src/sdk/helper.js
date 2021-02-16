@@ -172,3 +172,31 @@ export function validateValue({ value, rules, address }) {
 
   return { isValid, errorText };
 }
+
+export function getQueryVariable(variable) {
+  const query = window.location.search.substring(1);
+
+  const vars = query.split('&');
+  for (let i = 0; i < vars.length; i++) {
+    const pair = vars[i].split('=');
+    if (decodeURIComponent(pair[0]) === variable) {
+      return decodeURIComponent(pair[1]);
+    }
+  }
+  console.log('Query variable %s not found', variable);
+}
+
+export function searchUrlEditor(search, key, value) {
+  const re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+  const separator = search.indexOf('?') !== -1 ? "&" : "?";
+
+  if (!value) {
+    let searchUrl = search.replace(new RegExp("([?&]?)" + key + "=[^&]*", "i"), '');
+    if (searchUrl.indexOf('?') === -1) searchUrl = searchUrl.replace(/&/, '?');
+    return searchUrl;
+  } else if (search.match(re)) {
+    return search.replace(re, '$1' + key + "=" + value + '$2');
+  } else {
+    return search + separator + key + "=" + value;
+  }
+}

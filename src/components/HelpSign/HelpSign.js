@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TooltipIcon } from '../../constants/icons';
+import { TooltipIcon } from '../../assets/icons';
 import './HelpSign.css';
 
 function HelpSign({ className }) {

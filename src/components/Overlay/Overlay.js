@@ -9,6 +9,7 @@ function Overlay({
   show,
   withBackground,
   onClick,
+  children
 }) {
   let classNames = 'overlay';
 
@@ -21,7 +22,9 @@ function Overlay({
     <div
       className={classNames}
       onClick={onClick}
-    />
+    >
+      {children}
+    </div>
   )
 }
 

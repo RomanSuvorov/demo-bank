@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { ArrowSmallDownIcon, ArrowSmallUpIcon } from '../../constants/icons';
+import { ArrowSmallDownIcon, ArrowSmallUpIcon } from '../../assets/icons';
 import './Select.css';
 
 function Option({ selected, id, value, text, Icon, iconUrl, withAlt, onClick }) {

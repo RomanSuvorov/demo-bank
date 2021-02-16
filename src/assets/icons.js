@@ -334,12 +334,6 @@ function ContactIcon({ className }) {
   );
 }
 
-function ReplaceIcon() {
-  return (
-    <div></div>
-  );
-}
-
 function ArrowSmallDownIcon({ className }) {
   return (
     <svg className={className} width="6" height="4" viewBox="0 0 6 4" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -356,28 +350,6 @@ function ArrowSmallUpIcon({ className }) {
   );
 }
 
-function ArrowDownIcon({ className }) {
-  return (
-    <svg className={className} width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M5 0L9.33013 5.25L0.669873 5.25L5 0Z" fill="#C4C4C4"/>
-    </svg>
-  );
-}
-
-function ArrowUpIcon({ className }) {
-  return (
-    <svg className={className} width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M5 0L9.33013 5.25L0.669873 5.25L5 0Z" fill="#C4C4C4"/>
-    </svg>
-  );
-}
-
-function ChatIcon() {
-  return (
-    <div></div>
-  );
-}
-
 function TooltipIcon({ className }) {
   return (
     <svg
@@ -391,24 +363,6 @@ function TooltipIcon({ className }) {
       <path d="M40.124 20.062C40.124 9 31.124 0 20.062 0S0 9 0 20.062s9 20.062 20.062 20.062 20.062-8.999 20.062-20.062zM2 20.062C2 10.103 10.103 2 20.062 2c9.959 0 18.062 8.103 18.062 18.062 0 9.959-8.103 18.062-18.062 18.062C10.103 38.124 2 30.021 2 20.062z" />
     </svg>
   )
-}
-
-function PinIcon() {
-  return (
-    <div></div>
-  );
-}
-
-function GalleryArrowRightIcon() {
-  return (
-    <div></div>
-  );
-}
-
-function GalleryArrowLeftIcon() {
-  return (
-    <div></div>
-  );
 }
 
 function CloseIcon({ className }) {
@@ -448,26 +402,6 @@ function DirectionIcon({ className }) {
           <path fill="#fff" transform="rotate(-180 6 6)" d="M0 0h12v12H0z" />
         </clipPath>
       </defs>
-    </svg>
-  )
-}
-
-function AmericanDollar({ className }) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" className={className}>
-      <path d="M110 0C49.346 0 0 49.346 0 110s49.346 110 110 110 110-49.346 110-110S170.654 0 110 0zm0 210c-55.14 0-100-44.86-100-100S54.86 10 110 10s100 44.86 100 100-44.86 100-100 100z" />
-      <path d="M110 19.5c-49.902 0-90.5 40.598-90.5 90.5s40.598 90.5 90.5 90.5 90.5-40.598 90.5-90.5-40.598-90.5-90.5-90.5zm0 178c-48.248 0-87.5-39.252-87.5-87.5S61.752 22.5 110 22.5s87.5 39.252 87.5 87.5-39.252 87.5-87.5 87.5z" />
-      <path d="M118 55.052V67.79c6.485 3.027 11 9.593 11 17.21h12c0-14.327-9.772-26.411-23-29.948zM118 105.052v12.738c6.485 3.027 11 9.593 11 17.21s-4.515 14.182-11 17.21v12.738c13.228-3.537 23-15.621 23-29.948s-9.772-26.411-23-29.948zM102 152.21c-6.485-3.027-11-9.593-11-17.21H79c0 14.327 9.772 26.411 23 29.948V152.21zM102 114.948V102.21C95.515 99.182 91 92.616 91 85s4.515-14.182 11-17.21V55.052C88.772 58.589 79 70.673 79 85s9.772 26.411 23 29.948zM105 50.606h10v118.788h-10z" />
-    </svg>
-  );
-}
-
-function UkrainianHryvnia({ className }) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" className={className}>
-      <path d="M110 0C49.346 0 0 49.346 0 110s49.346 110 110 110 110-49.346 110-110S170.654 0 110 0zm0 210c-55.141 0-100-44.86-100-100S54.859 10 110 10s100 44.86 100 100-44.859 100-100 100z" />
-      <path d="M110 19.5c-49.902 0-90.5 40.598-90.5 90.5s40.598 90.5 90.5 90.5 90.5-40.598 90.5-90.5-40.598-90.5-90.5-90.5zm0 178c-48.248 0-87.5-39.252-87.5-87.5S61.752 22.5 110 22.5s87.5 39.252 87.5 87.5-39.252 87.5-87.5 87.5z" />
-      <path d="M99.383 112.131h16.971l4.262-4.261h-16.971zM110 154c-.328 0-.653-.008-.982-.025-5.756-.292-10.452-3.739-12.562-9.222-1.71-4.441-1.729-10.995 3.341-16.065l4.688-4.687H88.157c-5.043 7.266-6.202 16.482-2.9 25.063 3.807 9.891 12.679 16.366 23.147 16.896.528.027 1.061.041 1.596.041 17.094 0 31-13.907 31-31h-12c0 10.476-8.523 18.999-19 18.999zM110 66c.328 0 .653.008.982.025 5.756.292 10.452 3.739 12.562 9.222 1.71 4.441 1.729 10.995-3.341 16.065L115.515 96h16.328c5.043-7.266 6.203-16.482 2.9-25.063-3.807-9.891-12.679-16.366-23.147-16.896A31.304 31.304 0 00110 54c-17.094 0-31 13.907-31 31h12c0-10.477 8.523-19 19-19zM81.5 114.131h57V122h-57zM81.5 98h57v7.869h-57z" />
     </svg>
   )
 }
@@ -512,6 +446,42 @@ function SuccessIcon({ className }) {
   );
 }
 
+function MailIcon({ className }) {
+  return (
+    <svg
+      className={className}
+      width={24}
+      height={24}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"
+        fill="#F6A508"
+      />
+    </svg>
+  );
+}
+
+function PhoneIcon({ className }) {
+  return (
+    <svg
+      className={className}
+      width={24}
+      height={24}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M20 15.5c-1.25 0-2.45-.2-3.57-.57a1.02 1.02 0 00-1.02.24l-2.2 2.2a15.074 15.074 0 01-6.59-6.58l2.2-2.21c.28-.27.36-.66.25-1.01A11.36 11.36 0 018.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1zM12 3v10l3-3h6V3h-9z"
+        fill="#F6A508"
+      />
+    </svg>
+  )
+}
+
 export {
   BurgerMenuIcon,
   Logo,
@@ -528,21 +498,14 @@ export {
   ReviewIcon,
   FaqIcon,
   ContactIcon,
-  ReplaceIcon,
   ArrowSmallDownIcon,
   ArrowSmallUpIcon,
-  ArrowDownIcon,
-  ArrowUpIcon,
-  ChatIcon,
   TooltipIcon,
-  PinIcon,
-  GalleryArrowRightIcon,
-  GalleryArrowLeftIcon,
   CloseIcon,
   DirectionIcon,
-  AmericanDollar,
-  UkrainianHryvnia,
   CopyIcon,
   ErrorIcon,
   SuccessIcon,
+  MailIcon,
+  PhoneIcon,
 };

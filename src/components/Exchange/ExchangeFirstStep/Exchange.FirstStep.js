@@ -8,7 +8,7 @@ import { Button } from '../..';
 import { Tooltip } from '../..';
 import { HelpSign } from '../..';
 import { exchangeDirection } from '../../../constants';
-import { DirectionIcon } from '../../../constants/icons';
+import { DirectionIcon } from '../../../assets/icons';
 import Types from '../../../store/exchange/types';
 import './Exchange.FirstStep.css';
 
@@ -47,11 +47,11 @@ function FirstStep() {
     <div className="firstStep">
       <div className={"firstStep_row title"}>
         <div className={"firstStep_row__left"}>
-          <span>{t('FirstStep.Give')}</span>
+          <span>{t('firstStep.give')}</span>
         </div>
         <div className={"firstStep_row__center"} />
         <div className={"firstStep_row__right"}>
-          <span>{t('FirstStep.Get')}</span>
+          <span>{t('firstStep.get')}</span>
         </div>
       </div>
 
@@ -130,7 +130,7 @@ function FirstStep() {
           disabled={giveError || !giveAmount || !getAmount}
           onClick={handleSubmit}
         >
-          {t('FirstStep.Exchange')}
+          {t('firstStep.exchange')}
         </Button>
       </div>
     </div>

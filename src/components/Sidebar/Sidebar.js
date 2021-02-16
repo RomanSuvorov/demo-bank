@@ -2,10 +2,10 @@ import React  from 'react';
 import { Link, useRouteMatch, useLocation } from 'react-router-dom';
 
 import { sidebarOpts, routes } from '../../constants';
-import { CloseIcon } from '../../constants/icons';
+import { CloseIcon } from '../../assets/icons';
 import './Sidebar.css';
 
-function Sidebar({ show, isMobile, onClose }) {
+function Sidebar({ show, showContacts, isMobile, onClickContacts, onClose }) {
   const { isExact } = useRouteMatch();
   const { pathname } = useLocation();
 
@@ -23,8 +23,28 @@ function Sidebar({ show, isMobile, onClose }) {
         <div className={"sidebar_list"}>
           {
             sidebarOpts.map(({ key, path, text, Icon }) => {
-              let isActive = pathname === path;
-              if (isExact && key === routes.EXCHANGE.key) isActive = true;
+              let isActive = false;
+
+              if (!showContacts) {
+                isActive = pathname === path;
+                if (isExact && key === routes.EXCHANGE.key) isActive = true;
+              } else if (showContacts && key === routes.CONTACTS.key) {
+                isActive = true;
+              }
+
+
+              if (key === routes.CONTACTS.key) {
+                return (
+                  <div
+                    className={`sidebar_list__item ${isActive ? 'active' : ''}`}
+                    key={key}
+                    onClick={onClickContacts}
+                  >
+                    <Icon className={"sidebar_list__icon"}/>
+                    <span className={"sidebar_list__text"}>{text}</span>
+                  </div>
+                )
+              }
 
               return (
                 <Link

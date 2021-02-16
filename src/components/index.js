@@ -8,6 +8,7 @@ import { Tooltip } from './Tooltip/Tooltip';
 import { HelpSign } from './HelpSign/HelpSign';
 import { Loading, LoaderBall } from './Loading/Loading';
 import { Checkbox } from './Checkbox/Checkbox';
+import { Contacts } from './Contacts/Contacts';
 
 export {
   Header,
@@ -21,4 +22,5 @@ export {
   Loading,
   LoaderBall,
   Checkbox,
+  Contacts,
 };
