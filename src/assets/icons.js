@@ -342,10 +342,40 @@ function ArrowSmallDownIcon({ className }) {
   );
 }
 
+function ArrowDownIcon({ className }) {
+  return (
+    <svg
+      className={className}
+      width={10}
+      height={6}
+      viewBox="0 0 10 6"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M5 6L.67.75h8.66L5 6z" fill="#C4C4C4" />
+    </svg>
+  );
+}
+
 function ArrowSmallUpIcon({ className }) {
   return (
     <svg className={className} width="6" height="4" viewBox="0 0 6 4" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path transform="rotate(180, 3, 2)" d="M3 4L0.401924 0.25L5.59808 0.25L3 4Z" fill="white"/>
+    </svg>
+  );
+}
+
+function ArrowUpIcon({ className }) {
+  return (
+    <svg
+      className={className}
+      width={10}
+      height={6}
+      viewBox="0 0 10 6"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M5 0l4.33 5.25H.67L5 0z" fill="#C4C4C4" />
     </svg>
   );
 }
@@ -482,6 +512,25 @@ function PhoneIcon({ className }) {
   )
 }
 
+function SearchIcon({ className }) {
+  return (
+    <svg
+      className={className}
+      width={24}
+      height={24}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+        fill="#fff"
+        fillOpacity={0.5}
+      />
+    </svg>
+  );
+}
+
 export {
   BurgerMenuIcon,
   Logo,
@@ -499,7 +548,9 @@ export {
   FaqIcon,
   ContactIcon,
   ArrowSmallDownIcon,
+  ArrowDownIcon,
   ArrowSmallUpIcon,
+  ArrowUpIcon,
   TooltipIcon,
   CloseIcon,
   DirectionIcon,
@@ -508,4 +559,5 @@ export {
   SuccessIcon,
   MailIcon,
   PhoneIcon,
+  SearchIcon,
 };

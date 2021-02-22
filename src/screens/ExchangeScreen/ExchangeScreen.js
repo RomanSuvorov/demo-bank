@@ -2,14 +2,16 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { ExchangeBlock } from '../../components/Exchange';
-import { loadInitialData } from '../../store/exchange/actions';
+import { loadExchangeData } from '../../store/exchange/actions';
+import { loadFaqByAmount } from '../../store/faq/actions';
 import './ExchangeScreen.css';
 
 function ExchangeScreen() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadInitialData());
+    dispatch(loadExchangeData());
+    dispatch(loadFaqByAmount(1));
   }, []);
 
   return (

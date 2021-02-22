@@ -9,6 +9,7 @@ import { HelpSign } from './HelpSign/HelpSign';
 import { Loading, LoaderBall } from './Loading/Loading';
 import { Checkbox } from './Checkbox/Checkbox';
 import { Contacts } from './Contacts/Contacts';
+import { Collapse } from './Collapse/Collapse';
 
 export {
   Header,
@@ -23,4 +24,5 @@ export {
   LoaderBall,
   Checkbox,
   Contacts,
+  Collapse,
 };

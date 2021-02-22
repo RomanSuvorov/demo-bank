@@ -1,0 +1,119 @@
+.faqScreen {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;
+}
+
+.faqScreen_wrapper {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+.faqScreen_form__input .input_field {
+    width: 100%;
+    background-color: transparent;
+}
+
+.faqScreen_form__input .input_icon {
+    width: 24px;
+    height: 24px;
+}
+
+.faqScreen_form__input .input_field:focus ~ .input_icon svg path {
+    fill: var(--color-active);
+}
+
+.faqScreen_list__title span {
+    font-weight: 700;
+    color: var(--color-primaryText);
+    text-transform: uppercase;
+}
+
+.faqScreen_list__items {
+    max-height: calc(100vh - var(--side-header-mobile) - 50px - 70px - 18px - 18px);
+    overflow-y: auto;
+}
+
+.collapse_description span.faqScreen_list__searchedText {
+    color: var(--color-active);
+}
+
+.faqScreen_metaTags {
+    box-shadow: 10px 10px 50px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    background-color: var(--color-background-light);
+    margin-bottom: 18px;
+}
+
+.faqScreen_metaTags.mobile {
+    display: block;
+}
+
+.faqScreen_metaTags.desktop {
+    display: none;
+}
+
+.faqScreen_metaTags .collapse_header {
+    margin-top: 0;
+    background-color: transparent;
+    box-shadow: unset;
+    border-radius: 15px;
+}
+
+.faqScreen_metaTags .collapse_description {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: transparent;
+    box-shadow: unset;
+    margin-top: 0;
+}
+
+.faqScreen_metaTags .collapse_description.expanded {
+    padding: 12px;
+}
+
+.collapse_description .faqScreen_metaTags__item {
+    padding: 0;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.collapse_description.expanded .faqScreen_metaTags__item {
+    padding: 6px;
+}
+
+.faqScreen_metaTags__item:hover,
+.faqScreen_metaTags__item.active {
+    color: var(--color-active);
+}
+
+@media screen and (min-width: 768px) {
+    .faqScreen {
+        flex-direction: row;
+    }
+
+    .faqScreen_metaTags.mobile {
+        display: none;
+    }
+
+    .faqScreen_metaTags.desktop {
+        display: flex;
+        flex-direction: column;
+        align-self: self-start;
+        min-width: 320px;
+        margin-left: 32px;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .faqScreen_metaTags.desktop {
+        min-width: 45%;
+    }
+
+    .faqScreen_list__items {
+        max-height: calc(100vh - var(--side-header) - 32px - 70px - 18px - 32px);
+        overflow-y: auto;
+    }
+}

@@ -6,7 +6,7 @@ function Input({
   className,
   label,
   name,
-  type,
+  type = "text",
   value,
   error,
   placeholder,

@@ -515,7 +515,7 @@ const deliverList = [
 
 // <--- ---> //
 
-export const loadInitialData = () => async (dispatch, getState) => {
+export const loadExchangeData = () => async (dispatch, getState) => {
   const store = getState();
   const { direction } = store.exchange;
 
