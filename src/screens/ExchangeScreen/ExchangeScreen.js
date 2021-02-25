@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { ExchangeBlock } from '../../components/Exchange';
+import { Exchange } from '../../components';
 import { loadExchangeData } from '../../store/exchange/actions';
 import { loadFaqByAmount } from '../../store/faq/actions';
+import { loadReviewByAmount } from '../../store/review/actions';
 import './ExchangeScreen.css';
 
 function ExchangeScreen() {
@@ -11,12 +12,13 @@ function ExchangeScreen() {
 
   useEffect(() => {
     dispatch(loadExchangeData());
-    dispatch(loadFaqByAmount(1));
+    dispatch(loadFaqByAmount(4));
+    dispatch(loadReviewByAmount(12));
   }, []);
 
   return (
     <div className={"exchangeScreen"}>
-      <ExchangeBlock />
+      <Exchange />
     </div>
   );
 }

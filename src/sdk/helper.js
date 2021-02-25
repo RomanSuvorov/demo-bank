@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { compose, createStore, combineReducers, applyMiddleware } from 'redux';
 import ReduxPromise from 'redux-promise';
 import thunk from 'redux-thunk';
@@ -117,6 +118,9 @@ export function validateValue({ value, rules, address }) {
       case 'maxNumber':
         isValid = (value <= rule.value);
         break;
+      case 'maxLength':
+        isValid = (String(value).length <= rule.value);
+        break;
       case 'isCard':
         const americanExpressReg = /^(?:3[47][0-9]{13})$/;
         const visaReg = /^(?:4[0-9]{12}(?:[0-9]{3})?)$/;
@@ -161,6 +165,10 @@ export function validateValue({ value, rules, address }) {
         const accountReg = /^@(\w{5,32})$/;
         isValid = !!(value.match(phoneReg) || value.match(accountReg));
         break;
+      case 'isEmail':
+        const emailReg = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+        isValid = !!(value.match(emailReg));
+        break;
     }
 
     if (!isValid) {
@@ -199,4 +207,73 @@ export function searchUrlEditor(search, key, value) {
   } else {
     return search + separator + key + "=" + value;
   }
+}
+
+export function getDate({
+  time = 0,
+  divider = { timeDivider: ":", dateDivider: "." },
+  withTime = false,
+}) {
+  if (!time) return 'Нету данных';
+
+  const dateInMS = new Date(time);
+
+  const hh = String(dateInMS.getUTCHours()).padStart(2, '0');
+  const mm = String(dateInMS.getUTCMinutes()).padStart(2, '0');
+
+
+  const YYYY = dateInMS.getUTCFullYear();
+  const MM = String(dateInMS.getUTCMonth() + 1).padStart(2, '0'); // month of the year
+  const DD = String(dateInMS.getUTCDate()).padStart(2, '0'); // day of the month
+
+  if (withTime) {
+    return {
+      data:`${DD}${divider.dateDivider}${MM}${divider.dateDivider}${YYYY}`,
+      time: `${hh}${divider.timeDivider}${mm}`,
+    };
+  }
+
+  return `${DD}${divider.dateDivider}${MM}${divider.dateDivider}${YYYY}`;
+}
+
+export function useForm({ initialValues = {}, validate = {}, onSubmit }) {
+  const [formFields, setFormFields] = useState(initialValues);
+  let [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+      if (Object.keys(errors).length === 0 && isSubmitting) {
+        onSubmit(formFields);
+        setFormFields(initialValues);
+        setIsSubmitting(false);
+      }
+    }, [errors, isSubmitting]);
+
+  const createChangeHandler = (key) => (value) =>
+    setFormFields(prev => ({ ...prev, [key]: value }));
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    for (const [key, value] of Object.entries(formFields)) {
+      const { isValid, errorText } = validateValue({ value, rules: validate[key] });
+
+      setErrors(prevState => {
+        if (isValid) {
+          if (prevState.hasOwnProperty(key)) {
+            const newState = { ...prevState };
+            delete newState[key];
+            return newState;
+          }
+          return prevState;
+        } else {
+          return { ...prevState, [key]: errorText };
+        }
+      });
+    }
+
+    setIsSubmitting(true);
+  }
+
+  return { formFields, createChangeHandler, handleSubmit, errors };
 }

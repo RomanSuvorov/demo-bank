@@ -3,16 +3,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useHistory } from 'react-router-dom';
 
-import { Header, Sidebar, Overlay, Contacts } from '../../components';
+import { Header, Sidebar, Overlay, ModalWrapper } from '../../components';
 import { Router } from '../Router';
-import Types from '../../store/app/types';
+import AppTypes from '../../store/app/types';
 import { getQueryVariable, searchUrlEditor } from '../../sdk/helper';
 import './Layout.css';
 
 function Layout() {
   // stores
-  const [showContacts, changeShowContacts] = useState(false);
-  const { showSidebar, isMobile } = useSelector(state => state.app);
+  const [showContacts, setShowContacts] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
+  const { isMobile, modalShow } = useSelector(state => state.app);
   const dispatch = useDispatch();
 
   // routing
@@ -29,41 +30,91 @@ function Layout() {
     return () => window.removeEventListener("resize", changeWindowSize);
   }, []);
 
-  useEffect(() => {
-    const contacts = getQueryVariable('ct');
-    if (showContacts !== contacts) changeShowContacts(!!contacts);
-  }, [location])
-
-  const changeWindowSize = () => dispatch({ type: Types.CHANGE_WINDOW_SIZE, payload: window.innerWidth < 1024 });
-
-  const handleChangeSidebar = () => {
-    if (!showSidebar && showContacts) {
-      handleToggleContacts();
+  const changeWindowSize = () => {
+    if (window.innerWidth < 1024 && showSidebar) {
+      setShowSidebar(false);
     }
-    dispatch({ type: Types.TOGGLE_SIDEBAR });
+    dispatch({ type: AppTypes.CHANGE_WINDOW_SIZE, payload: window.innerWidth < 1024 });
   }
 
-  const handleChangeLang = value => i18n.changeLanguage(value);
+  useEffect(() => {
+    const isContactExist = getQueryVariable('ct');
+
+    if (isContactExist) {
+      if (isMobile && showSidebar) setShowSidebar(false);
+      setShowContacts(true);
+      dispatch({
+        type: AppTypes.TOGGLE_MODAL,
+        payload: {
+          show: true,
+          componentPath: 'Contacts/Contacts',
+          componentProps: {},
+          withOverlay: true,
+          closeCallback: handleToggleContacts,
+        },
+      });
+    }
+  }, []);
 
   const handleToggleContacts = () => {
-    const search = searchUrlEditor(location.search, 'ct', showContacts ? null : true);
+    const isContactExist = getQueryVariable('ct');
 
+    if (!isContactExist && isMobile && showSidebar) setShowSidebar(false);
+    setShowContacts(!isContactExist);
+
+    const search = searchUrlEditor(location.search, 'ct', isContactExist ? null : true);
     history.push({
       pathname: location.pathname,
       search: search,
     });
 
-    if (!showContacts && isMobile) {
-      handleChangeSidebar();
+    dispatch({
+      type: AppTypes.TOGGLE_MODAL,
+      payload: {
+        show: !isContactExist,
+        componentPath: isContactExist ? null : 'Contacts/Contacts',
+        componentProps: {},
+        withOverlay: !isContactExist,
+        closeCallback: handleToggleContacts
+      },
+    });
+  }
+
+  const handleToggleSidebar = () => {
+    const show = !showSidebar;
+
+    if (show && modalShow) {
+      const isContactExist = getQueryVariable('ct');
+
+      if (isContactExist) {
+        const search = searchUrlEditor(location.search, 'ct', null);
+        history.push({
+          pathname: location.pathname,
+          search: search,
+        });
+      }
+
+      dispatch({
+        type: AppTypes.TOGGLE_MODAL,
+        payload: {
+          show: false,
+          componentPath: null,
+          componentProps: {},
+          withOverlay: false,
+        },
+      });
     }
+    setShowSidebar(show);
   };
+
+  const handleChangeLang = value => i18n.changeLanguage(value);
 
   return (
     <div className={"layout"}>
       <Header
         lang={i18n.language}
         showSidebar={showSidebar}
-        onChangeSidebar={handleChangeSidebar}
+        onChangeSidebar={handleToggleSidebar}
         onChangeLang={handleChangeLang}
       />
       <div className={"layout_container"}>
@@ -72,7 +123,7 @@ function Layout() {
           showContacts={showContacts}
           isMobile={isMobile}
           onClickContacts={handleToggleContacts}
-          onClose={handleChangeSidebar}
+          onClose={handleToggleSidebar}
         />
         <div className={"layout_wrapper"}>
           <div className={`layout_content${showSidebar ? ' sidebarExpanded' : ''}`}>
@@ -81,22 +132,15 @@ function Layout() {
         </div>
       </div>
 
-      {/* <<--- MODALS --->> */}
+      {/* MODALS */}
+      <ModalWrapper />
+
       {/* Overlay is needed for mobile version */}
       <Overlay
         forMobileOnly={true}
         show={showSidebar}
-        onClick={handleChangeSidebar}
+        onClick={handleToggleSidebar}
       />
-
-      {/* Contact Modal */}
-      <Overlay
-        forMobileOnly={false}
-        show={showContacts}
-        onClick={handleToggleContacts}
-      >
-        <Contacts />
-      </Overlay>
     </div>
   );
 }

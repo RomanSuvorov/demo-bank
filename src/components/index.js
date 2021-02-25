@@ -1,28 +1,32 @@
-import { Header } from './Header/Header';
-import { Sidebar } from './Sidebar/Sidebar';
-import { Select } from './Select/Select';
-import { Overlay } from './Overlay/Overlay';
-import { Input } from './Input/Input';
 import { Button } from './Button/Button';
-import { Tooltip } from './Tooltip/Tooltip';
-import { HelpSign } from './HelpSign/HelpSign';
-import { Loading, LoaderBall } from './Loading/Loading';
 import { Checkbox } from './Checkbox/Checkbox';
-import { Contacts } from './Contacts/Contacts';
 import { Collapse } from './Collapse/Collapse';
+import { ExchangeBlock as Exchange } from './Exchange/ExchangeBlock/ExchangeBlock';
+import { Header } from './Header/Header';
+import { HelpSign } from './HelpSign/HelpSign';
+import { Input } from './Input/Input';
+import { Loading, LoaderBall } from './Loading/Loading';
+import { ModalWrapper } from './ModalWrapper/ModalWrapper';
+import { Overlay } from './Overlay/Overlay';
+import { Review } from './Review/Review';
+import { Select } from './Select/Select';
+import { Sidebar } from './Sidebar/Sidebar';
+import { Tooltip } from './Tooltip/Tooltip';
 
 export {
-  Header,
-  Sidebar,
-  Select,
-  Overlay,
-  Input,
   Button,
-  Tooltip,
+  Checkbox,
+  Collapse,
+  Exchange,
+  Header,
   HelpSign,
   Loading,
+  Input,
   LoaderBall,
-  Checkbox,
-  Contacts,
-  Collapse,
+  ModalWrapper,
+  Overlay,
+  Review,
+  Select,
+  Sidebar,
+  Tooltip,
 };

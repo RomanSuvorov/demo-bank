@@ -22,6 +22,11 @@
     text-overflow: ellipsis;
 }
 
+textarea.input_field {
+    resize: none;
+    height: unset;
+}
+
 .input_field.withIcon {
     padding-right: 42px;
 }
@@ -59,13 +64,13 @@
 .input_error {
     position: absolute;
     margin-left: 6px;
-    bottom: -21px;
+    bottom: -19px;
     left: 0;
 }
 
 .input_error__text {
     color: var(--color-error);
-    font-size: 8px;
+    font-size: 10px;
 }
 
 .input_icon {

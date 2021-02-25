@@ -30,6 +30,17 @@
     width: 100%;
 }
 
+.layout_modal {
+    top: 50%;
+    left: 0;
+    transform: translate(-100%, -50%);
+}
+
+.layout_modal.visible {
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 @media screen and (min-width: 1024px) {
     .layout_content {
         margin: 32px auto;

@@ -28,16 +28,31 @@ function Input({
           </label>
         )
       }
-      <input
-        className={`input_field ${error ? 'input_field__error' : ''} ${Icon ? 'withIcon' : ''}`}
-        id={name}
-        value={value ? value : ''}
-        placeholder={placeholder}
-        type={type}
-        readOnly={readOnly}
-        onChange={e => onChange(e.target.value)}
-        {...props}
-      />
+      {
+        type === 'textarea' ? (
+          <textarea
+            className={`input_field ${error ? 'input_field__error' : ''} ${Icon ? 'withIcon' : ''}`}
+            id={name}
+            value={value ? value : ''}
+            placeholder={placeholder}
+            readOnly={readOnly}
+            onChange={e => onChange(e.target.value)}
+            {...props}
+          />
+        ) : (
+          <input
+            className={`input_field ${error ? 'input_field__error' : ''} ${Icon ? 'withIcon' : ''}`}
+            id={name}
+            value={value ? value : ''}
+            placeholder={placeholder}
+            type={type}
+            readOnly={readOnly}
+            onChange={e => onChange(e.target.value)}
+            {...props}
+          />
+        )
+      }
+
       {
         Icon && (
           <div className={`input_icon ${label ? 'withLabel' : ''}`} onClick={iconHandler}>

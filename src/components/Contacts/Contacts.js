@@ -70,4 +70,4 @@ function Contacts() {
   );
 }
 
-export { Contacts };
+export default Contacts;

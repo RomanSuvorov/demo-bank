@@ -11,12 +11,12 @@ import FaqTypes from '../../store/faq/types';
 import './FaqScreen.css';
 
 const Tags = ({ className, tags, chosen, fixed = false, onClick = () => {} }) => {
-  const { t } = useTranslation('faq');
+  const { t } = useTranslation('translation');
 
   return (
     <Collapse
       className={className}
-      title={<span>{t('metaBlockTitle')}</span>}
+      title={<span>{t('faq.metaBlockTitle')}</span>}
       description={
         tags.map(tag => {
           const active = chosen.includes(tag);
@@ -48,7 +48,7 @@ function FaqScreen() {
     chosenMetaTags,
   } = useSelector(state => state.faq);
   const dispatch = useDispatch();
-  const { t } = useTranslation('faq');
+  const { t } = useTranslation('translation');
   const mapList = searchText ? searchedFaqArray : faqArray;
   const highLight = useCallback((str) => {
     return highlightText(searchText, str);
@@ -103,7 +103,7 @@ function FaqScreen() {
                   className={"faqScreen_form__input"}
                   name={"search"}
                   value={searchText}
-                  placeholder={t('searchPlaceholder')}
+                  placeholder={t('faq.searchPlaceholder')}
                   Icon={SearchIcon}
                   iconHandler={handleSearchSubmit}
                   onChange={handleSearchChange}

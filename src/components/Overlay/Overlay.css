@@ -10,13 +10,14 @@
     background-color: transparent;
     visibility: hidden;
     opacity: 0;
-    transition: opacity .3s, visibility .3s;
+    transition: opacity .5s, visibility .5s;
     cursor: pointer;
 }
 
 .overlay.show {
     visibility: visible;
     opacity: 1;
+    transition: opacity .5s, visibility .5s;
 }
 
 .overlay.withBackground {
