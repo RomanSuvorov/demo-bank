@@ -39,7 +39,10 @@ function ModalWrapper() {
   return (
     <Wrapper {...wrapperProps}>
       <Suspense fallback={<Loading />}>
-        <div className={`modalWrapper ${modalClassName} ${show ? 'visible' : ''}`} onClick={handleCloseModal}>
+        <div
+          className={`modalWrapper ${modalClassName} ${show ? 'visible' : ''}`}
+          onClick={e => e.stopPropagation()}
+        >
             {modalComponentPath && <CustomComponent {...modalComponentProps} />}
         </div>
       </Suspense>

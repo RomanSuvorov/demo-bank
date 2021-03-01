@@ -23,7 +23,7 @@ function Contacts() {
   };
 
   return (
-    <div className={"contacts"} onClick={e => e.stopPropagation()}>
+    <div className={"contacts"}>
       <div className={"contacts_background"} />
       <div className={"contacts_content"}>
         <div className={"contacts_content__title"}>
