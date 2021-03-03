@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { compose, createStore, combineReducers, applyMiddleware } from 'redux';
 import ReduxPromise from 'redux-promise';
 import thunk from 'redux-thunk';
@@ -276,4 +276,43 @@ export function useForm({ initialValues = {}, validate = {}, onSubmit }) {
   }
 
   return { formFields, createChangeHandler, handleSubmit, errors };
+}
+
+export function useIsMounted() {
+  const isMounted = useRef(false);
+
+  useEffect(() => {
+    isMounted.current = true;
+    return () => isMounted.current = false;
+  }, []);
+
+  return isMounted;
+}
+
+export function throttle(func, ms) {
+  let isThrottled = false;
+  let savedArgs;
+  let savedThis;
+
+  function wrapper() {
+    if (isThrottled) {
+      savedArgs = arguments;
+      savedThis = this;
+      return;
+    }
+
+    func.apply(this, arguments);
+    isThrottled = true;
+    setTimeout(function() {
+      isThrottled = false;
+
+      if(savedArgs) {
+        wrapper.apply(savedThis, savedArgs);
+        savedArgs = undefined;
+        savedThis = undefined;
+      }
+    }, ms);
+  }
+
+  return wrapper;
 }

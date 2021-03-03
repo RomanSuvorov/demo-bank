@@ -6,8 +6,8 @@ import { _saveState, createReduxStore } from './sdk/helper';
 import reducers from './store';
 import './App.css';
 
-import { Layout } from './delegate';
-import { Loading } from './components';
+import { Layout } from './delegate/Layout';
+import { Loading }  from './components/Loading';
 
 const store = createReduxStore(reducers);
 

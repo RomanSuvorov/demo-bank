@@ -1,4 +1,6 @@
-import { ExchangeScreen, FaqScreen, ReviewScreen } from '../screens';
+import { ExchangeScreen } from '../screens/ExchangeScreen';
+import { ReviewScreen } from '../screens/ReviewScreen';
+import { FaqScreen } from '../screens/FaqScreen';
 
 const routes = {
   DEFAULT: {

@@ -57,7 +57,7 @@ export const loadFaqByAmount = (count = 1) => async (dispatch) => {
 
   try {
     // TODO: await from server;
-    const faqArray = [faqMockList[0]];
+    const faqArray = [faqMockList[0], faqMockList[1]];
 
     dispatch({ type: Types.LOAD_FAQ_SUCCESS, payload: { faqArray } })
   } catch (e) {

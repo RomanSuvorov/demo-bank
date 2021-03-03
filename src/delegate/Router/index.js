@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import { routes, routesList } from '../../constants';
 
-function Router() {
+export default function() {
   return (
     <Switch>
       {
@@ -17,5 +17,3 @@ function Router() {
     </Switch>
   )
 }
-
-export { Router };
