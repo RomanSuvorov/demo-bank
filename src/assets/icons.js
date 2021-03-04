@@ -380,6 +380,36 @@ function ArrowUpIcon({ className }) {
   );
 }
 
+function ArrowSmallLeft({ className }) {
+  return (
+    <svg
+      className={className}
+      width={7}
+      height={12}
+      viewBox="0 0 7 12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M6 1L1 6l5 5" stroke="#fff" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function ArrowSmallRight({ className }) {
+  return (
+    <svg
+      className={className}
+      width={7}
+      height={12}
+      viewBox="0 0 7 12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M1 1l5 5-5 5" stroke="#fff" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function TooltipIcon({ className }) {
   return (
     <svg
@@ -551,6 +581,8 @@ export {
   ArrowDownIcon,
   ArrowSmallUpIcon,
   ArrowUpIcon,
+  ArrowSmallLeft,
+  ArrowSmallRight,
   TooltipIcon,
   CloseIcon,
   DirectionIcon,

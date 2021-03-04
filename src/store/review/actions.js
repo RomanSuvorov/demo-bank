@@ -13,6 +13,31 @@ const reviewMock = [
     comment: 'Lorem iit temporibus veniam!',
     date: 1614000175279,
   },
+  {
+    username: 'anna',
+    comment: 'Lorem iit temporibus veniam! ercitationem imp',
+    date: 1614000172279,
+  },
+  {
+    username: 'anna1',
+    comment: 'Lorem iit temporibus veniam! ercitationem imp',
+    date: 1614000172279,
+  },
+  {
+    username: 'anna2',
+    comment: 'Lorem iit temporibus veniam! ercitationem imp',
+    date: 1614000172279,
+  },
+  {
+    username: 'anna3',
+    comment: 'Lorem iit temporibus veniam! ercitationem imp',
+    date: 1614000172279,
+  },
+  {
+    username: 'anna4',
+    comment: 'Lorem iit temporibus veniam! ercitationem imp',
+    date: 1614000172279,
+  },
 ];
 
 export const loadReviewData = () => async (dispatch) => {
@@ -35,7 +60,7 @@ export const loadReviewByAmount = (amount) => async (dispatch) => {
 
   try {
     // TODO: await from server;
-    const review = [reviewMock[0]];
+    const review = [...reviewMock];
 
     dispatch({ type: Types.LOAD_REVIEW_SUCCESS, payload: review })
   } catch (e) {

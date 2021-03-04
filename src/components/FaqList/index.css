@@ -1,6 +1,7 @@
 .faqList {
     display: flex;
     flex-direction: column;
+    min-width: 280px;
     margin: 18px 0;
 }
 
