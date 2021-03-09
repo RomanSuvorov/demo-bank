@@ -6,18 +6,59 @@
     justify-content: center;
 }
 
+.loading_line {
+    display: flex;
+    height: 24px;
+    align-items: flex-end;
+}
+
 .loading_line__item {
     width: 2px;
     background: var(--color-primaryText);
     margin: 0 3px;
     display: inline-block;
+    height: 12px;
     animation: opacity-2 2000ms infinite ease-in-out;
 }
 
 .loading_text {
+    margin-top: 12px;
+}
+
+.loading_text span {
     color: var(--color-primaryText);
-    margin-top: 6px;
     font-size: 12px;
+}
+
+.loading .dots {
+    margin-left: 6px;
+}
+
+.loading .dots > span {
+    animation-name: blink;
+    animation-duration: 1.4s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+}
+
+.loading .dots > span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.loading .dots > span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.2;
+    }
 }
 
 .loading_line__item.item_1 { animation-delay: 800ms; }

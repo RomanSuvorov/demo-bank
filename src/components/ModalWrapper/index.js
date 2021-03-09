@@ -38,7 +38,7 @@ export function Modal() {
 
   return (
     <Wrapper {...wrapperProps}>
-      <Suspense fallback={<Loading />}>
+      <Suspense fallback={<Loading text={'Load modal'} withDots />}>
         <div
           className={`modalWrapper ${modalClassName} ${show ? 'visible' : ''}`}
           onClick={e => e.stopPropagation()}

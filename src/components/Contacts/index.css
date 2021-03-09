@@ -19,7 +19,7 @@
     width: 100%;
     bottom: 0;
     right: 0;
-    background-image: url(/src/assets/Group.svg);
+    background-image: url(/src/assets/btc.svg);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 50% 50%;
@@ -65,10 +65,12 @@
 
 .contacts_content__copyBox:hover svg path {
     fill: var(--color-active);
+    fill-opacity: 1;
 }
 
 .contacts_content__item--copy.copied path {
     fill: var(--color-green);
+    fill-opacity: 1;
 }
 
 .contacts_content__iconBox {

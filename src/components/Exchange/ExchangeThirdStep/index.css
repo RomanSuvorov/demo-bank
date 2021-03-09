@@ -30,6 +30,7 @@
 
 .thirdStep_input.copied .input_icon svg path {
     fill: var(--color-green);
+    fill-opacity: 1;
 }
 
 .thirdStep_transaction {

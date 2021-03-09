@@ -19,7 +19,7 @@ function App() {
   return (
     <Provider store={store}>
       <Router>
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<Loading text={'App loading'} withDots />}>
           <Layout />
         </Suspense>
       </Router>

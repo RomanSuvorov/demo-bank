@@ -10,6 +10,7 @@
     font-weight: 700;
     color: var(--color-primaryText);
     text-transform: uppercase;
+    padding-left: 12px;
 }
 
 .reviewScreen_list__items {

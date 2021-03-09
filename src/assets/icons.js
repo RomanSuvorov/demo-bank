@@ -561,6 +561,43 @@ function SearchIcon({ className }) {
   );
 }
 
+function ExpandIcon({ className }) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="18"
+      fill="none"
+      viewBox="0 0 18 18"
+    >
+      <path
+        fill="#fff"
+        fillOpacity="0.5"
+        d="M12 0l2.3 2.3-2.89 2.87 1.42 1.42L15.7 3.7 18 6V0h-6zM0 6l2.3-2.3 2.87 2.89 1.42-1.42L3.7 2.3 6 0H0v6zm6 12l-2.3-2.3 2.89-2.87-1.42-1.42L2.3 14.3 0 12v6h6zm12-6l-2.3 2.3-2.87-2.89-1.42 1.42 2.89 2.87L12 18h6v-6z"
+      />
+    </svg>
+  );
+}
+
+function PinIcon({ className }) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="33"
+      fill="none"
+      viewBox="0 0 24 33"
+    >
+      <path
+        fill="#F7A508"
+        d="M12.189.37A11.32 11.32 0 00.86 11.698c0 8.495 11.328 21.036 11.328 21.036s11.327-12.54 11.327-21.036A11.319 11.319 0 0012.189.37zm0 15.373a4.047 4.047 0 01-4.046-4.045 4.047 4.047 0 014.046-4.046 4.047 4.047 0 014.045 4.046 4.047 4.047 0 01-4.045 4.045z"
+      />
+    </svg>
+  );
+}
+
 export {
   BurgerMenuIcon,
   Logo,
@@ -592,4 +629,6 @@ export {
   MailIcon,
   PhoneIcon,
   SearchIcon,
+  ExpandIcon,
+  PinIcon,
 };

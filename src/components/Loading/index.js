@@ -2,7 +2,7 @@ import React from 'react';
 
 import './index.css';
 
-export function Loading({ text }) {
+export function Loading({ text, withDots }) {
   return (
     <div className="loading">
       <div className="loading_line">
@@ -18,7 +18,18 @@ export function Loading({ text }) {
       </div>
       {
         text && (
-          <span className={"loading_text"}>{text}</span>
+          <div className={"loading_text"}>
+            <span className={"loading_text"}>{text}</span>
+            {
+              withDots && (
+              <span className={"dots"}>
+                <span>.</span>
+                <span>.</span>
+                <span>.</span>
+              </span>
+              )
+            }
+          </div>
         )
       }
     </div>

@@ -82,7 +82,7 @@ export function ExchangeBlock() {
         </div>
       </div>
       <div className={"exchangeBlock_content"}>
-        {loading ? <Loading text={"Loading data..."} /> : getStep()}
+        {loading ? <Loading text={"Loading data"} withDots /> : getStep()}
         <FinishStep />
       </div>
     </div>

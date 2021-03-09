@@ -23,6 +23,7 @@
 
 .faqScreen_form__input .input_field:focus ~ .input_icon svg path {
     fill: var(--color-active);
+    fill-opacity: 1;
 }
 
 .faqScreen_list {

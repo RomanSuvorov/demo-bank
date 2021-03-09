@@ -1,0 +1,43 @@
+.map {
+    min-width: 280px;
+    margin: 18px auto;
+    padding: 18px 12px;
+    background-color: var(--color-background);
+    border-radius: 15px;
+    box-shadow: 10px 10px 50px var(--color-blackShadow);
+    cursor: pointer;
+}
+
+.map:hover .map_header__expand svg path {
+    fill: var(--color-active);
+    fill-opacity: 1;
+}
+.map:hover .map_content {
+    transform: scale(1.1);
+}
+
+.map_header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.map_header__title {
+    margin-bottom: 12px;
+}
+
+.map_header__title span {
+    font-weight: 700;
+    color: var(--color-primaryText);
+    padding-left: 12px;
+}
+
+.map_content {
+    width: 100%;
+    height: 150px;
+    background-image: url(/src/assets/mockMap.svg);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    transform: scale(1.0);
+    -webkit-backface-visibility: hidden;
+    transition: transform 0.3s;
+}

@@ -1,0 +1,42 @@
+/* map container */
+.googleMap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /*align-items: center;*/
+    width: 80vw;
+    height: 50vh;
+    border-radius: inherit;
+    overflow: hidden;
+    position: relative;
+    background-color: var(--color-background);
+}
+
+.googleMap_title {
+    padding: 18px 12px;
+    height: 52px;
+}
+
+.googleMap_title span {
+    font-weight: 700;
+    color: var(--color-primaryText);
+}
+
+.googleMap_overlay {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--color-background);
+}
+
+
+/* map pin */
+.pin {
+    position: absolute;
+    transform: translate(-50%, -100%);
+}

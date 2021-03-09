@@ -77,7 +77,7 @@ export function FaqScreen() {
     <div className={"faqScreen"}>
       {
         loading ? (
-          <Loading text={"Loading data..."} />
+          <Loading text={"Loading data"} withDots />
         ) : (
           <Fragment>
             <div className={"faqScreen_wrapper"}>

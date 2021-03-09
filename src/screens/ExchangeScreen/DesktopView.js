@@ -5,6 +5,7 @@ import { HowToBuy } from '../../components/HoToBuy';
 import { Slider } from '../../components/Slider';
 import { Review } from '../../components/Review';
 import { FaqList } from '../../components/FaqList';
+import { Map } from '../../components/Map';
 
 export function DesktopView({
   faq,
@@ -18,6 +19,7 @@ export function DesktopView({
     <div className={"exchangeScreen_desktop"}>
       <ExchangeBlock />
       <HowToBuy />
+      <Map />
       <Slider
         className={"exchangeScreen_desktop__slider"}
         slides={review}

@@ -6,7 +6,7 @@ import { Button } from '../Button';
 import { useForm } from '../../sdk/helper';
 import './index.css';
 
-export function ReviewForm({
+export default function ReviewForm({
   className,
   loading,
   error,

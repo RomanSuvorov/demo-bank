@@ -87,6 +87,7 @@ textarea.input_field {
 
 .input_icon:hover svg path {
     fill: var(--color-active);
+    fill-opacity: 1;
 }
 
 .input_icon.withLabel {

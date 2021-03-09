@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Loading }  from '../../components/Loading';
 import { Review } from '../../components/Review';
 import { Button } from '../../components/Button';
-import { ReviewForm } from '../../components/ReviewForm';
+import ReviewForm from '../../components/ReviewForm';
 import { loadReviewData, createNewReview } from '../../store/review/actions';
 import AppTypes from '../../store/app/types';
 import './index.css';
@@ -47,7 +47,7 @@ export function ReviewScreen() {
     <div className={"reviewScreen"}>
       {
         loading ? (
-          <Loading text={"Loading data..."} />
+          <Loading text={"Loading data"} withDots />
         ) : (
           <Fragment>
             <div className={"reviewScreen_list"}>
