@@ -1,6 +1,8 @@
 import Types from './types';
 import { createReducer } from '../../sdk/helper';
 
+import default_banner from '../../assets/banner_default.png';
+
 const initialStore = {
   // media query
   isMobile: false,
@@ -19,6 +21,21 @@ const initialStore = {
   pinLoading: false,
   pinList: [],
   pinError: undefined,
+
+  // banner
+  bannerLoading: false,
+  banner: {
+    link: '',
+    linkPosition: 'left',
+    linkName: '',
+    src: default_banner,
+    type: 'video',
+    title: '',
+    titlePosition: 'left',
+    description: '',
+    descriptionPosition: 'left',
+  },
+  bannerError: undefined,
 };
 
 const reducer = {
@@ -61,6 +78,20 @@ const reducer = {
   [Types.LOAD_PIN_ERROR]: (draft, payload) => draft.pinError = payload,
 
   [Types.LOAD_PIN_FINISH]: draft => draft.pinLoading = false,
+
+  // banner
+  [Types.LOAD_BANNER_START]: draft => draft.bannerLoading = true,
+
+  [Types.LOAD_BANNER_SUCCESS]: (draft, payload) => {
+    draft.banner = {
+      ...draft.banner,
+      ...payload,
+    }
+  },
+
+  [Types.LOAD_PIN_ERROR]: (draft, payload) => draft.bannerError = payload,
+
+  [Types.LOAD_BANNER_FINISH]: draft => draft.bannerLoading = false,
 };
 
 export default createReducer(reducer, initialStore);

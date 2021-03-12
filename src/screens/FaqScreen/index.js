@@ -43,23 +43,19 @@ export function FaqScreen() {
     loading,
     error,
     searchText,
-    searchedFaqArray,
-    faqArray,
     metaTags,
     chosenMetaTags,
   } = useSelector(state => state.faq);
   const dispatch = useDispatch();
   const { t } = useTranslation('translation');
-  let mapList = searchText ? searchedFaqArray : faqArray;
-  mapList = mapList.filter(q => {
-    if (chosenMetaTags.length <= 0) return q;
-    const exist = chosenMetaTags.every(t => q.metaTags.includes(t));
-    if (exist) return q;
-  });
-
 
   useEffect(() => {
     dispatch(loadFaqData());
+
+    return () => {
+      dispatch({ type: FaqTypes.SEARCH_BY_TEXT, payload: '' });
+      dispatch({ type: FaqTypes.CHANGE_CHOSEN_TAGS });
+    };
   }, []);
 
   const handleSearchSubmit = (e) => {
@@ -104,11 +100,7 @@ export function FaqScreen() {
                 onClick={(tag) => handleToggleMetaTag(tag)}
               />
 
-              <FaqList
-                className={"faqScreen_list"}
-                array={mapList}
-                search={searchText}
-              />
+              <FaqList className={"faqScreen_list"} />
             </div>
 
             {/* --- TABLET AND DESKTOP --- */}

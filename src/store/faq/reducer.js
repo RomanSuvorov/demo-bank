@@ -47,6 +47,10 @@ const reducer = {
   [Types.CHANGE_CHOSEN_TAGS]: (draft, payload) => {
     let result = [...draft.chosenMetaTags];
 
+    if (!payload) {
+      return draft.chosenMetaTags = [];
+    }
+
     if (draft.chosenMetaTags.includes(payload)) {
       // remove tag from chosen
       result = result.filter(item => item !== payload);

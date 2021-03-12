@@ -4,33 +4,29 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loadExchangeData } from '../../store/exchange/actions';
 import { loadFaqByAmount } from '../../store/faq/actions';
 import { loadReviewByAmount } from '../../store/review/actions';
+import { loadBannerData } from '../../store/app/actions';
 import { DesktopView } from './DesktopView';
 import { TabletView } from './TabletView';
 import { MobileView } from './MobileView';
 import './index.css';
 
 export function ExchangeScreen() {
-  const { isMobile, isTablet, isDesktop } = useSelector(state => state.app);
-  const { faqArray, loading: faqLoading, error: faqError } = useSelector(state => state.faq);
-  const { reviewArray, loading: reviewLoading, error: reviewError } = useSelector(state => state.review);
+  const {
+    isMobile,
+    isTablet,
+    isDesktop,
+  } = useSelector(state => state.app);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(loadExchangeData());
+    dispatch(loadBannerData());
     dispatch(loadFaqByAmount(4));
     dispatch(loadReviewByAmount(12));
   }, []);
 
   const getExchangeScreenByPort = () => {
     let Component = MobileView;
-    const componentProps = {
-      faq: faqArray,
-      faqLoading,
-      faqError,
-      review: reviewArray,
-      reviewLoading,
-      reviewError,
-    };
 
     if (isDesktop) {
       Component = DesktopView;
@@ -40,7 +36,7 @@ export function ExchangeScreen() {
       Component = MobileView;
     }
 
-    return <Component {...componentProps} />
+    return <Component />
   };
 
   return (

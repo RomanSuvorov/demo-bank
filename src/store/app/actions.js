@@ -22,6 +22,18 @@ const mockPins = [
   },
 ];
 
+const mockBanner = {
+  link: 'https:google.com',
+  linkPosition: 'right',
+  linkName: 'Google',
+  src: 'Pe0Ci3z5xTw',
+  type: 'video',
+  title: 'Banner title',
+  titlePosition: 'left',
+  description: 'Banner Description',
+  descriptionPosition: 'left',
+};
+
 export const loadPinData = () => async (dispatch) => {
   dispatch({ type: Types.LOAD_PIN_START });
 
@@ -36,3 +48,19 @@ export const loadPinData = () => async (dispatch) => {
     dispatch({ type: Types.LOAD_PIN_FINISH });
   }
 }
+
+export const loadBannerData = () => async (dispatch) => {
+  dispatch({ type: Types.LOAD_BANNER_START });
+
+  try {
+    // TODO: await from server;
+    const banner = mockBanner;
+
+    dispatch({ type: Types.LOAD_BANNER_SUCCESS, payload: banner });
+  } catch (e) {
+    dispatch({ type: Types.LOAD_BANNER_ERROR, payload: e });
+
+  } finally {
+    dispatch({ type: Types.LOAD_BANNER_FINISH });
+  }
+};

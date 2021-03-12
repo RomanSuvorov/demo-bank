@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import { Loading }  from '../../components/Loading';
-import { Review } from '../../components/Review';
+import { ReviewItem } from '../../components/ReviewItem';
 import { Button } from '../../components/Button';
 import ReviewForm from '../../components/ReviewForm';
 import { loadReviewData, createNewReview } from '../../store/review/actions';
@@ -57,7 +57,7 @@ export function ReviewScreen() {
               <div className={"reviewScreen_list__items"}>
                 {
                   reviewArray.map(review => (
-                    <Review
+                    <ReviewItem
                       item={review}
                       key={review.date}
                     />

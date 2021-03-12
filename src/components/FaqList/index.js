@@ -1,13 +1,29 @@
 import React, { Fragment, useCallback } from 'react';
+import { useSelector } from 'react-redux';
 
 import { Collapse } from '../Collapse';
 import { Loading }  from '../Loading';
 import './index.css';
 
-export function FaqList({ className, array, loading, error, search }) {
+export function FaqList({ className }) {
+  const {
+    loading,
+    error,
+    searchText,
+    searchedFaqArray,
+    faqArray,
+    chosenMetaTags,
+  } = useSelector(state => state.faq);
+  let mapList = searchText ? searchedFaqArray : faqArray;
+  mapList = mapList.filter(q => {
+    if (chosenMetaTags.length <= 0) return q;
+    const exist = chosenMetaTags.every(t => q.metaTags.includes(t));
+    if (exist) return q;
+  });
+
   const highLight = useCallback((str) => {
-    return highlightText(search, str);
-  }, [search]);
+    return highlightText(searchText, str);
+  }, [searchText]);
 
   const highlightText = (filter, str) => {
     if (!filter) return str;
@@ -37,13 +53,13 @@ export function FaqList({ className, array, loading, error, search }) {
           loading ? (
             <Loading />
           ) : (
-            array.map((question, index) => (
+            mapList.map((question, index) => (
               <Collapse
                 className={"faqList_items__collapse"}
                 expanded={index === 0}
                 key={question.value}
-                title={<span>{search ? highLight(question.title) : question.title}</span>}
-                description={<span>{search ? highLight(question.description) : question.description}</span>}
+                title={<span>{searchText ? highLight(question.title) : question.title}</span>}
+                description={<span>{searchText ? highLight(question.description) : question.description}</span>}
               />
             ))
           )
