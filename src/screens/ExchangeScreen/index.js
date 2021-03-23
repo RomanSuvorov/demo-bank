@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loadExchangeData } from '../../store/exchange/actions';
 import { loadFaqByAmount } from '../../store/faq/actions';
 import { loadReviewByAmount } from '../../store/review/actions';
-import { loadBannerData } from '../../store/app/actions';
+import { loadBannerData, loadChartData } from '../../store/app/actions';
 import { DesktopView } from './DesktopView';
 import { TabletView } from './TabletView';
 import { MobileView } from './MobileView';
@@ -23,6 +23,7 @@ export function ExchangeScreen() {
     dispatch(loadBannerData());
     dispatch(loadFaqByAmount(4));
     dispatch(loadReviewByAmount(12));
+    dispatch(loadChartData());
   }, []);
 
   const getExchangeScreenByPort = () => {

@@ -1,4 +1,5 @@
 import Types from './types';
+import AppTypes from './types';
 
 // <--- MOCK DATA ---> //
 const mockPins = [
@@ -34,6 +35,29 @@ const mockBanner = {
   descriptionPosition: 'left',
 };
 
+const mockCheckboxes = [
+  {
+    value: 'BTCUSDT',
+    label: 'BTC / USDT',
+  },
+  {
+    value: 'BCHUSDT',
+    label: 'BCH / USDT',
+  },
+  {
+    value: 'XRPUSDT',
+    label: 'XRP / USDT',
+  },
+  {
+    value: 'LTCUSDT',
+    label: 'LTC / USDT',
+  },
+  {
+    value: 'ETHUSDT',
+    label: 'ETH / USDT',
+  },
+];
+
 export const loadPinData = () => async (dispatch) => {
   dispatch({ type: Types.LOAD_PIN_START });
 
@@ -64,3 +88,24 @@ export const loadBannerData = () => async (dispatch) => {
     dispatch({ type: Types.LOAD_BANNER_FINISH });
   }
 };
+
+export const loadChartData = () => async (dispatch) => {
+  dispatch({ type: Types.LOAD_CHART_DATA_START });
+
+  try {
+    // TODO: await from server;
+    const checkboxes = mockCheckboxes;
+
+    dispatch({ type: Types.LOAD_CHART_DATA_SUCCESS, payload: checkboxes });
+  } catch (e) {
+    dispatch({ type: Types.LOAD_CHART_DATA_ERROR, payload: e });
+  } finally {
+    dispatch({ type: Types.LOAD_CHART_DATA_FINISH });
+  }
+};
+
+export const changeChartPeriod = (time) => async (dispatch) => {
+  dispatch({ type: AppTypes.TOGGLE_TIME_PERIOD, payload: time });
+
+  // TODO: change time period on server;
+}

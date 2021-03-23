@@ -17,10 +17,8 @@ const TYPE = {
 };
 
 export function Banner() {
-  const { banner } = useSelector(state => state.app);
+  const { bannerLoading, banner, bannerError } = useSelector(state => state.app);
   const {
-    bannerLoading,
-    error,
     link,
     linkPosition,
     linkName,

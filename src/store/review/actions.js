@@ -16,27 +16,27 @@ const reviewMock = [
   {
     username: 'anna',
     comment: 'Lorem iit temporibus veniam! ercitationem imp',
-    date: 1614000172279,
+    date: 1614000172278,
   },
   {
     username: 'anna1',
     comment: 'Lorem iit temporibus veniam! ercitationem imp',
-    date: 1614000172279,
+    date: 1614000172277,
   },
   {
     username: 'anna2',
     comment: 'Lorem iit temporibus veniam! ercitationem imp',
-    date: 1614000172279,
+    date: 1614000172276,
   },
   {
     username: 'anna3',
     comment: 'Lorem iit temporibus veniam! ercitationem imp',
-    date: 1614000172279,
+    date: 1614000172275,
   },
   {
     username: 'anna4',
     comment: 'Lorem iit temporibus veniam! ercitationem imp',
-    date: 1614000172279,
+    date: 1614000172274,
   },
 ];
 

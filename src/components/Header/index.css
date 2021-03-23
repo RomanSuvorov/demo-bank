@@ -21,7 +21,7 @@
     border-radius: 50%;
     cursor: pointer;
     padding: 0;
-    z-index: 2;
+    z-index: 4;
 }
 
 .header_logoBox {

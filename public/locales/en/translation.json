@@ -36,6 +36,13 @@
     },
     "map": {
       "title": "Наши партнеры:"
+    },
+    "chart": {
+      "times": {
+        "first": "1 minute",
+        "second": "1 hour",
+        "third": "1 day"
+      }
     }
   }
 }

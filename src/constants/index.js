@@ -19,6 +19,14 @@ const transactionProcess = {
   CANCELED: 'CANCELED',
 };
 
+const color = {
+  colorApp: 'rgba(23, 27, 31, 1)',
+  colorSecondaryText: 'rgba(255, 255, 255, 0.5)',
+  colorBackgroundLight: 'rgba(255, 255, 255, 0.05)',
+  colorActive: 'rgba(246, 165, 8, 1)',
+  colorBackground: 'rgba(34, 39, 45, 1)',
+}
+
 export {
   exchangeDirection,
   exchangeStream,
@@ -28,4 +36,5 @@ export {
   exchangeStepList,
   routes,
   routesList,
+  color,
 };

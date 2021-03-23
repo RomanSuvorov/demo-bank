@@ -119,6 +119,7 @@ export function Layout() {
         },
       });
     }
+    setShowContacts(false);
     setShowSidebar(show);
     showSideRef.current = show;
   };

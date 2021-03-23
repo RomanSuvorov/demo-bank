@@ -17,7 +17,7 @@ export function Modal() {
   const [show, setShow] = useState(modalShow);
 
   useEffect(() => {
-    if (modalShow) setShow(true);
+    setShow(modalShow);
   }, [modalShow])
 
   let CustomComponent;

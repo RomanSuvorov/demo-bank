@@ -36,6 +36,18 @@ const initialStore = {
     descriptionPosition: 'left',
   },
   bannerError: undefined,
+
+  chartLoading: false,
+  chart: {
+    checkboxes: [],
+    activeCheckbox: {
+      value: '',
+      label: '',
+    },
+    dataset: [],
+    time: 60000,
+  },
+  chartError: undefined,
 };
 
 const reducer = {
@@ -92,6 +104,22 @@ const reducer = {
   [Types.LOAD_PIN_ERROR]: (draft, payload) => draft.bannerError = payload,
 
   [Types.LOAD_BANNER_FINISH]: draft => draft.bannerLoading = false,
+
+  // chart
+  [Types.TOGGLE_TIME_PERIOD]: (draft, payload) => draft.chart.time = payload,
+
+  [Types.CHANGE_CHART]: (draft, payload) => draft.chart.activeCheckbox = payload,
+
+  [Types.LOAD_CHART_DATA_START]: draft => draft.chartLoading = true,
+
+  [Types.LOAD_CHART_DATA_SUCCESS]: (draft, payload) => {
+    draft.chart.checkboxes = payload;
+    draft.chart.activeCheckbox = payload[0];
+  },
+
+  [Types.LOAD_CHART_DATA_ERROR]: (draft, payload) => draft.chartError = payload,
+
+  [Types.LOAD_CHART_DATA_FINISH]: draft => draft.chartLoading = false,
 };
 
 export default createReducer(reducer, initialStore);
