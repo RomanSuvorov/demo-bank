@@ -4,6 +4,15 @@ import { createReducer } from '../../sdk/helper';
 import default_banner from '../../assets/banner_default.png';
 
 const initialStore = {
+  // app
+  appLoading: true,
+  appStatus: undefined,
+  appError: undefined,
+  // socket
+  socketLoading: true,
+  socket: null,
+  socketError: undefined,
+
   // media query
   isMobile: false,
   isTablet: false,
@@ -37,20 +46,46 @@ const initialStore = {
   },
   bannerError: undefined,
 
-  chartLoading: false,
+  chartLoading: true,
   chart: {
     checkboxes: [],
     activeCheckbox: {
       value: '',
       label: '',
     },
-    dataset: [],
-    time: 60000,
+    dataset: {},
+    activePeriod: null,
+    periods: [],
   },
   chartError: undefined,
 };
 
 const reducer = {
+  // app
+  [Types.APP_START]: draft => draft.appLoading = true,
+
+  [Types.APP_SUCCESS]: (draft, payload) => {
+    draft.appStatus = payload.status;
+    draft.appError = undefined;
+  },
+
+  [Types.APP_ERROR]: (draft, payload) => draft.appError = payload,
+
+  [Types.APP_FINISH]: draft => draft.appLoading = false,
+
+  // socket
+  [Types.SOCKET_CONNECTING_START]: draft => draft.socketLoading = true,
+
+  [Types.SOCKET_CONNECTING_SUCCESS]: (draft, payload) => {
+    draft.socket = payload;
+    draft.socketLoading = false;
+  },
+
+  [Types.SOCKET_CONNECTING_ERROR]: (draft, payload) => {
+    draft.socketError = payload;
+    draft.socketLoading = false;
+  },
+
   // media query
   [Types.CHANGE_WINDOW_SIZE]: (draft, payload) => {
     if (payload >= 1024) {
@@ -106,15 +141,25 @@ const reducer = {
   [Types.LOAD_BANNER_FINISH]: draft => draft.bannerLoading = false,
 
   // chart
-  [Types.TOGGLE_TIME_PERIOD]: (draft, payload) => draft.chart.time = payload,
+  [Types.TOGGLE_TIME_PERIOD]: (draft, payload) => draft.chart.activePeriod = payload,
 
   [Types.CHANGE_CHART]: (draft, payload) => draft.chart.activeCheckbox = payload,
 
   [Types.LOAD_CHART_DATA_START]: draft => draft.chartLoading = true,
 
-  [Types.LOAD_CHART_DATA_SUCCESS]: (draft, payload) => {
-    draft.chart.checkboxes = payload;
-    draft.chart.activeCheckbox = payload[0];
+  [Types.LOAD_CHART_DATA_SUCCESS]: (draft, { checkboxes, periods }) => {
+    draft.chart.checkboxes = checkboxes;
+    draft.chart.periods = periods;
+
+    draft.chart.activeCheckbox = checkboxes[0];
+    draft.chart.activePeriod = periods[0].value;
+  },
+
+  [Types.LOAD_CHART_DATASET_UPDATE]: draft => draft.chart.dataset = {},
+
+  [Types.LOAD_CHART_DATASET_UPDATED]: (draft, payload) => {
+    const { symbol, chart, price, change, changeDirection } = payload;
+    draft.chart.dataset[symbol] = { chart, price, change, changeDirection };
   },
 
   [Types.LOAD_CHART_DATA_ERROR]: (draft, payload) => draft.chartError = payload,

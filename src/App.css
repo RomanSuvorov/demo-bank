@@ -132,6 +132,7 @@ a {
 }
 
 span,
+tspan,
 p,
 label {
     color: var(--color-secondaryText);

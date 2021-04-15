@@ -19,10 +19,10 @@ export function ExchangeScreen() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadExchangeData());
-    dispatch(loadBannerData());
-    dispatch(loadFaqByAmount(4));
-    dispatch(loadReviewByAmount(12));
+    // dispatch(loadExchangeData());
+    // dispatch(loadBannerData());
+    // dispatch(loadFaqByAmount(4));
+    // dispatch(loadReviewByAmount(12));
     dispatch(loadChartData());
   }, []);
 

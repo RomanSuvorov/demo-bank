@@ -12,14 +12,14 @@ import { ChartSwitcher } from '../../components/ChartSwitcher';
 export function TabletView() {
   return (
     <div className={"exchangeScreen_tablet"}>
-      <ExchangeBlock />
+      {/*<ExchangeBlock />*/}
       <ChartSwitcher />
       <CryptoChart />
-      <Banner />
-      <Map />
-      <HowToBuy />
-      <ReviewBlock />
-      <FaqList />
+      {/*<Banner />*/}
+      {/*<Map />*/}
+      {/*<HowToBuy />*/}
+      {/*<ReviewBlock />*/}
+      {/*<FaqList />*/}
     </div>
   );
 }

@@ -7,8 +7,10 @@ import { Header } from '../../components/Header';
 import { Sidebar } from '../../components/Sidebar';
 import { Overlay } from '../../components/Overlay';
 import { Modal } from '../../components/ModalWrapper';
+import { Loading } from '../../components/Loading';
 import Router from '../Router';
 import AppTypes from '../../store/app/types';
+import { socketDisconnect, startApp } from '../../store/app/actions';
 import { getQueryVariable, searchUrlEditor, throttle } from '../../sdk/helper';
 import './index.css';
 
@@ -20,7 +22,7 @@ export function Layout() {
   // useEffect doesn't see change of showSidebar boolean value
   // for this showSideRef was created
   const showSideRef = useRef(false);
-  const { isDesktop, modalShow } = useSelector(state => state.app);
+  const { isDesktop, modalShow, socketLoading, socket, socketError, appLoading, appStatus, appError } = useSelector(state => state.app);
   const dispatch = useDispatch();
 
   // routing
@@ -31,11 +33,15 @@ export function Layout() {
   const { i18n } = useTranslation();
 
   useEffect(() => {
+    dispatch(startApp());
     changeWindowSize();
 
     const throttledChangeWindowSize = throttle(changeWindowSize, 100);
     window.addEventListener("resize", throttledChangeWindowSize);
-    return () => window.removeEventListener("resize", throttledChangeWindowSize);
+    return () => {
+      window.removeEventListener("resize", throttledChangeWindowSize);
+      dispatch(socketDisconnect(socket));
+    }
   }, []);
 
   const changeWindowSize = () => {
@@ -125,6 +131,22 @@ export function Layout() {
   };
 
   const handleChangeLang = value => i18n.changeLanguage(value);
+
+  if (appLoading) {
+    return (
+      <div className={"layout"}>
+        <Loading text={'App loading'} withDots />
+      </div>
+    );
+  }
+
+  if (appError || !appStatus) {
+    return (
+      <div className={"layout"}>
+        <Loading text={'App error'} withDots />
+      </div>
+    )
+  }
 
   return (
     <div className={"layout"}>

@@ -1,5 +1,8 @@
 import Types from './types';
-import AppTypes from './types';
+import { config } from '../../constants/config';
+import { io } from 'socket.io-client';
+
+import sdk from '../../sdk';
 
 // <--- MOCK DATA ---> //
 const mockPins = [
@@ -35,28 +38,64 @@ const mockBanner = {
   descriptionPosition: 'left',
 };
 
-const mockCheckboxes = [
-  {
-    value: 'BTCUSDT',
-    label: 'BTC / USDT',
-  },
-  {
-    value: 'BCHUSDT',
-    label: 'BCH / USDT',
-  },
-  {
-    value: 'XRPUSDT',
-    label: 'XRP / USDT',
-  },
-  {
-    value: 'LTCUSDT',
-    label: 'LTC / USDT',
-  },
-  {
-    value: 'ETHUSDT',
-    label: 'ETH / USDT',
-  },
-];
+export const startApp = () => async (dispatch) => {
+  dispatch({ type: Types.APP_START });
+
+  try {
+    const { status } = await sdk.api.getStatusApi();
+
+    await dispatch({ type: Types.APP_SUCCESS, payload: { status: status }});
+
+    if (status) await dispatch(socketConnect());
+  } catch (error) {
+    dispatch({ type: Types.APP_ERROR, payload: error });
+  } finally {
+    dispatch({ type: Types.APP_FINISH });
+  }
+}
+
+export const socketConnect = () => async (dispatch) => {
+  const socket = io((config.url || '') + '/');
+
+  dispatch({ type: Types.SOCKET_CONNECTING_START });
+
+  socket.on('connect', () => {
+    console.log('--- SOCKET CONNECTED --- ', socket.connected);
+    if (socket.connected) {
+      dispatch({ type: Types.SOCKET_CONNECTING_SUCCESS, payload: socket });
+
+      dispatch({ type: Types.LOAD_CHART_DATASET_UPDATE });
+      socket.emit('charts', { period: "1m" });
+    }
+  });
+
+  socket.on('connect_error', (err) => {
+    dispatch({ type: Types.SOCKET_CONNECTING_ERROR, payload: 'Try to reconnect, please await' });
+    setTimeout(() => {
+      socket.connect();
+    }, 2000);
+  });
+
+  socket.on('disconnect', reason => {
+    console.log('--- DISCONNECTED REASON --- ', reason);
+
+    if (reason === 'io server disconnect') {
+      return socket.disconnect();
+    }
+  });
+
+  socket.on('charts', data => {
+    // console.log('charts', data);
+    dispatch({ type: Types.LOAD_CHART_DATASET_UPDATED, payload: data });
+  });
+}
+
+export const socketDisconnect = (socket) => async (dispatch) => {
+  if (socket) {
+    console.log(socket);
+    socket.disconnect();
+  }
+};
 
 export const loadPinData = () => async (dispatch) => {
   dispatch({ type: Types.LOAD_PIN_START });
@@ -93,19 +132,19 @@ export const loadChartData = () => async (dispatch) => {
   dispatch({ type: Types.LOAD_CHART_DATA_START });
 
   try {
-    // TODO: await from server;
-    const checkboxes = mockCheckboxes;
+    const { checkboxes, periods } = await sdk.api.getChartsData();
 
-    dispatch({ type: Types.LOAD_CHART_DATA_SUCCESS, payload: checkboxes });
-  } catch (e) {
-    dispatch({ type: Types.LOAD_CHART_DATA_ERROR, payload: e });
+    dispatch({ type: Types.LOAD_CHART_DATA_SUCCESS, payload: { periods: periods, checkboxes: checkboxes } });
+  } catch (error) {
+    dispatch({ type: Types.LOAD_CHART_DATA_ERROR, payload: error });
   } finally {
     dispatch({ type: Types.LOAD_CHART_DATA_FINISH });
   }
 };
 
-export const changeChartPeriod = (time) => async (dispatch) => {
-  dispatch({ type: AppTypes.TOGGLE_TIME_PERIOD, payload: time });
+export const changeChartPeriod = ({ period, socket }) => async (dispatch) => {
+  dispatch({ type: Types.TOGGLE_TIME_PERIOD, payload: period });
 
-  // TODO: change time period on server;
+  dispatch({ type: Types.LOAD_CHART_DATASET_UPDATE });
+  socket.emit('charts', { period });
 }
