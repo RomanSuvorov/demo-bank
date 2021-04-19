@@ -2,9 +2,9 @@ import React from 'react';
 
 import './index.css';
 
-export function Loading({ text, withDots }) {
+export function Loading({ text = '', withDots = false, block = false }) {
   return (
-    <div className="loading">
+    <div className={`loading ${block ? 'block' : ''}`}>
       <div className="loading_line">
         <span className="loading_line__item item_1" />
         <span className="loading_line__item item_2" />

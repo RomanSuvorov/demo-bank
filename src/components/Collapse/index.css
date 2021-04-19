@@ -1,6 +1,12 @@
 .collapse {
     position: relative;
     width: 100%;
+    min-height: 30px;
+    transition: all 0.8s;
+}
+
+.collapse.load {
+    min-height: 72px;
 }
 
 .collapse_header {

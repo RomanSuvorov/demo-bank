@@ -1,8 +1,7 @@
-import React, { useEffect, Fragment } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { Loading }  from '../../components/Loading';
 import { Input } from '../../components/Input';
 import { Collapse } from '../../components/Collapse';
 import { FaqList } from '../../components/FaqList';
@@ -11,11 +10,13 @@ import { SearchIcon } from '../../assets/icons';
 import FaqTypes from '../../store/faq/types';
 import './index.css';
 
-const Tags = ({ className, tags, chosen, fixed = false, onClick = () => {} }) => {
+const Tags = ({ loading, className, tags, chosen, fixed = false, onClick = () => {} }) => {
   const { t } = useTranslation('translation');
 
   return (
     <Collapse
+      loading={loading}
+      loadingText={"Faq meta tags loading"}
       className={className}
       title={<span>{t('faq.metaBlockTitle')}</span>}
       description={
@@ -71,49 +72,43 @@ export function FaqScreen() {
 
   return (
     <div className={"faqScreen"}>
-      {
-        loading ? (
-          <Loading text={"Loading data"} withDots />
-        ) : (
-          <Fragment>
-            <div className={"faqScreen_wrapper"}>
-              <form
-                className={"faqScreen_form"}
-                onSubmit={handleSearchSubmit}
-              >
-                <Input
-                  className={"faqScreen_form__input"}
-                  name={"search"}
-                  value={searchText}
-                  placeholder={t('faq.searchPlaceholder')}
-                  Icon={SearchIcon}
-                  iconHandler={handleSearchSubmit}
-                  onChange={handleSearchChange}
-                />
-              </form>
+      <div className={"faqScreen_wrapper"}>
+        <form
+          className={"faqScreen_form"}
+          onSubmit={handleSearchSubmit}
+        >
+          <Input
+            className={"faqScreen_form__input"}
+            name={"search"}
+            value={searchText}
+            placeholder={t('faq.searchPlaceholder')}
+            Icon={SearchIcon}
+            iconHandler={handleSearchSubmit}
+            onChange={handleSearchChange}
+          />
+        </form>
 
-              {/* --- MOBILE --- */}
-              <Tags
-                className={"faqScreen_metaTags mobile"}
-                tags={metaTags}
-                chosen={chosenMetaTags}
-                onClick={(tag) => handleToggleMetaTag(tag)}
-              />
+        {/* --- MOBILE --- */}
+        <Tags
+          loading={loading}
+          className={"faqScreen_metaTags mobile"}
+          tags={metaTags}
+          chosen={chosenMetaTags}
+          onClick={(tag) => handleToggleMetaTag(tag)}
+        />
 
-              <FaqList className={"faqScreen_list"} />
-            </div>
+        <FaqList className={"faqScreen_list"} />
+      </div>
 
-            {/* --- TABLET AND DESKTOP --- */}
-            <Tags
-              className={"faqScreen_metaTags desktop"}
-              tags={metaTags}
-              chosen={chosenMetaTags}
-              fixed={true}
-              onClick={(tag) => handleToggleMetaTag(tag)}
-            />
-          </Fragment>
-        )
-      }
+      {/* --- TABLET AND DESKTOP --- */}
+      <Tags
+        loading={loading}
+        className={"faqScreen_metaTags desktop"}
+        tags={metaTags}
+        chosen={chosenMetaTags}
+        fixed={true}
+        onClick={(tag) => handleToggleMetaTag(tag)}
+      />
     </div>
   );
 }

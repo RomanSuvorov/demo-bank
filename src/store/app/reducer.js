@@ -46,7 +46,8 @@ const initialStore = {
   },
   bannerError: undefined,
 
-  chartLoading: true,
+  chartDataLoading: true,
+  chartLoading: false,
   chart: {
     checkboxes: [],
     activeCheckbox: {
@@ -141,11 +142,14 @@ const reducer = {
   [Types.LOAD_BANNER_FINISH]: draft => draft.bannerLoading = false,
 
   // chart
-  [Types.TOGGLE_TIME_PERIOD]: (draft, payload) => draft.chart.activePeriod = payload,
+  [Types.TOGGLE_TIME_PERIOD]: (draft, payload) => {
+    draft.chart.activePeriod = payload;
+    draft.chartLoading = true;
+  },
 
   [Types.CHANGE_CHART]: (draft, payload) => draft.chart.activeCheckbox = payload,
 
-  [Types.LOAD_CHART_DATA_START]: draft => draft.chartLoading = true,
+  [Types.LOAD_CHART_DATA_START]: draft => draft.chartDataLoading = true,
 
   [Types.LOAD_CHART_DATA_SUCCESS]: (draft, { checkboxes, periods }) => {
     draft.chart.checkboxes = checkboxes;
@@ -160,11 +164,14 @@ const reducer = {
   [Types.LOAD_CHART_DATASET_UPDATED]: (draft, payload) => {
     const { symbol, chart, price, change, changeDirection } = payload;
     draft.chart.dataset[symbol] = { chart, price, change, changeDirection };
+    if (draft.chartLoading) {
+      draft.chartLoading = false;
+    }
   },
 
   [Types.LOAD_CHART_DATA_ERROR]: (draft, payload) => draft.chartError = payload,
 
-  [Types.LOAD_CHART_DATA_FINISH]: draft => draft.chartLoading = false,
+  [Types.LOAD_CHART_DATA_FINISH]: draft => draft.chartDataLoading = false,
 };
 
 export default createReducer(reducer, initialStore);

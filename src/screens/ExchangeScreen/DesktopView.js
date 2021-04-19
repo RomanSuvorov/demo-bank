@@ -19,7 +19,7 @@ export function DesktopView() {
       {/*<HowToBuy />*/}
       {/*<Map />*/}
       {/*<ReviewBlock />*/}
-      {/*<FaqList />*/}
+      <FaqList />
     </div>
   );
 }

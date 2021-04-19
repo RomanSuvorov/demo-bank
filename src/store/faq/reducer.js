@@ -2,7 +2,7 @@ import Types from './types';
 import { createReducer } from '../../sdk/helper';
 
 const initialStore = {
-  loading: false,
+  loading: true,
   error: undefined,
   searchText: '',
   searchedFaqArray: [],
@@ -18,10 +18,10 @@ const reducer = {
   [Types.LOAD_FAQ_ERROR]: (draft, payload) => draft.error = payload,
 
   [Types.LOAD_FAQ_SUCCESS]: (draft, payload) => {
-    const { faqArray, metaTags } = payload;
+    const { faqList, metaTags } = payload;
 
     draft.metaTags = !!metaTags ? metaTags : [];
-    draft.faqArray = faqArray;
+    draft.faqArray = faqList;
   },
 
   [Types.LOAD_FAQ_FINISH]: draft => draft.loading = false,

@@ -51,7 +51,7 @@ export function FaqList({ className }) {
       <div className={"faqList_items"}>
         {
           loading ? (
-            <Loading />
+            <Loading text={"Load FAQ Data"} withDots={true} block={true} />
           ) : (
             mapList.map((question, index) => (
               <Collapse

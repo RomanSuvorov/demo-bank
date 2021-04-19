@@ -5,13 +5,35 @@ class DemobankSDK {
     };
 
     this.urls = {
+      // status
       GET_STATUS_API: `${this.config.demobankApi}/status`,
+      // charts
       GET_CHARTS_DATA: `${this.config.demobankApi}/charts`,
+      // faq
+      GET_FAQ_DATA: `${this.config.demobankApi}/faq`,
+      GET_FAQ_LIST_BY_AMOUNT: `${this.config.demobankApi}/faq?amount=`
     };
 
     this.api = {
-      getStatusApi: async () => await this._fetchServer(this.urls.GET_STATUS_API, 'get'),
-      getChartsData: async () => await this._fetchServer(this.urls.GET_CHARTS_DATA, 'get'),
+      // status
+      getStatusApi: async () => await this._fetchServer(
+        this.urls.GET_STATUS_API,
+        'get',
+      ),
+      // charts
+      getChartsData: async () => await this._fetchServer(
+        this.urls.GET_CHARTS_DATA,
+        'get',
+      ),
+      // faq
+      getFaqData: async () => await this._fetchServer(
+        this.urls.GET_FAQ_DATA,
+        'get',
+      ),
+      getFaqListByAmount: async (count) => await this._fetchServer(
+        this.urls.GET_FAQ_LIST_BY_AMOUNT + count,
+        'get',
+      ),
     };
   };
 

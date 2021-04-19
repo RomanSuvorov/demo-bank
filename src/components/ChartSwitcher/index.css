@@ -32,8 +32,14 @@
     border: 2px solid var(--color-active);
 }
 
-.chartSwitcher_checkbox__header {
-    padding: 18px;
+.chartSwitcher_checkbox__content {
+    position: relative;
+    min-height: 26px;
+    transition: all 0.8s;
+}
+
+.chartSwitcher_checkbox__content.active {
+    min-height: 86px;
 }
 
 .chartSwitcher_checkbox__currency {
@@ -41,6 +47,7 @@
     align-items: center;
     justify-content: space-between;
     flex: 1;
+    padding: 12px 18px 12px;
 }
 
 .chartSwitcher_checkbox_value span {
@@ -96,7 +103,7 @@
     position: relative;
     transform: translateY(0);
     height: 26px;
-    padding-top: 12px;
+    padding: 0 18px 12px;
     visibility: visible;
     opacity: 1;
     transition: all 0.8s;
@@ -124,11 +131,21 @@
     color: var(--color-error);
 }
 
+.chartSwitcher_checkbox_chartWrapper {
+    height: 1px;
+    transition: all 0.3s;
+}
+
+.chartSwitcher_checkbox_chartWrapper.active {
+    height: 60px;
+}
+
 .chartSwitcher_checkbox_chart {
     display: flex;
     border-radius: 15px;
     overflow: hidden;
     visibility: hidden;
+    position: relative;
     transition: all 0.8s;
 }
 

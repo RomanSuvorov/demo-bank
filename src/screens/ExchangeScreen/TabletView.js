@@ -19,7 +19,7 @@ export function TabletView() {
       {/*<Map />*/}
       {/*<HowToBuy />*/}
       {/*<ReviewBlock />*/}
-      {/*<FaqList />*/}
+      <FaqList />
     </div>
   );
 }

@@ -21,7 +21,7 @@ export function ExchangeScreen() {
   useEffect(() => {
     // dispatch(loadExchangeData());
     // dispatch(loadBannerData());
-    // dispatch(loadFaqByAmount(4));
+    dispatch(loadFaqByAmount(4));
     // dispatch(loadReviewByAmount(12));
     dispatch(loadChartData());
   }, []);

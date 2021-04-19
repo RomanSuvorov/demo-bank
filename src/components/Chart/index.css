@@ -7,19 +7,6 @@
     position: relative;
 }
 
-.cryptoChart_load {
-    display: flex;
-    background-color: var(--color-background);
-    border-radius: 15px;
-    box-shadow: 10px 10px 50px var(--color-blackShadow);
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    z-index: 1;
-}
-
 .cryptoChart_info {
     display: flex;
     justify-content: space-between;
@@ -139,10 +126,16 @@
     color: var(--color-error);
 }
 
+.cryptoChart_chartWrapper {
+    position: relative;
+    height: 200px;
+}
+
 .cryptoChart_chart {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 .cryptoChart_chart tspan {

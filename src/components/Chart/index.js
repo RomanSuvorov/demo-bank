@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import {
@@ -77,7 +77,7 @@ function Tick({ mode, period, payload, x, y, textAnchor, width, height, orientat
 }
 
 export function CryptoChart() {
-  const { chartLoading, chart, chartError, socket } = useSelector(state => state.app);
+  const { chartDataLoading, chartLoading, chart, chartError, socket } = useSelector(state => state.app);
   const { activeCheckbox, dataset, periods, activePeriod } = chart;
   const [cryptoStr = "", usdtStr = ""] = activeCheckbox.label.split('/');
   const { t } = useTranslation('translation');
@@ -90,7 +90,7 @@ export function CryptoChart() {
     dispatch(changeChartPeriod({ period: periodvalue, socket }));
   };
 
-  const dataLoading = chartLoading
+  const chartUpdating = chartLoading
     || !dataset[activeCheckbox.value]
     || !dataset[activeCheckbox.value].chart
     || !dataset[activeCheckbox.value].chart.length > 0;
@@ -103,12 +103,10 @@ export function CryptoChart() {
     );
   }
 
-  if (dataLoading) {
+  if (chartDataLoading) {
     return (
       <div className={"cryptoChart"}>
-        <div className={"cryptoChart_load"}>
-          <Loading text={"Load Chart Data"} withDots={true} />
-        </div>
+        <Loading text={"Load Chart Data"} withDots={true} block={true} />
       </div>
     );
   }
@@ -142,68 +140,74 @@ export function CryptoChart() {
       </div>
 
       <div className={`cryptoChart_price ${dataset[activeCheckbox.value] ? '' : 'load'}`}>
-          <span className={"cryptoChart_price--price"}>
-            {dataset[activeCheckbox.value] ? dataset[activeCheckbox.value].price : ''}
-          </span>
+              <span className={"cryptoChart_price--price"}>
+                {dataset[activeCheckbox.value] ? dataset[activeCheckbox.value].price : ''}
+              </span>
         <span className={`cryptoChart_price--percent ${dataset[activeCheckbox.value] ? dataset[activeCheckbox.value].changeDirection : ''}`}>
-            {dataset[activeCheckbox.value] ? dataset[activeCheckbox.value].change : ''}
-          </span>
+                {
+                  dataset[activeCheckbox.value] ?
+                    `${dataset[activeCheckbox.value].changeDirection === 'positive' ? `+${dataset[activeCheckbox.value].change}` : dataset[activeCheckbox.value].change}`
+                    : ''
+                }
+              </span>
       </div>
 
-      <ResponsiveContainer
-        width={"100%"}
-        height={200}
-        className={"cryptoChart_chart"}
-      >
+      <div className={"cryptoChart_chartWrapper"}>
         {
-          dataLoading ? (
-            <Loading />
+          chartUpdating ? (
+            <Loading text={"Updating chart"} withDots={true} block={true} />
           ) : (
-            <AreaChart data={dataset[activeCheckbox.value].chart}>
-              <defs>
-                <linearGradient id={"value"} x1={0} x2={0} y1={0} y2={1}>
-                  <stop offset="35%" stopColor={"rgb(246, 165, 8)"} stopOpacity={0.5}/>
-                  <stop offset="85%" stopColor={"rgb(246, 137, 8)"} stopOpacity={0.05}/>
-                </linearGradient>
-              </defs>
-              <CartesianGrid
-                strokeDasharray="0"
-                vertical={false}
-                stroke={color.colorBackgroundLight}
-              />
-              <XAxis
-                axisLine={false}
-                tickLine={false}
-                stroke={color.colorSecondaryText}
-                dataKey="time"
-                tick={props => <Tick mode={"time"} period={activePeriod} {...props} />}
-                interval={"preserveStart"}
-                tickMargin={6}
-              />
-              <YAxis
-                padding={{ top: 6 }}
-                axisLine={false}
-                tickLine={false}
-                stroke={color.colorSecondaryText}
-                tick={props => <Tick mode={"value"} {...props} />}
-                orientation={"right"}
-                tickMargin={6}
-                domain={['dataMin', 'dataMax']}
-              />
-              <Area
-                type="linear"
-                dataKey="value"
-                stroke={color.colorActive}
-                strokeWidth={2}
-                fill="url(#value)"
-                fillOpacity={1}
-                animationDuration={800}
-              />
-              <Tooltip content={<TooltipChart />} />
-            </AreaChart>
+            <ResponsiveContainer
+              width={"100%"}
+              height={200}
+              className={"cryptoChart_chart"}
+            >
+              <AreaChart data={dataset[activeCheckbox.value].chart}>
+                <defs>
+                  <linearGradient id={"value"} x1={0} x2={0} y1={0} y2={1}>
+                    <stop offset="35%" stopColor={"rgb(246, 165, 8)"} stopOpacity={0.5}/>
+                    <stop offset="85%" stopColor={"rgb(246, 137, 8)"} stopOpacity={0.05}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid
+                  strokeDasharray="0"
+                  vertical={false}
+                  stroke={color.colorBackgroundLight}
+                />
+                <XAxis
+                  axisLine={false}
+                  tickLine={false}
+                  stroke={color.colorSecondaryText}
+                  dataKey="time"
+                  tick={props => <Tick mode={"time"} period={activePeriod} {...props} />}
+                  interval={"preserveStart"}
+                  tickMargin={6}
+                />
+                <YAxis
+                  padding={{ top: 6 }}
+                  axisLine={false}
+                  tickLine={false}
+                  stroke={color.colorSecondaryText}
+                  tick={props => <Tick mode={"value"} {...props} />}
+                  orientation={"right"}
+                  tickMargin={6}
+                  domain={['dataMin', 'dataMax']}
+                />
+                <Area
+                  type="linear"
+                  dataKey="value"
+                  stroke={color.colorActive}
+                  strokeWidth={2}
+                  fill="url(#value)"
+                  fillOpacity={1}
+                  animationDuration={800}
+                />
+                <Tooltip content={<TooltipChart />} />
+              </AreaChart>
+            </ResponsiveContainer>
           )
         }
-      </ResponsiveContainer>
+      </div>
     </div>
   );
 }
