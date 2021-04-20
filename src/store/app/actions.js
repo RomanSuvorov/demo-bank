@@ -46,7 +46,7 @@ export const startApp = () => async (dispatch) => {
 
     await dispatch({ type: Types.APP_SUCCESS, payload: { status: status }});
 
-    if (status) await dispatch(socketConnect());
+    // if (status) await dispatch(socketConnect());
   } catch (error) {
     dispatch({ type: Types.APP_ERROR, payload: error });
   } finally {

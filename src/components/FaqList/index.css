@@ -5,6 +5,10 @@
     margin: 18px 0;
 }
 
+.faqList_title {
+    margin-bottom: 18px;
+}
+
 .faqList_title span {
     font-weight: 700;
     color: var(--color-primaryText);
@@ -21,6 +25,10 @@
     max-height: calc(100vh - var(--side-header-mobile) - 50px - 70px - 18px - 18px);
     overflow-y: auto;
     position: relative;
+}
+
+.faqList_items .collapse:first-child .collapse_header {
+    margin-top: 0;
 }
 
 .collapse_description span.faqList_items__searchedText {

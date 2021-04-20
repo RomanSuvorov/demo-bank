@@ -13,12 +13,12 @@ export function DesktopView() {
   return (
     <div className={"exchangeScreen_desktop"}>
       {/*<ExchangeBlock />*/}
-      <ChartSwitcher />
-      <CryptoChart />
+      {/*<ChartSwitcher />*/}
+      {/*<CryptoChart />*/}
       {/*<Banner />*/}
       {/*<HowToBuy />*/}
       {/*<Map />*/}
-      {/*<ReviewBlock />*/}
+      <ReviewBlock />
       <FaqList />
     </div>
   );

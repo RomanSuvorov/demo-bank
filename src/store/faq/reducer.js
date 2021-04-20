@@ -13,7 +13,10 @@ const initialStore = {
 
 const reducer = {
   //---------------- LOAD DATA FOR FAQ LIST ------------------//
-  [Types.LOAD_FAQ_START]: draft => draft.loading = true,
+  [Types.LOAD_FAQ_START]: draft => {
+    draft.loading = true;
+    draft.error = undefined;
+  },
 
   [Types.LOAD_FAQ_ERROR]: (draft, payload) => draft.error = payload,
 
@@ -22,6 +25,7 @@ const reducer = {
 
     draft.metaTags = !!metaTags ? metaTags : [];
     draft.faqArray = faqList;
+    draft.error = undefined;
   },
 
   [Types.LOAD_FAQ_FINISH]: draft => draft.loading = false,

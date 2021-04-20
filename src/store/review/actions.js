@@ -1,53 +1,13 @@
 import Types from './types';
-
-const reviewMock = [
-  {
-    username: 'Test1',
-    comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium adipisci asperiores, blanditiis ' +
-      'culpa distinctio eligendi esse exercitationem impedit iste iusto nihil nobis optio perspiciatis quasi quibusdam ' +
-      'recusandae reprehenderit temporibus veniam!',
-    date: 1614000275279,
-  },
-  {
-    username: 'Abramovish23324',
-    comment: 'Lorem iit temporibus veniam!',
-    date: 1614000175279,
-  },
-  {
-    username: 'anna',
-    comment: 'Lorem iit temporibus veniam! ercitationem imp',
-    date: 1614000172278,
-  },
-  {
-    username: 'anna1',
-    comment: 'Lorem iit temporibus veniam! ercitationem imp',
-    date: 1614000172277,
-  },
-  {
-    username: 'anna2',
-    comment: 'Lorem iit temporibus veniam! ercitationem imp',
-    date: 1614000172276,
-  },
-  {
-    username: 'anna3',
-    comment: 'Lorem iit temporibus veniam! ercitationem imp',
-    date: 1614000172275,
-  },
-  {
-    username: 'anna4',
-    comment: 'Lorem iit temporibus veniam! ercitationem imp',
-    date: 1614000172274,
-  },
-];
+import sdk from '../../sdk';
 
 export const loadReviewData = () => async (dispatch) => {
   dispatch({ type: Types.LOAD_REVIEW_START });
 
   try {
-    // TODO: await from server;
-    const review = reviewMock;
+    const { reviewList } = await sdk.api.getReviewsData();
 
-    dispatch({ type: Types.LOAD_REVIEW_SUCCESS, payload: review });
+    dispatch({ type: Types.LOAD_REVIEW_SUCCESS, payload: reviewList });
   } catch (e) {
     dispatch({ type: Types.LOAD_REVIEW_ERROR, payload: e });
   } finally {
@@ -55,14 +15,13 @@ export const loadReviewData = () => async (dispatch) => {
   }
 }
 
-export const loadReviewByAmount = (amount) => async (dispatch) => {
+export const loadReviewByAmount = (count = 1) => async (dispatch) => {
   dispatch({ type: Types.LOAD_REVIEW_START });
 
   try {
-    // TODO: await from server;
-    const review = [...reviewMock];
+    const { reviewsList } = await sdk.api.getReviewsListByAmount(count);
 
-    dispatch({ type: Types.LOAD_REVIEW_SUCCESS, payload: review })
+    dispatch({ type: Types.LOAD_REVIEW_SUCCESS, payload: reviewsList });
   } catch (e) {
     dispatch({ type: Types.LOAD_REVIEW_ERROR, payload: e });
   } finally {

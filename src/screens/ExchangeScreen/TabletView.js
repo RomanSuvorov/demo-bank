@@ -13,8 +13,8 @@ export function TabletView() {
   return (
     <div className={"exchangeScreen_tablet"}>
       {/*<ExchangeBlock />*/}
-      <ChartSwitcher />
-      <CryptoChart />
+      {/*<ChartSwitcher />*/}
+      {/*<CryptoChart />*/}
       {/*<Banner />*/}
       {/*<Map />*/}
       {/*<HowToBuy />*/}

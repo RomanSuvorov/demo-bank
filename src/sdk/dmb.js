@@ -11,7 +11,10 @@ class DemobankSDK {
       GET_CHARTS_DATA: `${this.config.demobankApi}/charts`,
       // faq
       GET_FAQ_DATA: `${this.config.demobankApi}/faq`,
-      GET_FAQ_LIST_BY_AMOUNT: `${this.config.demobankApi}/faq?amount=`
+      GET_FAQ_LIST_BY_AMOUNT: `${this.config.demobankApi}/faqByAmount?amount=`,
+      // reviews
+      GET_REVIEWS_DATA: `${this.config.demobankApi}/reviews`,
+      GET_REVIEWS_LIST_BY_AMOUNT: `${this.config.demobankApi}/reviewsByAmount?amount=`
     };
 
     this.api = {
@@ -32,6 +35,15 @@ class DemobankSDK {
       ),
       getFaqListByAmount: async (count) => await this._fetchServer(
         this.urls.GET_FAQ_LIST_BY_AMOUNT + count,
+        'get',
+      ),
+      // reviews
+      getReviewsData: async () => await this._fetchServer(
+        this.urls.GET_REVIEWS_DATA,
+        'get',
+      ),
+      getReviewsListByAmount: async (count) => await this._fetchServer(
+        this.urls.GET_REVIEWS_LIST_BY_AMOUNT + count,
         'get',
       ),
     };

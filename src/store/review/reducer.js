@@ -2,7 +2,7 @@ import Types from './types';
 import { createReducer } from '../../sdk/helper';
 
 const initialStore = {
-  loading: false,
+  loading: true,
   error: undefined,
   reviewArray: [],
 
@@ -11,9 +11,15 @@ const initialStore = {
 };
 
 const reducer = {
-  [Types.LOAD_REVIEW_START]: draft => draft.loading = true,
+  [Types.LOAD_REVIEW_START]: draft => {
+    draft.loading = true;
+    draft.error = undefined;
+  },
 
-  [Types.LOAD_REVIEW_SUCCESS]: (draft, payload) => draft.reviewArray = payload,
+  [Types.LOAD_REVIEW_SUCCESS]: (draft, payload) => {
+    draft.reviewArray = payload;
+    draft.error = undefined;
+  },
 
   [Types.LOAD_REVIEW_ERROR]: (draft, payload) => draft.error = payload,
 

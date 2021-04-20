@@ -22,8 +22,8 @@ export function ExchangeScreen() {
     // dispatch(loadExchangeData());
     // dispatch(loadBannerData());
     dispatch(loadFaqByAmount(4));
-    // dispatch(loadReviewByAmount(12));
-    dispatch(loadChartData());
+    dispatch(loadReviewByAmount(2));
+    // dispatch(loadChartData());
   }, []);
 
   const getExchangeScreenByPort = () => {

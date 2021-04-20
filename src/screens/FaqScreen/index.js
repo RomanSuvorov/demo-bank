@@ -7,6 +7,7 @@ import { Collapse } from '../../components/Collapse';
 import { FaqList } from '../../components/FaqList';
 import { loadFaqData } from '../../store/faq/actions';
 import { SearchIcon } from '../../assets/icons';
+import { ErrorBlock } from '../../components/ErrorBlock';
 import FaqTypes from '../../store/faq/types';
 import './index.css';
 
@@ -69,6 +70,14 @@ export function FaqScreen() {
   };
 
   const handleToggleMetaTag = (tag) => dispatch({ type: FaqTypes.CHANGE_CHOSEN_TAGS, payload: tag });
+
+  if (error) {
+    return (
+      <div className={"faqScreen"}>
+        <ErrorBlock error={error} />
+      </div>
+    );
+  }
 
   return (
     <div className={"faqScreen"}>

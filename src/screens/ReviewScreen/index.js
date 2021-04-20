@@ -1,10 +1,11 @@
-import React, { useEffect, Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import { Loading }  from '../../components/Loading';
 import { ReviewItem } from '../../components/ReviewItem';
 import { Button } from '../../components/Button';
+import { ErrorBlock } from '../../components/ErrorBlock';
 import ReviewForm from '../../components/ReviewForm';
 import { loadReviewData, createNewReview } from '../../store/review/actions';
 import AppTypes from '../../store/app/types';
@@ -46,8 +47,8 @@ export function ReviewScreen() {
   return (
     <div className={"reviewScreen"}>
       {
-        loading ? (
-          <Loading text={"Loading data"} withDots />
+        error ? (
+          <ErrorBlock error={error} />
         ) : (
           <Fragment>
             <div className={"reviewScreen_list"}>
@@ -56,23 +57,26 @@ export function ReviewScreen() {
               </div>
               <div className={"reviewScreen_list__items"}>
                 {
-                  reviewArray.map(review => (
-                    <ReviewItem
-                      item={review}
-                      key={review.date}
-                    />
-                  ))
+                  loading ? (
+                    <Loading text={"Loading reviews"} withDots block />
+                  ) : (
+                    reviewArray.map(review => (
+                      <ReviewItem
+                        item={review}
+                        key={review.date}
+                      />
+                    ))
+                  )
                 }
               </div>
               <Button
                 className={`reviewScreen_modalBtn`}
-                hidden={isDesktop}
+                hidden={loading || error || isDesktop}
                 onClick={() => handleToggleReviewForm(true)}
               >
                 {t('review.form.createBtn')}
               </Button>
             </div>
-
             {
               isDesktop && (
                 <ReviewForm

@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux';
 
 import { Slider } from '../Slider';
 import { ReviewItem } from '../ReviewItem';
+import { Loading } from '../Loading';
+import { ErrorBlock } from '../ErrorBlock';
 import './index.css';
 
 export function ReviewBlock() {
@@ -12,12 +14,26 @@ export function ReviewBlock() {
     error,
   } = useSelector(state => state.review);
 
+  if (error) {
+    return (
+      <div className={"reviewBlock"}>
+        <ErrorBlock error={error} />
+      </div>
+    );
+  }
+
   return (
     <div className={"reviewBlock"}>
-      <Slider
-        slides={reviewArray}
-        renderComponent={({ item, key }) => <ReviewItem item={item} key={key} />}
-      />
+      {
+        loading ? (
+          <Loading text={"Loading reviews"} withDots block />
+        ) : (
+          <Slider
+            slides={reviewArray}
+            renderComponent={({ item, key }) => <ReviewItem item={item} key={key} />}
+          />
+        )
+      }
     </div>
   );
 }

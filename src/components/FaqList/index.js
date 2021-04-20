@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 
 import { Collapse } from '../Collapse';
 import { Loading }  from '../Loading';
+import { ErrorBlock } from '../ErrorBlock';
 import './index.css';
 
 export function FaqList({ className }) {
@@ -43,27 +44,39 @@ export function FaqList({ className }) {
     return str;
   };
 
+  const getList = () => {
+    if (error) {
+      return (
+        <ErrorBlock error={error} />
+      );
+    }
+
+    if (loading) {
+      return (
+        <Loading text={"Load FAQ Data"} withDots={true} block={true} />
+      );
+    }
+
+    return (
+      mapList.map((question, index) => (
+        <Collapse
+          className={"faqList_items__collapse"}
+          expanded={index === 0}
+          key={question.value}
+          title={<span>{searchText ? highLight(question.title) : question.title}</span>}
+          description={<span>{searchText ? highLight(question.description) : question.description}</span>}
+        />
+      ))
+    )
+  };
+
   return (
     <div className={`faqList ${className || ''}`}>
       <div className={"faqList_title"}>
         <span>FAQ</span>
       </div>
       <div className={"faqList_items"}>
-        {
-          loading ? (
-            <Loading text={"Load FAQ Data"} withDots={true} block={true} />
-          ) : (
-            mapList.map((question, index) => (
-              <Collapse
-                className={"faqList_items__collapse"}
-                expanded={index === 0}
-                key={question.value}
-                title={<span>{searchText ? highLight(question.title) : question.title}</span>}
-                description={<span>{searchText ? highLight(question.description) : question.description}</span>}
-              />
-            ))
-          )
-        }
+        {getList()}
       </div>
     </div>
   )

@@ -1,4 +1,6 @@
 .reviewBlock {
+    position: relative;
     min-width: 280px;
+    min-height: 128px;
     width: 100%;
 }
