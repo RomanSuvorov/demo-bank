@@ -32,19 +32,17 @@ export const loadReviewByAmount = (count = 1) => async (dispatch) => {
 export const createNewReview = (form) => async (dispatch) => {
   dispatch({ type: Types.CREATE_REVIEW_START });
 
-  const getMockReview = () => {
-    return {
-      username: form.name,
-      comment: form.description,
-      date: Date.now(),
-    };
+  const newReview = {
+    username: form.name,
+    comment: form.description,
+    date: Date.now(),
+    email: form.email,
   };
 
   try {
-    // TODO: await from server;
-    const newReview = getMockReview();
+    const { review } = await sdk.api.createReview(newReview);
 
-    dispatch({ type: Types.CREATE_REVIEW_SUCCESS, payload: newReview });
+    dispatch({ type: Types.CREATE_REVIEW_SUCCESS, payload: review });
   } catch (e) {
     dispatch({ type: Types.CREATE_REVIEW_ERROR, payload: e });
   } finally {

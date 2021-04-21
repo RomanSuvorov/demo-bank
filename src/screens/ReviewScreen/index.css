@@ -27,8 +27,9 @@
 .reviewScreen_list__items {
     position: relative;
     height: 100%;
-    max-height: calc(100vh - var(--side-header-mobile) - 50px - 18px - 18px);
+    max-height: calc(100vh - var(--side-header-mobile) - 18px - 18px - 18px - 18px);
     overflow-y: auto;
+    border-radius: 15px;
 }
 
 .reviewScreen_modal {
@@ -58,6 +59,6 @@
 
 @media screen and (min-width: 1024px) {
     .reviewScreen_list__items {
-        max-height: calc(100vh - var(--side-header) - 32px - 18px - 32px);
+        max-height: calc(100vh - var(--side-header) - 32px - 18px - 18px - 32px);
     }
 }

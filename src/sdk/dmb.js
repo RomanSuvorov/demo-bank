@@ -14,7 +14,8 @@ class DemobankSDK {
       GET_FAQ_LIST_BY_AMOUNT: `${this.config.demobankApi}/faqByAmount?amount=`,
       // reviews
       GET_REVIEWS_DATA: `${this.config.demobankApi}/reviews`,
-      GET_REVIEWS_LIST_BY_AMOUNT: `${this.config.demobankApi}/reviewsByAmount?amount=`
+      GET_REVIEWS_LIST_BY_AMOUNT: `${this.config.demobankApi}/reviewsByAmount?amount=`,
+      CREATE_REVIEW: `${this.config.demobankApi}/reviewCreate`,
     };
 
     this.api = {
@@ -46,6 +47,11 @@ class DemobankSDK {
         this.urls.GET_REVIEWS_LIST_BY_AMOUNT + count,
         'get',
       ),
+      createReview: async (review) => await this._fetchServer(
+        this.urls.CREATE_REVIEW,
+        'post',
+        review,
+      ),
     };
   };
 
@@ -57,7 +63,7 @@ class DemobankSDK {
       headers: Header,
     };
 
-    if (method === 'post' || method === 'put') {
+    if ((method === 'post' || method === 'put') && body !== 'undefined') {
       Params.body = JSON.stringify(body);
     }
 

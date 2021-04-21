@@ -22,7 +22,7 @@ export function ExchangeScreen() {
     // dispatch(loadExchangeData());
     // dispatch(loadBannerData());
     dispatch(loadFaqByAmount(4));
-    dispatch(loadReviewByAmount(2));
+    dispatch(loadReviewByAmount(3));
     // dispatch(loadChartData());
   }, []);
 

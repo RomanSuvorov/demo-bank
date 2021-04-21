@@ -229,15 +229,14 @@ export function getDate({
 
   const dateInMS = new Date(time);
 
-  const hh = String(dateInMS.getUTCHours()).padStart(2, '0');
-  const mm = String(dateInMS.getUTCMinutes()).padStart(2, '0');
-
-
-  const YYYY = dateInMS.getUTCFullYear();
-  const MM = String(dateInMS.getUTCMonth() + 1).padStart(2, '0'); // month of the year
-  const DD = String(dateInMS.getUTCDate()).padStart(2, '0'); // day of the month
+  const YYYY = dateInMS.getFullYear();
+  const MM = String(dateInMS.getMonth() + 1).padStart(2, '0'); // month of the year
+  const DD = String(dateInMS.getDate()).padStart(2, '0'); // day of the month
 
   if (withTime) {
+    const hh = String(dateInMS.getHours()).padStart(2, '0');
+    const mm = String(dateInMS.getMinutes()).padStart(2, '0');
+
     return {
       data:`${DD}${divider.dateDivider}${MM}${divider.dateDivider}${YYYY}`,
       time: `${hh}${divider.timeDivider}${mm}`,
