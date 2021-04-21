@@ -10,6 +10,7 @@
     flex-direction: row;
     flex: 1;
     overflow: hidden;
+    margin: 18px 0;
 }
 
 .layout_wrapper {
@@ -23,7 +24,7 @@
 }
 
 .layout_content {
-    margin: 18px auto;
+    margin: 0 auto;
     padding: 0;
     max-width: var(--content-width);
     transition: max-width .3s;

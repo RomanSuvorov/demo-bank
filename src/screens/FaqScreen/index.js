@@ -106,7 +106,7 @@ export function FaqScreen() {
           onClick={(tag) => handleToggleMetaTag(tag)}
         />
 
-        <FaqList className={"faqScreen_list"} />
+        <FaqList className={"faqScreen_list"} page />
       </div>
 
       {/* --- TABLET AND DESKTOP --- */}

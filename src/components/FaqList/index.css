@@ -22,7 +22,6 @@
     align-items: center;
     justify-content: center;
     min-height: 120px;
-    max-height: calc(100vh - var(--side-header-mobile) - 50px - 70px - 18px - 18px);
     overflow-y: auto;
     position: relative;
 }
@@ -33,4 +32,10 @@
 
 .collapse_description span.faqList_items__searchedText {
     color: var(--color-active);
+}
+
+@media screen and (min-width: 768px) {
+    .faqList_items.page {
+        max-height: calc(100vh - var(--side-header-mobile) - 50px - 70px - 18px - 18px);
+    }
 }

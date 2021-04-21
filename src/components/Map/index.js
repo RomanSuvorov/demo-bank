@@ -30,7 +30,7 @@ export function Map() {
 
   return (
     <div className={"map"}
-      onClick={handleOpenModal}
+      onClick={() => handleOpenModal(true)}
     >
       <div className={"map_header"}>
         <div className={"map_header__title"}>

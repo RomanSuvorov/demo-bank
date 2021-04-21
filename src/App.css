@@ -19,7 +19,7 @@
     --color-secondaryText: rgba(var(--dmb-white), 0.5); /* subtitles, descriptions or other statistics information */
     --color-placeholder: rgba(var(--dmb-white), 0.2); /* input placeholder or disabled elements */
     --color-green: rgba(var(--dmb-green), 1); /* important points in a chart */
-    --color-overlay: rgba(var(--dmb-black), 0.6);
+    --color-overlay: rgba(var(--dmb-black), 0.7);
     --color-blackShadow: rgba(var(--dmb-black), 0.25);
     --color-error: rgba(var(--dmb-red), 1);
 

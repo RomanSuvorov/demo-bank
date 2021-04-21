@@ -304,7 +304,9 @@ export default function GoogleMap() {
         <div className={"googleMap_title"}>
           <span>{t('exchange.map.title')}</span>
         </div>
-        <Loading text={'Pins loading'} withDots />
+        <div className={"googleMap_map"}>
+          <Loading text={'Pins loading'} withDots />
+        </div>
       </div>
     );
   }
@@ -314,38 +316,35 @@ export default function GoogleMap() {
       <div className={"googleMap_title"}>
         <span>{t('exchange.map.title')}</span>
       </div>
-      <GoogleMapAPI
-        bootstrapURLKeys={{ key: "AIzaSyAxbGTRaQhqN7MLd7_ezh69qtHQN1SEN2w" }}
-        defaultCenter={center}
-        defaultZoom={zoom ? zoom : 2}
-        options={mapOptions}
-        yesIWantToUseGoogleMapApiInternals
-        onTilesLoaded={() => {
-          setTimeout(() => setLoadingMap(false), 1000)
-        }}
-      >
+      <div className={"googleMap_map"}>
         {
-          pinList.map(({ lat, lng, title, description }) => (
-            <Pin
-              key={`${lng + lat}`}
-              title={title}
-              descriptipn={description}
-              lat={lat}
-              lng={lng}
-            />
-          ))
+          loadingMap && (
+            <Loading text={'Tiles loading'} withDots block />
+          )
         }
-      </GoogleMapAPI>
-      {
-        loadingMap && (
-          <div className={"googleMap_overlay"}>
-            <div className={"googleMap_title"}>
-              <span>{t('exchange.map.title')}</span>
-            </div>
-            <Loading text={'Tiles loading'} withDots />
-          </div>
-        )
-      }
+        <GoogleMapAPI
+          bootstrapURLKeys={{ key: "AIzaSyAxbGTRaQhqN7MLd7_ezh69qtHQN1SEN2w" }}
+          defaultCenter={center}
+          defaultZoom={zoom ? zoom : 2}
+          options={mapOptions}
+          yesIWantToUseGoogleMapApiInternals
+          onTilesLoaded={() => {
+            setTimeout(() => setLoadingMap(false), 1000)
+          }}
+        >
+          {
+            pinList.map(({ lat, lng, title, description }) => (
+              <Pin
+                key={`${lng + lat}`}
+                title={title}
+                descriptipn={description}
+                lat={lat}
+                lng={lng}
+              />
+            ))
+          }
+        </GoogleMapAPI>
+      </div>
     </div>
   );
 }

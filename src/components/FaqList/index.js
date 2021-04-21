@@ -6,7 +6,7 @@ import { Loading }  from '../Loading';
 import { ErrorBlock } from '../ErrorBlock';
 import './index.css';
 
-export function FaqList({ className }) {
+export function FaqList({ className, page = false }) {
   const {
     loading,
     error,
@@ -75,7 +75,7 @@ export function FaqList({ className }) {
       <div className={"faqList_title"}>
         <span>FAQ</span>
       </div>
-      <div className={"faqList_items"}>
+      <div className={`faqList_items ${page ? 'page' : ''}`}>
         {getList()}
       </div>
     </div>

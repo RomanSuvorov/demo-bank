@@ -19,11 +19,11 @@ export function ExchangeScreen() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // dispatch(loadExchangeData());
-    // dispatch(loadBannerData());
+    dispatch(loadExchangeData());
+    dispatch(loadBannerData());
     dispatch(loadFaqByAmount(4));
     dispatch(loadReviewByAmount(3));
-    // dispatch(loadChartData());
+    dispatch(loadChartData());
   }, []);
 
   const getExchangeScreenByPort = () => {

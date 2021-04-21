@@ -3,11 +3,9 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /*align-items: center;*/
     width: 80vw;
     height: 50vh;
     border-radius: inherit;
-    overflow: hidden;
     position: relative;
     background-color: var(--color-background);
 }
@@ -20,6 +18,18 @@
 .googleMap_title span {
     font-weight: 700;
     color: var(--color-primaryText);
+}
+
+.googleMap_map {
+    height: calc(100% - 52px);
+    width: 100%;
+    position: relative;
+    border-radius: 0 0 15px 15px;
+    overflow: hidden;
+}
+
+.googleMap_map .loading.block {
+    border-radius: inherit;
 }
 
 .googleMap_overlay {

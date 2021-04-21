@@ -37,7 +37,7 @@ export function ReviewScreen() {
       payload: {
         show: value,
         componentPath: value ? 'ReviewForm' : null,
-        componentProps: {} ,
+        componentProps: {},
         withOverlay: value,
         closeCallback: () => handleToggleReviewForm(false),
       }

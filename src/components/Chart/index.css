@@ -87,6 +87,10 @@
     background-color: var(--color-active);
 }
 
+.cryptoChart_times__item span {
+    font-size: 12px;
+}
+
 .cryptoChart_times__item.active span {
     color: var(--color-primaryText);
 }
@@ -97,8 +101,8 @@
     flex: 1;
     position: relative;
     transform: translateY(0);
-    height: 49px;
-    padding: 12px 12px 18px;
+    height: 43px;
+    padding: 12px;
     visibility: visible;
     opacity: 1;
     transition: all 0.8s;
@@ -141,4 +145,12 @@
 .cryptoChart_chart tspan {
     font-size: 12px;
 }
+
+@media screen and (min-width: 768px) {
+    .cryptoChart_times__item span {
+        font-size: 14px;
+    }
+}
+
+
 
