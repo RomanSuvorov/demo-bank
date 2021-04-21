@@ -3,4 +3,17 @@
     min-width: 280px;
     min-height: 128px;
     width: 100%;
+    margin: 0 auto 12px;
+}
+
+@media screen and (min-width: 768px) {
+   .reviewBlock {
+       margin: 0 auto 18px;
+   }
+}
+
+@media screen and (min-width: 1024px) {
+    .reviewBlock {
+        margin: 0 auto 24px;
+    }
 }

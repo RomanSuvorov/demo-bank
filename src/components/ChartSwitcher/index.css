@@ -2,6 +2,7 @@
     min-width: 280px;
     width: 100%;
     min-height: 80px;
+    margin: 0 auto 12px;
     position: relative;
 }
 
@@ -151,4 +152,16 @@
 
 .chartSwitcher_checkbox.active .chartSwitcher_checkbox_chart {
     visibility: visible;
+}
+
+@media screen and (min-width: 768px) {
+    .chartSwitcher {
+        margin: 0 auto 18px;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .chartSwitcher {
+        margin: 0 auto 24px;
+    }
 }

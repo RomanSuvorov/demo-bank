@@ -2,6 +2,25 @@
 
 }
 
+.exchangeScreen_tablet {
+    display: flex;
+    flex-direction: row;
+}
+
+.exchangeScreen_tablet__column {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+.exchangeScreen_tablet__column.left {
+    padding-right: 12px;
+}
+
+.exchangeScreen_tablet__column.right {
+    padding-left: 12px;
+}
+
 @media screen and (min-width: 768px) {
     .exchangeScreen {
 

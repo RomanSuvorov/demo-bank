@@ -1,6 +1,6 @@
 .howToBuy {
     min-width: 280px;
-    margin: 18px auto;
+    margin: 0 auto 12px;
     padding: 18px 12px;
     background-color: var(--color-background);
     border-radius: 15px;
@@ -64,8 +64,18 @@
 }
 
 @media screen and (min-width: 768px) {
+    .howToBuy {
+        margin: 0 auto 18px;
+    }
+
     .howToBuy_schema__item {
         flex: 1;
         max-width: unset;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .howToBuy {
+        margin: 0 auto 24px;
     }
 }

@@ -58,16 +58,20 @@ export function FaqList({ className, page = false }) {
     }
 
     return (
-      mapList.map((question, index) => (
-        <Collapse
-          className={"faqList_items__collapse"}
-          expanded={index === 0}
-          key={question.value}
-          title={<span>{searchText ? highLight(question.title) : question.title}</span>}
-          description={<span>{searchText ? highLight(question.description) : question.description}</span>}
-        />
-      ))
-    )
+      <div className={"faqList_items__infiniteScrollBox"}>
+        {
+          mapList.map((question, index) => (
+            <Collapse
+              className={"faqList_items__collapse"}
+              expanded={index === 0}
+              key={question.value}
+              title={<span>{searchText ? highLight(question.title) : question.title}</span>}
+              description={<span>{searchText ? highLight(question.description) : question.description}</span>}
+            />
+          ))
+        }
+      </div>
+    );
   };
 
   return (

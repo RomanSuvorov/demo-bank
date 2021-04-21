@@ -69,7 +69,7 @@
 .collapse_description.expanded {
     visibility: visible;
     overflow-y: auto;
-    max-height: 300px;
+    max-height: 9999px;
     opacity: 1;
     padding: 18px;
     margin-top: 18px;

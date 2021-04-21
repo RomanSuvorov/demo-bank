@@ -1,13 +1,13 @@
 .exchangeBlock {
     display: flex;
     flex-direction: column;
-    flex: 1;
     min-width: 280px;
     height: 519px;
     max-width: 388px;
     box-shadow: 10px 10px 50px var(--color-blackShadow);
     position: relative;
     user-select: none;
+    margin-bottom: 12px;
 }
 
 /* HEADER */
@@ -64,7 +64,29 @@
     color: var(--color-primaryText);
 }
 
+/* CONTENT */
+.exchangeBlock_content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: calc(100% - 36px);
+    background-color: var(--color-background);
+    padding: 18px 12px;
+    border-radius: 0 0 15px;
+}
+
+@media screen and (min-width: 768px) {
+    .exchangeBlock {
+        margin-bottom: 18px;
+    }
+}
+
 @media screen and (min-width: 1024px) {
+    .exchangeBlock {
+        height: 498px;
+        margin-bottom: 24px;
+    }
+
     .exchangeBlock_header {
         height: 36px;
     }
@@ -80,23 +102,6 @@
 
     .exchangeBlock_header__select {
         width: 146px;
-    }
-}
-
-/* CONTENT */
-.exchangeBlock_content {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    height: calc(100% - 36px);
-    background-color: var(--color-background);
-    padding: 18px 12px;
-    border-radius: 0 0 15px;
-}
-
-@media screen and (min-width: 1024px) {
-    .exchangeBlock {
-        height: 498px;;
     }
 
     .exchangeBlock_content {

@@ -2,7 +2,7 @@
     min-width: 280px;
     min-height: 280px;
     width: 100%;
-    margin: 18px auto;
+    margin: 0 auto 12px;
     overflow: hidden;
     position: relative;
 }
@@ -147,8 +147,18 @@
 }
 
 @media screen and (min-width: 768px) {
+    .cryptoChart {
+        margin: 0 auto 18px;
+    }
+
     .cryptoChart_times__item span {
         font-size: 14px;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .cryptoChart {
+        margin: 0 auto 24px;
     }
 }
 

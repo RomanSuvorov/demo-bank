@@ -1,7 +1,7 @@
 .banner {
     min-width: 280px;
     width: 100%;
-    margin: 18px auto;
+    margin: 0 auto 12px;
     overflow: hidden;
     height: 140px;
     background-color: var(--color-background);
@@ -84,4 +84,16 @@ iframe.banner_media {
 
 .banner_center {
     align-self: center;
+}
+
+@media screen and (min-width: 768px) {
+    .banner {
+        margin: 0 auto 18px;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .banner {
+        margin: 0 auto 24px;
+    }
 }
