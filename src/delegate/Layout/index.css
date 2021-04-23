@@ -18,7 +18,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     background-color: var(--color-app);
-    margin: 0 12px;
+    margin: 12px 0;
 }
 
 .layout_content {

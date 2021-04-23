@@ -14,13 +14,10 @@ import { color } from '../../constants';
 import './index.css';
 
 export function ChartSwitcher() {
-  const {
-    chartDataLoading,
-    chartLoading,
-    chart,
-    chartError,
-  } = useSelector(state => state.app);
-  const { checkboxes, activeCheckbox, dataset } = chart;
+  const chartDataLoading = useSelector(state => state.app.chartDataLoading);
+  const chartLoading = useSelector(state => state.app.chartLoading);
+  const { checkboxes, activeCheckbox, dataset } = useSelector(state => state.app.chart);
+  const chartError = useSelector(state => state.app.chartError);
   const dispatch = useDispatch();
 
   const handleChooseCheckbox = (item) => {

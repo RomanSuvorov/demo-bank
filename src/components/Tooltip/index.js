@@ -12,7 +12,7 @@ const POSITION = {
 };
 
 export function Tooltip({ className, title, children }) {
-  const { isDesktop } = useSelector(state => state.app);
+  const isDesktop = useSelector(state => state.app.isDesktop);
   const isMounted = useIsMounted();
   const containerRef = useRef(null);
   const tooltipRef = useRef(null);

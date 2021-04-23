@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { Button } from '../Button';
 import { Loading } from '../Loading';
+import { ErrorBlock } from '../ErrorBlock';
 import './index.css';
 
 const POSITION = {
@@ -17,7 +18,9 @@ const TYPE = {
 };
 
 export function Banner() {
-  const { bannerLoading, banner, bannerError } = useSelector(state => state.app);
+  const bannerLoading = useSelector(state => state.app.bannerLoading);
+  const banner = useSelector(state => state.app.banner);
+  const bannerError = useSelector(state => state.app.bannerError);
   const {
     link,
     linkPosition,
@@ -70,10 +73,18 @@ export function Banner() {
     }
   };
 
+  if (bannerError) {
+    return (
+      <div className={"banner"}>
+        <ErrorBlock error={bannerError} />
+      </div>
+    );
+  }
+
   if (bannerLoading) {
     return (
       <div className={"banner"}>
-        <Loading />
+        <Loading text={"Loading banner"} withDots block />
       </div>
     );
   }

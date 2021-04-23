@@ -14,25 +14,23 @@ import { exchangeDirection, exchangeStream } from '../../../constants';
 import './index.css';
 
 export function SecondStep() {
-  const {
-    streamExchange,
-    direction,
-    variantList,
-    variantSelected,
-    cardValue,
-    walletValue,
-    accountValue,
-    cardError,
-    walletError,
-    accountError,
-    deliverCountryList,
-    deliverCityList,
-    deliverCountrySelected,
-    deliverCitySelected,
-    deliverValue,
-    privacyValue,
-    forgetInputsValue,
-  } = useSelector(state => state.exchange);
+  const streamExchange = useSelector(state => state.exchange.streamExchange);
+  const direction = useSelector(state => state.exchange.direction);
+  const variantList = useSelector(state => state.exchange.variantList);
+  const variantSelected = useSelector(state => state.exchange.variantSelected);
+  const cardValue = useSelector(state => state.exchange.cardValue);
+  const walletValue = useSelector(state => state.exchange.walletValue);
+  const accountValue = useSelector(state => state.exchange.accountValue);
+  const cardError = useSelector(state => state.exchange.cardError);
+  const walletError = useSelector(state => state.exchange.walletError);
+  const accountError = useSelector(state => state.exchange.accountError);
+  const deliverCountryList = useSelector(state => state.exchange.deliverCountryList);
+  const deliverCityList = useSelector(state => state.exchange.deliverCityList);
+  const deliverCountrySelected = useSelector(state => state.exchange.deliverCountrySelected);
+  const deliverCitySelected = useSelector(state => state.exchange.deliverCitySelected);
+  const deliverValue = useSelector(state => state.exchange.deliverValue);
+  const privacyValue = useSelector(state => state.exchange.privacyValue);
+  const forgetInputsValue = useSelector(state => state.exchange.forgetInputsValue);
   const isCardMode = !!((streamExchange === exchangeStream.SELL_BY_CARD) || (streamExchange === exchangeStream.BUY_BY_CARD));
   const dispatch = useDispatch();
   const { t } = useTranslation('exchange');

@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 
 import { Input } from '../Input';
 import { Button } from '../Button';
+import { Loading } from '../Loading';
+import { ErrorBlock } from '../ErrorBlock';
 import { useForm } from '../../sdk/helper';
 import './index.css';
 
@@ -37,6 +39,22 @@ export default function ReviewForm({
     onSubmit: onCreate,
   });
   const { t } = useTranslation('translation');
+
+  if (error) {
+    return (
+      <form className={`reviewForm ${className || ''}`}>
+        <ErrorBlock error={error} />
+      </form>
+    );
+  }
+
+  if (loading) {
+    return (
+      <form className={`reviewForm ${className || ''}`}>
+        <Loading text={"Creating review"} withDots block />
+      </form>
+    );
+  }
 
   return (
     <form

@@ -7,22 +7,21 @@ import { SecondStep } from '../ExchangeSecondStep';
 import { ThirdStep } from '../ExchangeThirdStep';
 import { FinishStep } from '../ExchangeFinishStep';
 import { Loading }  from '../../Loading';
+import { ErrorBlock } from '../../ErrorBlock';
 import { Select }  from '../../Select';
 import { exchangeDirection, exchangeStepList } from '../../../constants';
 import Types from '../../../store/exchange/types';
 import './index.css';
 
 export function ExchangeBlock() {
-  const {
-    error,
-    loading,
-    direction,
-    step,
-    countryList,
-    countrySelected,
-    buyPercent,
-    sellPercent,
-  } = useSelector(state => state.exchange);
+  const error = useSelector(state => state.exchange.error);
+  const loading = useSelector(state => state.exchange.loading);
+  const direction = useSelector(state => state.exchange.direction);
+  const step = useSelector(state => state.exchange.step);
+  const countryList = useSelector(state => state.exchange.countryList);
+  const countrySelected = useSelector(state => state.exchange.countrySelected);
+  const buyPercent = useSelector(state => state.exchange.buyPercent);
+  const sellPercent = useSelector(state => state.exchange.sellPercent);
   const dispatch = useDispatch();
   const { t } = useTranslation('exchange');
 
@@ -55,6 +54,22 @@ export function ExchangeBlock() {
 
   const handleChangeCountry = value => dispatch({ type: Types.CHANGE_COUNTRY_PERCENT, payload: value });
 
+  if (error) {
+    return (
+      <div className="exchangeBlock">
+        <ErrorBlock error={error} />
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="exchangeBlock">
+        <Loading text={"Loading exchange data"} withDots block />
+      </div>
+    );
+  }
+
   return (
     <div className="exchangeBlock">
       <div className={"exchangeBlock_header"}>
@@ -82,7 +97,7 @@ export function ExchangeBlock() {
         </div>
       </div>
       <div className={"exchangeBlock_content"}>
-        {loading ? <Loading text={"Loading data"} withDots /> : getStep()}
+        {getStep()}
         <FinishStep />
       </div>
     </div>

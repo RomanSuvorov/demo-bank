@@ -8,11 +8,9 @@ import { ErrorBlock } from '../ErrorBlock';
 import './index.css';
 
 export function ReviewBlock() {
-  const {
-    loading,
-    reviewArray,
-    error,
-  } = useSelector(state => state.review);
+  const loading = useSelector(state => state.review.loading);
+  const reviewArray = useSelector(state => state.review.reviewArray);
+  const error = useSelector(state => state.review.error);
 
   if (error) {
     return (

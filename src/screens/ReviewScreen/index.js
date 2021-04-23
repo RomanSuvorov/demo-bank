@@ -12,20 +12,18 @@ import AppTypes from '../../store/app/types';
 import './index.css';
 
 export function ReviewScreen() {
-  const {
-    loading,
-    error,
-    reviewArray,
-    createLoading,
-    createError,
-  } = useSelector(state => state.review);
-  const { isDesktop } = useSelector(state => state.app);
+  const loading = useSelector(state => state.review.loading);
+  const error = useSelector(state => state.review.error);
+  const reviewArray = useSelector(state => state.review.reviewArray);
+  const createLoading = useSelector(state => state.review.createLoading);
+  const createError = useSelector(state => state.review.createError);
+  const isDesktop = useSelector(state => state.app.isDesktop);
   const dispatch = useDispatch();
   const { t } = useTranslation('translation');
 
   useEffect(() => {
     dispatch(loadReviewData());
-  }, []);
+  }, [dispatch]);
 
   const handleCreateReview = async (form) => {
     await dispatch(createNewReview(form));
@@ -37,7 +35,6 @@ export function ReviewScreen() {
       payload: {
         show: value,
         componentPath: value ? 'ReviewForm' : null,
-        componentProps: {},
         withOverlay: value,
         closeCallback: () => handleToggleReviewForm(false),
       }
@@ -62,6 +59,7 @@ export function ReviewScreen() {
                   ) : (
                     reviewArray.map(review => (
                       <ReviewItem
+                        page={true}
                         item={review}
                         key={review.date}
                       />

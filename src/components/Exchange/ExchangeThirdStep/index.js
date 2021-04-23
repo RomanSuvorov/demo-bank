@@ -15,11 +15,9 @@ import { preventSendingByUser } from '../../../store/exchange/actions';
 import './index.css';
 
 export function ThirdStep() {
-  const {
-    streamExchange,
-    transactionData,
-    transactionStatus,
-  } = useSelector(state => state.exchange);
+  const streamExchange = useSelector(state => state.exchange.streamExchange);
+  const transactionData = useSelector(state => state.exchange.transactionData);
+  const transactionStatus = useSelector(state => state.exchange.transactionStatus);
   const dispatch = useDispatch();
   const { t } = useTranslation('exchange');
 

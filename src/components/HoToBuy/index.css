@@ -71,6 +71,7 @@
     .howToBuy_schema__item {
         flex: 1;
         max-width: unset;
+        min-width: 130px;
     }
 }
 

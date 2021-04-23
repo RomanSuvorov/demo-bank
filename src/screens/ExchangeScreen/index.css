@@ -2,14 +2,19 @@
 
 }
 
-.exchangeScreen_tablet {
+.exchangeScreen_tablet,
+.exchangeScreen_desktop {
     display: flex;
     flex-direction: row;
 }
 
-.exchangeScreen_tablet__column {
+.exchangeScreen_tablet__column,
+.exchangeScreen_desktop__column {
     display: flex;
     flex-direction: column;
+}
+
+.exchangeScreen_tablet__column {
     width: 50%;
 }
 
@@ -21,12 +26,19 @@
     padding-left: 12px;
 }
 
-@media screen and (min-width: 768px) {
-    .exchangeScreen {
-
-    }
+.exchangeScreen_desktop__column {
+    width: calc((100% - 180px) / 2);
 }
 
-@media screen and (min-width: 1024px) {
+.exchangeScreen_desktop__column.left {
+    padding: 0 9px;
+}
 
+.exchangeScreen_desktop__column.center {
+    padding: 0 9px;
+}
+
+.exchangeScreen_desktop__column.right {
+    padding: 0 9px;
+    width: 180px;
 }

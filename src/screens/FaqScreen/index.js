@@ -41,13 +41,11 @@ const Tags = ({ loading, className, tags, chosen, fixed = false, onClick = () =>
 };
 
 export function FaqScreen() {
-  const {
-    loading,
-    error,
-    searchText,
-    metaTags,
-    chosenMetaTags,
-  } = useSelector(state => state.faq);
+  const loading = useSelector(state => state.faq.loading);
+  const error = useSelector(state => state.faq.error);
+  const searchText = useSelector(state => state.faq.searchText);
+  const metaTags = useSelector(state => state.faq.metaTags);
+  const chosenMetaTags = useSelector(state => state.faq.chosenMetaTags);
   const dispatch = useDispatch();
   const { t } = useTranslation('translation');
 
@@ -58,7 +56,7 @@ export function FaqScreen() {
       dispatch({ type: FaqTypes.SEARCH_BY_TEXT, payload: '' });
       dispatch({ type: FaqTypes.CHANGE_CHOSEN_TAGS });
     };
-  }, []);
+  }, [dispatch]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -106,7 +104,7 @@ export function FaqScreen() {
           onClick={(tag) => handleToggleMetaTag(tag)}
         />
 
-        <FaqList className={"faqScreen_list"} page />
+        <FaqList className={"faqScreen_list"} page expandedIndex={0} />
       </div>
 
       {/* --- TABLET AND DESKTOP --- */}

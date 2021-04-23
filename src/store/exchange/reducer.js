@@ -44,7 +44,6 @@ const initialStore = {
   deliverCitySelected: null,
 
   // 3rd step
-  // transactionData: "36CBFBE9E63178BA0360B9B8AD986A70",
   transactionData: "0000   0000   0000   0000",
   transactionStatus: transactionProcess.AWAITING,
 
@@ -53,6 +52,7 @@ const initialStore = {
   // navigation
   step: exchangeStepList[0].index,
   showFinishStep: false,
+
   // state of process
   loading: false,
   error: undefined,

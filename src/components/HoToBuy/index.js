@@ -6,7 +6,8 @@ import './index.css';
 
 export function HowToBuy() {
   const { t } = useTranslation('translation');
-  const { step, showFinishStep } = useSelector(state => state.exchange);
+  const step = useSelector(state => state.exchange.step);
+  const showFinishStep = useSelector(state => state.exchange.showFinishStep);
 
   return (
     <div className={"howToBuy"}>

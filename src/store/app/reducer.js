@@ -21,13 +21,12 @@ const initialStore = {
   // modal
   modalShow: false,
   modalComponentPath: null,
-  modalComponentProps: {},
   modalClassName: '',
   modalWithOverlay: true,
   closeCallback: () => {},
 
   // map
-  pinLoading: false,
+  pinLoading: true,
   pinList: [],
   pinError: undefined,
 
@@ -109,10 +108,9 @@ const reducer = {
   },
 
   // modal
-  [Types.TOGGLE_MODAL]: (draft, { show, componentPath, componentProps, className = '', withOverlay, closeCallback }) => {
+  [Types.TOGGLE_MODAL]: (draft, { show, componentPath, className = '', withOverlay, closeCallback }) => {
     draft.modalShow = show;
     draft.modalComponentPath = componentPath;
-    draft.modalComponentProps = componentProps;
     draft.modalClassName = className;
     draft.modalWithOverlay = withOverlay;
     draft.closeCallback = closeCallback;
@@ -137,7 +135,7 @@ const reducer = {
     }
   },
 
-  [Types.LOAD_PIN_ERROR]: (draft, payload) => draft.bannerError = payload,
+  [Types.LOAD_BANNER_ERROR]: (draft, payload) => draft.bannerError = payload,
 
   [Types.LOAD_BANNER_FINISH]: draft => draft.bannerLoading = false,
 

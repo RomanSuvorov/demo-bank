@@ -7,7 +7,8 @@ import ExchangeTypes from '../../../store/exchange/types';
 import './index.css';
 
 export function FinishStep() {
-  const { streamExchange, showFinishStep } = useSelector(state => state.exchange);
+  const streamExchange = useSelector(state => state.exchange.streamExchange);
+  const showFinishStep = useSelector(state => state.exchange.showFinishStep);
   const dispatch = useDispatch();
   const { t } = useTranslation('exchange');
   const title = 'Заявка обработана!';

@@ -1,5 +1,4 @@
 .chartSwitcher {
-    min-width: 280px;
     width: 100%;
     min-height: 80px;
     margin: 0 auto 12px;
@@ -24,7 +23,7 @@
     border-radius: 15px;
     box-shadow: 4px 4px 50px var(--color-blackShadow);
     border: 2px solid transparent;
-    margin: 18px auto;
+    margin: 6px auto;
     cursor: pointer;
     transition: all 0.3s;
 }
@@ -134,11 +133,15 @@
 
 .chartSwitcher_checkbox_chartWrapper {
     height: 1px;
-    transition: all 0.3s;
+    opacity: 0;
+    visibility: hidden;
+    transition: height 0.3s, opacity 0.3s 0.3s, visibility 0.3s 0.3s;
 }
 
 .chartSwitcher_checkbox_chartWrapper.active {
     height: 60px;
+    opacity: 1;
+    visibility: visible;
 }
 
 .chartSwitcher_checkbox_chart {
@@ -157,6 +160,10 @@
 @media screen and (min-width: 768px) {
     .chartSwitcher {
         margin: 0 auto 18px;
+    }
+
+    .chartSwitcher_checkbox {
+        margin: 12px auto;
     }
 }
 

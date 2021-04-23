@@ -11,17 +11,15 @@ import { MobileView } from './MobileView';
 import './index.css';
 
 export function ExchangeScreen() {
-  const {
-    isMobile,
-    isTablet,
-    isDesktop,
-  } = useSelector(state => state.app);
+  const isMobile = useSelector(state => state.app.isMobile);
+  const isTablet = useSelector(state => state.app.isTablet);
+  const isDesktop = useSelector(state => state.app.isDesktop);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(loadExchangeData());
     dispatch(loadBannerData());
-    dispatch(loadFaqByAmount(4));
+    dispatch(loadFaqByAmount(3));
     dispatch(loadReviewByAmount(3));
     dispatch(loadChartData());
   }, []);

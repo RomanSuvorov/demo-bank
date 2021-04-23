@@ -4,11 +4,12 @@ import { useTranslation } from 'react-i18next';
 import GoogleMapAPI, { fitBounds } from 'google-map-react';
 
 import { Loading } from '../Loading';
+import { ErrorBlock } from '../ErrorBlock';
 import { useIsMounted } from '../../sdk/helper';
 import { PinIcon } from '../../assets/icons';
 import './index.css';
 
-const mapOptions = ({ ControlPosition, ...props }) => {
+const mapOptions = ({ ControlPosition }) => {
 
   return {
     mapTypeControl: false,
@@ -261,7 +262,9 @@ const bound = {
 const Pin = () => <PinIcon className={"pin"} />;
 
 export default function GoogleMap() {
-  const { pinLoading, pinList, pinError } = useSelector(state => state.app);
+  const pinLoading = useSelector(state => state.app.pinLoading);
+  const pinList = useSelector(state => state.app.pinList);
+  const pinError = useSelector(state => state.app.pinError);
   const [loadingMap, setLoadingMap] = useState(true);
   const [state, setState] = useState({
     center: undefined,
@@ -294,8 +297,16 @@ export default function GoogleMap() {
   const { center, zoom, calculated } = state;
 
   if (pinError) {
-    // TODO: create Error Component;
-    return <div className={"googleMap"}>Error</div>;
+    return (
+      <div className={"googleMap"}>
+        <div className={"googleMap_title"}>
+          <span>{t('exchange.map.title')}</span>
+        </div>
+        <div className={"googleMap_map"}>
+          <ErrorBlock error={pinError} />
+        </div>
+      </div>
+    );
   }
 
   if (pinLoading || !calculated || !center) {

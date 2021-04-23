@@ -13,18 +13,16 @@ import Types from '../../../store/exchange/types';
 import './index.css';
 
 export function FirstStep() {
-  const {
-    direction,
-    giveList,
-    getList,
-    variantList,
-    giveSelected,
-    giveError,
-    getSelected,
-    variantSelected,
-    giveAmount,
-    getAmount,
-  } = useSelector(state => state.exchange);
+  const direction = useSelector(state => state.exchange.direction);
+  const variantList = useSelector(state => state.exchange.variantList);
+  const giveList = useSelector(state => state.exchange.giveList);
+  const getList = useSelector(state => state.exchange.getList);
+  const giveSelected = useSelector(state => state.exchange.giveSelected);
+  const giveError = useSelector(state => state.exchange.giveError);
+  const getSelected = useSelector(state => state.exchange.getSelected);
+  const variantSelected = useSelector(state => state.exchange.variantSelected);
+  const giveAmount = useSelector(state => state.exchange.giveAmount);
+  const getAmount = useSelector(state => state.exchange.getAmount);
   const dispatch = useDispatch();
   const { t } = useTranslation('exchange');
 

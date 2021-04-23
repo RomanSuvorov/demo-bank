@@ -46,7 +46,7 @@ export const startApp = () => async (dispatch) => {
 
     await dispatch({ type: Types.APP_SUCCESS, payload: { status: status }});
 
-    // if (status) await dispatch(socketConnect());
+    if (status) await dispatch(socketConnect());
   } catch (error) {
     dispatch({ type: Types.APP_ERROR, payload: error });
   } finally {
@@ -90,11 +90,11 @@ export const socketConnect = () => async (dispatch) => {
   });
 }
 
-export const socketDisconnect = (socket) => async (dispatch) => {
-  if (socket) {
-    console.log(socket);
-    socket.disconnect();
-  }
+export const socketDisconnect = () => async (dispatch, getState) => {
+  const store = await getState();
+  const { socket } = store.app;
+
+  if (socket) await socket.disconnect();
 };
 
 export const loadPinData = () => async (dispatch) => {
@@ -142,9 +142,14 @@ export const loadChartData = () => async (dispatch) => {
   }
 };
 
-export const changeChartPeriod = ({ period, socket }) => async (dispatch) => {
-  dispatch({ type: Types.TOGGLE_TIME_PERIOD, payload: period });
+export const changeChartPeriod = (period) => async (dispatch, getState) => {
+  const store = getState();
+  const { socket } = store.app;
 
-  dispatch({ type: Types.LOAD_CHART_DATASET_UPDATE });
-  socket.emit('charts', { period });
+  if (socket) {
+    dispatch({ type: Types.TOGGLE_TIME_PERIOD, payload: period });
+
+    dispatch({ type: Types.LOAD_CHART_DATASET_UPDATE });
+    socket.emit('charts', { period });
+  }
 }

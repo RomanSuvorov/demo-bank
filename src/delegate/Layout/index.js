@@ -8,6 +8,7 @@ import { Sidebar } from '../../components/Sidebar';
 import { Overlay } from '../../components/Overlay';
 import { Modal } from '../../components/ModalWrapper';
 import { Loading } from '../../components/Loading';
+import { ErrorBlock } from '../../components/ErrorBlock';
 import Router from '../Router';
 import AppTypes from '../../store/app/types';
 import { socketDisconnect, startApp } from '../../store/app/actions';
@@ -22,8 +23,18 @@ export function Layout() {
   // useEffect doesn't see change of showSidebar boolean value
   // for this showSideRef was created
   const showSideRef = useRef(false);
-  const { isDesktop, modalShow, socketLoading, socket, socketError, appLoading, appStatus, appError } = useSelector(state => state.app);
+  const isDesktop = useSelector(state => state.app.isDesktop);
+  const modalShow = useSelector(state => state.app.modalShow);
+  const appLoading = useSelector(state => state.app.appLoading);
+  const appStatus = useSelector(state => state.app.appStatus);
+  const appError = useSelector(state => state.app.appError);
   const dispatch = useDispatch();
+
+  // TODO: show a message to the user that the socket is not connected
+  //  The diagram functionality is not available now;
+  //  (Should start 'Reconnecting' process)
+  const socketLoading = useSelector(state => state.app.socketLoading);
+  const socketError = useSelector(state => state.app.socketError);
 
   // routing
   const location = useLocation();
@@ -33,24 +44,24 @@ export function Layout() {
   const { i18n } = useTranslation();
 
   useEffect(() => {
-    dispatch(startApp());
+    function changeWindowSize() {
+      if (window.innerWidth < 1024 && showSideRef.current) {
+        setShowSidebar(false);
+        showSideRef.current = false;
+      }
+      dispatch({ type: AppTypes.CHANGE_WINDOW_SIZE, payload: window.innerWidth });
+    }
     changeWindowSize();
-
     const throttledChangeWindowSize = throttle(changeWindowSize, 100);
+
+    dispatch(startApp());
+
     window.addEventListener("resize", throttledChangeWindowSize);
     return () => {
       window.removeEventListener("resize", throttledChangeWindowSize);
-      dispatch(socketDisconnect(socket));
+      dispatch(socketDisconnect());
     }
-  }, []);
-
-  const changeWindowSize = () => {
-    if (window.innerWidth < 1024 && showSideRef.current) {
-      setShowSidebar(false);
-      showSideRef.current = false;
-    }
-    dispatch({ type: AppTypes.CHANGE_WINDOW_SIZE, payload: window.innerWidth });
-  }
+  }, [dispatch]);
 
   useEffect(() => {
     const isContactExist = getQueryVariable('ct');
@@ -66,13 +77,12 @@ export function Layout() {
         payload: {
           show: true,
           componentPath: 'Contacts',
-          componentProps: {},
           withOverlay: true,
           closeCallback: handleToggleContacts,
         },
       });
     }
-  }, []);
+  }, [dispatch]);
 
   const handleToggleContacts = () => {
     const isContactExist = getQueryVariable('ct');
@@ -94,7 +104,6 @@ export function Layout() {
       payload: {
         show: !isContactExist,
         componentPath: isContactExist ? null : 'Contacts',
-        componentProps: {},
         withOverlay: !isContactExist,
         closeCallback: handleToggleContacts
       },
@@ -120,7 +129,6 @@ export function Layout() {
         payload: {
           show: false,
           componentPath: null,
-          componentProps: {},
           withOverlay: false,
         },
       });
@@ -141,11 +149,13 @@ export function Layout() {
   }
 
   if (appError || !appStatus) {
+    const error = appError ? appError : 'Server does not respond';
+
     return (
       <div className={"layout"}>
-        <Loading text={'App error'} withDots />
+        <ErrorBlock error={error} />
       </div>
-    )
+    );
   }
 
   return (
@@ -172,7 +182,7 @@ export function Layout() {
       </div>
 
       {/* MODALS */}
-      <Modal />
+      <Modal modalShow={modalShow} />
 
       {/* Overlay is needed for mobile version */}
       <Overlay

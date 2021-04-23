@@ -53,25 +53,32 @@
 .reviewItem_comment {
     display: flex;
     align-items: center;
+    max-height: 60px;
 }
 
 .reviewItem_comment span {
+    display: -webkit-box;
     font-size: 12px;
     color: var(--color-primaryText);
     line-height: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 100%;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 
 @media screen and (min-width: 1024px) {
-    .reviewItem {
+    .reviewItem.page {
         flex-direction: row;
     }
 
-    .reviewItem_details {
+    .reviewItem.page .reviewItem_details {
         margin-right: 24px;
         margin-bottom: 0;
     }
 
-    .reviewItem_details__user {
+    .reviewItem.page .reviewItem_details__user {
         max-width: 120px;
     }
 }

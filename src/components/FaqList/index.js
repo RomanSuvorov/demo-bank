@@ -6,15 +6,14 @@ import { Loading }  from '../Loading';
 import { ErrorBlock } from '../ErrorBlock';
 import './index.css';
 
-export function FaqList({ className, page = false }) {
-  const {
-    loading,
-    error,
-    searchText,
-    searchedFaqArray,
-    faqArray,
-    chosenMetaTags,
-  } = useSelector(state => state.faq);
+export function FaqList({ className, page = false, expandedIndex = undefined }) {
+  const loading = useSelector(state => state.faq.loading);
+  const error = useSelector(state => state.faq.error);
+  const searchText = useSelector(state => state.faq.searchText);
+  const searchedFaqArray = useSelector(state => state.faq.searchedFaqArray);
+  const faqArray = useSelector(state => state.faq.faqArray);
+  const chosenMetaTags = useSelector(state => state.faq.chosenMetaTags);
+
   let mapList = searchText ? searchedFaqArray : faqArray;
   mapList = mapList.filter(q => {
     if (chosenMetaTags.length <= 0) return q;
@@ -63,7 +62,7 @@ export function FaqList({ className, page = false }) {
           mapList.map((question, index) => (
             <Collapse
               className={"faqList_items__collapse"}
-              expanded={index === 0}
+              expanded={index === expandedIndex}
               key={question.value}
               title={<span>{searchText ? highLight(question.title) : question.title}</span>}
               description={<span>{searchText ? highLight(question.description) : question.description}</span>}

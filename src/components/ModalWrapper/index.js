@@ -5,15 +5,11 @@ import { Overlay } from '../Overlay';
 import { Loading }  from '../Loading';
 import './index.css';
 
-export function Modal() {
-  const {
-    modalShow,
-    modalComponentPath,
-    modalComponentProps,
-    modalClassName,
-    modalWithOverlay,
-    closeCallback,
-  } = useSelector(state => state.app);
+export function Modal({ modalShow }) {
+  const modalComponentPath = useSelector(state => state.app.modalComponentPath);
+  const modalClassName = useSelector(state => state.app.modalClassName);
+  const modalWithOverlay = useSelector(state => state.app.modalWithOverlay);
+  const closeCallback = useSelector(state => state.app.closeCallback);
   const [show, setShow] = useState(modalShow);
 
   useEffect(() => {
@@ -43,7 +39,7 @@ export function Modal() {
           className={`modalWrapper ${modalClassName} ${show ? 'visible' : ''}`}
           onClick={e => e.stopPropagation()}
         >
-            {modalComponentPath && <CustomComponent {...modalComponentProps} />}
+            {modalComponentPath && <CustomComponent />}
         </div>
       </Suspense>
     </Wrapper>

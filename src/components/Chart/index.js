@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import {
@@ -77,8 +77,10 @@ function Tick({ mode, period, payload, x, y, textAnchor, width, height, orientat
 }
 
 export function CryptoChart() {
-  const { chartDataLoading, chartLoading, chart, chartError, socket } = useSelector(state => state.app);
-  const { activeCheckbox, dataset, periods, activePeriod } = chart;
+  const chartDataLoading = useSelector(state => state.app.chartDataLoading);
+  const chartLoading = useSelector(state => state.app.chartLoading);
+  const { activeCheckbox, dataset, periods, activePeriod } = useSelector(state => state.app.chart);
+  const chartError = useSelector(state => state.app.chartError);
   const [cryptoStr = "", usdtStr = ""] = activeCheckbox.label.split('/');
   const { t } = useTranslation('translation');
   const dispatch = useDispatch();
@@ -87,7 +89,7 @@ export function CryptoChart() {
     const { periodvalue } = e.currentTarget.dataset;
     if (!periodvalue || periodvalue === activePeriod) return;
 
-    dispatch(changeChartPeriod({ period: periodvalue, socket }));
+    dispatch(changeChartPeriod(periodvalue));
   };
 
   const chartUpdating = chartLoading
@@ -106,14 +108,13 @@ export function CryptoChart() {
   if (chartDataLoading) {
     return (
       <div className={"cryptoChart"}>
-        <Loading text={"Load Chart Data"} withDots={true} block={true} />
+        <Loading text={"Loading chart data"} withDots={true} block={true} />
       </div>
     );
   }
 
   return (
     <div className={"cryptoChart"}>
-
       <div className={"cryptoChart_info"}>
         <div className={"cryptoChart_value"}>
           <span>{cryptoStr.trim()}</span>

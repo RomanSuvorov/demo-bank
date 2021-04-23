@@ -21,7 +21,6 @@ export function Map() {
       payload: {
         show: value,
         componentPath: value ? 'GoogleMap' : null,
-        componentProps: {},
         withOverlay: value,
         closeCallback: () => handleOpenModal(false),
       }
