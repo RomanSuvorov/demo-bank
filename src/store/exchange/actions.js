@@ -1,35 +1,9 @@
 import Types from './types';
 import { exchangeDirection, exchangeStream } from '../../constants';
 import { getSelectorsData } from '../../sdk/helper';
+import sdk from '../../sdk';
+
 // <--- MOCK DATA ---> //
-
-const countryOpts = [
-  {
-    key: 'russian_federation',
-    value: 'RU',
-    text: 'Российская Федерация',
-    iconUrl: 'https://i.ibb.co/pfxdGWd/russia.png',
-    sellPercent: '+1.0',
-    buyPercent: '-1.0',
-  },
-  {
-    key: 'ukraine',
-    value: 'UA',
-    text: 'Украина',
-    iconUrl: 'https://i.ibb.co/ByNPx0T/ukraine.png',
-    sellPercent: '+1.1',
-    buyPercent: '-1.1',
-  },
-  {
-    key: 'great_britain',
-    value: 'GB',
-    text: 'Великобритания',
-    iconUrl: 'https://i.ibb.co/xzWsdKK/united-kingdom.png',
-    sellPercent: '+0.9',
-    buyPercent: '-0.9',
-  },
-];
-
 const dataFromServer = [
   {
     key: 'btc',
@@ -478,34 +452,28 @@ const dataFromServer = [
 
 const deliverList = [
   {
-    key: 'russian_federation',
     value: 'russian_federation',
     text: 'Российская Федерация',
     cityList: [
       {
-        key: 'moscow',
         value: 'moscow',
         text: 'Москва',
       },
       {
-        key: 'st_petersburg',
         value: 'st_petersburg',
         text: 'Санкт-Петербург',
       },
     ],
   },
   {
-    key: 'ukraine',
     value: 'ukraine',
     text: 'Украина',
     cityList: [
       {
-        key: 'kyiv',
         value: 'kyiv',
         text: 'Киев',
       },
       {
-        key: 'kharkov',
         value: 'kharkov',
         text: 'Харков',
       },
@@ -522,8 +490,8 @@ export const loadExchangeData = () => async (dispatch, getState) => {
   dispatch({ type: Types.LOAD_DATA_START });
 
   try {
-    // TODO: await from server;
-    const countryList = countryOpts;
+    const { countryIndexes } = await sdk.api.getCountryIndexes();
+    dispatch({ type: Types.LOAD_COUNTRIES_INDEXES_SUCCESS, payload: countryIndexes })
     // TODO: await from server;
     const data = dataFromServer;
 
@@ -560,10 +528,6 @@ export const loadExchangeData = () => async (dispatch, getState) => {
 
     const result = {
       streamExchange: streamExchange,
-      countryList: countryList,
-      countrySelected: countryList[0].value,
-      sellPercent: countryOpts[0].sellPercent,
-      buyPercent: countryOpts[0].buyPercent,
       exchangeData: data,
       giveList: giveList,
       giveSelected: giveSelected,

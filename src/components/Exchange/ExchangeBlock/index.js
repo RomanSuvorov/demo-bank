@@ -20,8 +20,6 @@ export function ExchangeBlock() {
   const step = useSelector(state => state.exchange.step);
   const countryList = useSelector(state => state.exchange.countryList);
   const countrySelected = useSelector(state => state.exchange.countrySelected);
-  const buyPercent = useSelector(state => state.exchange.buyPercent);
-  const sellPercent = useSelector(state => state.exchange.sellPercent);
   const dispatch = useDispatch();
   const { t } = useTranslation('exchange');
 
@@ -75,7 +73,7 @@ export function ExchangeBlock() {
       <div className={"exchangeBlock_header"}>
         <Select
           className={"exchangeBlock_header__select"}
-          value={countrySelected}
+          value={countrySelected.value}
           options={countryList}
           onChange={handleChangeCountry}
         />
@@ -84,7 +82,9 @@ export function ExchangeBlock() {
             <span>{t('header.buy')}</span>
           </div>
           <div className="exchangeBlock_header__value">
-            <span>{buyPercent}%</span>
+            <span hidden={!countrySelected || !countrySelected.buyPercent}>
+              {countrySelected ? countrySelected.buyPercent : ''}%
+            </span>
           </div>
         </div>
         <div className={`exchangeBlock_header__item ${direction === exchangeDirection.CRYPTO_SELL ? 'active' : ''}`}>
@@ -92,7 +92,9 @@ export function ExchangeBlock() {
             <span>{t('header.sell')}</span>
           </div>
           <div className="exchangeBlock_header__value">
-            <span>{sellPercent}%</span>
+            <span hidden={!countrySelected || !countrySelected.sellPercent}>
+              {countrySelected ? countrySelected.sellPercent : ''}%
+            </span>
           </div>
         </div>
       </div>

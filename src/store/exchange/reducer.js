@@ -10,9 +10,7 @@ const price = 28000;
 
 const initialStore = {
   countryList: [],
-  countrySelected: '', // value
-  buyPercent: '',
-  sellPercent: '',
+  countrySelected: null,
 
   // 1st step
   direction: exchangeDirection.CRYPTO_SELL,
@@ -62,14 +60,13 @@ const reducer = {
   //---------------- LOAD DATA FOR FIRST STEP ------------------//
   [Types.LOAD_DATA_START]: draft => draft.loading = true,
 
+  [Types.LOAD_COUNTRIES_INDEXES_SUCCESS]: (draft, payload) => {
+    draft.countryList = payload;
+    draft.countrySelected = payload[0];
+  },
+
   [Types.LOAD_DATA_SUCCESS]: (draft, payload) => {
     draft.streamExchange = payload.streamExchange;
-
-    // percent
-    draft.countryList = payload.countryList;
-    draft.countrySelected = payload.countrySelected;
-    draft.sellPercent = payload.sellPercent;
-    draft.buyPercent = payload.buyPercent;
 
     // selectors
     draft.exchangeData = payload.exchangeData;
@@ -97,10 +94,7 @@ const reducer = {
   [Types.LOAD_DATA_FINISH]: draft => draft.loading = false,
 
   [Types.CHANGE_COUNTRY_PERCENT]: (draft, payload) => {
-    const countrySelected = draft.countryList.find(country => country.value === payload);
-    draft.countrySelected = countrySelected.value;
-    draft.sellPercent = countrySelected.sellPercent;
-    draft.buyPercent = countrySelected.buyPercent;
+    draft.countrySelected = draft.countryList.find(country => country.value === payload);
   },
 
   [Types.CHANGE_DIRECTION]: draft => {
@@ -221,9 +215,9 @@ const reducer = {
     draft.giveAmount = payload;
 
     if (draft.direction === exchangeDirection.CRYPTO_SELL) {
-      draft.getAmount = getAmount((payload * price), draft.sellPercent, 3);
+      draft.getAmount = getAmount((payload * price), draft.countrySelected.sellPercent, 3);
     } else {
-      draft.getAmount = getAmount((payload / price), draft.buyPercent, 8);
+      draft.getAmount = getAmount((payload / price), draft.countrySelected.buyPercent, 8);
     }
 
     const { isValid, errorText } = validateValue({ value: payload, rules: draft.variantSelected.rules });
@@ -235,9 +229,9 @@ const reducer = {
 
     let giveAmount;
     if (draft.direction === exchangeDirection.CRYPTO_SELL) {
-      giveAmount = getAmount((payload / price), draft.sellPercent, 8);
+      giveAmount = getAmount((payload / price), draft.countrySelected.sellPercent, 8);
     } else {
-      giveAmount = getAmount((payload * price), draft.buyPercent, 3);
+      giveAmount = getAmount((payload * price), draft.countrySelected.buyPercent, 3);
     }
 
     draft.giveAmount = giveAmount;
@@ -411,9 +405,7 @@ const reducer = {
   },
 
   [Types.RESET_EXCHANGE]: draft => {
-    draft.countrySelected = draft.countryList[0].value;
-    draft.sellPercent = draft.countryList[0].sellPercent;
-    draft.buyPercent = draft.countryList[0].buyPercent;
+    draft.countrySelected = draft.countryList[0];
     draft.direction = initialStore.direction;
 
     const giveList = draft.exchangeData.filter(item => item.isCrypto);
@@ -471,6 +463,33 @@ const reducer = {
 
   [Types.FINISH_STEP]: (draft, payload) => {
     draft.showFinishStep = payload;
+  },
+
+  [Types.UPDATE_COUNTRY_INDEXES]: (draft, payload) => {
+    const { country } = payload;
+
+    const countryIndexInCurrentArray = draft.countryList.findIndex(item => item._id === country._id);
+    if (countryIndexInCurrentArray !== -1) {
+      draft.countryList = [
+        ...draft.countryList.slice(0, countryIndexInCurrentArray),
+        country,
+        ...draft.countryList.slice(countryIndexInCurrentArray + 1),
+      ];
+
+      if (draft.countrySelected._id === country._id) {
+        draft.countrySelected = country;
+      }
+    } else {
+      draft.countryList = [...draft.countryList, country];
+    }
+  },
+
+  [Types.UPDATE_COUNTRIES_INDEXES]: (draft, payload) => {
+    const { countries } = payload;
+    draft.countryList = countries;
+
+    const prevSelectedId = draft.countrySelected._id;
+    draft.countrySelected = countries.find(item => item._id === prevSelectedId);
   },
 };
 

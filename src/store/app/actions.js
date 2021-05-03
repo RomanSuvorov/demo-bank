@@ -1,4 +1,5 @@
 import Types from './types';
+import ExchangeTypes from '../exchange/types';
 import { config } from '../../constants/config';
 import { io } from 'socket.io-client';
 
@@ -87,6 +88,16 @@ export const socketConnect = () => async (dispatch) => {
   socket.on('charts', data => {
     // console.log('charts', data);
     dispatch({ type: Types.LOAD_CHART_DATASET_UPDATED, payload: data });
+  });
+
+  socket.on('updateCountryIndexes', data => {
+    console.log('updateCountryIndexes', data);
+    dispatch({ type: ExchangeTypes.UPDATE_COUNTRY_INDEXES, payload: data });
+  });
+
+  socket.on('updateCountriesIndexes', data => {
+    console.log('updateCountriesIndexes', data);
+    dispatch({ type: ExchangeTypes.UPDATE_COUNTRIES_INDEXES, payload: data });
   });
 }
 

@@ -7,6 +7,8 @@ class DemobankSDK {
     this.urls = {
       // status
       GET_STATUS_API: `${this.config.demobankApi}/status`,
+      // exchange
+      GET_COUNTRY_INDEXES: `${this.config.demobankApi}/countryIndexes`,
       // charts
       GET_CHARTS_DATA: `${this.config.demobankApi}/charts`,
       // faq
@@ -22,6 +24,11 @@ class DemobankSDK {
       // status
       getStatusApi: async () => await this._fetchServer(
         this.urls.GET_STATUS_API,
+        'get',
+      ),
+      // exchange
+      getCountryIndexes: async () => await this._fetchServer(
+        this.urls.GET_COUNTRY_INDEXES,
         'get',
       ),
       // charts

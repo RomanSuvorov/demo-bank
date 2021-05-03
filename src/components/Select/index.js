@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { ArrowSmallDownIcon, ArrowSmallUpIcon } from '../../assets/icons';
 import './index.css';
@@ -18,17 +19,17 @@ function Option({ selected, id, value, text, Icon, iconUrl, withAlt, onClick }) 
   );
 }
 
-function DropdownList({ show, value, options, withAlt, onChoose }) {
+function DropdownList({ show, value, options, withAlt, lang, onChoose }) {
   return (
     <div className={`select_list ${show ? 'show' : ''}`}>
       {
         options.map(option => (
           <Option
             selected={value}
-            key={option.key}
-            id={option.key}
+            key={option.value}
+            id={option.value}
             value={option.value}
-            text={option.text}
+            text={option.translation && option.translation[lang] ? option.translation[lang] : null}
             Icon={option.Icon}
             iconUrl={option.iconUrl}
             withAlt={withAlt}
@@ -51,6 +52,7 @@ export function Select({
 }) {
   const selectRef = useRef(null);
   const [showSelectList, setSelectListVisibility] = useState(false);
+  const { i18n } = useTranslation('translation');
   const initialOpt = options.find(item => item.value === value);
 
   useEffect(() => {
@@ -83,14 +85,16 @@ export function Select({
     >
       <div
         className="select_selected"
-        title={(withAlt && initialOpt && initialOpt.text) ? initialOpt.text : null}
+        title={(withAlt && initialOpt && initialOpt.translation && initialOpt.translation[i18n.language]) ? initialOpt.translation[i18n.language] : null}
       >
         {
           initialOpt ? (
             <>
               {initialOpt.Icon && <initialOpt.Icon />}
               {initialOpt.iconUrl && <img className={"select_selected__logoImg"} src={initialOpt.iconUrl} alt={initialOpt.value} />}
-              <span className={`select_selected__text ${initialOpt.Icon || initialOpt.iconUrl ? 'withIcon' : ''}`}>{initialOpt.text && initialOpt.text}</span>
+              <span className={`select_selected__text ${initialOpt.Icon || initialOpt.iconUrl ? 'withIcon' : ''}`}>
+                {initialOpt && initialOpt.translation && initialOpt.translation[i18n.language] ? initialOpt.translation[i18n.language] : null}
+              </span>
             </>
           ) : (
             <span className={"select_selected__placeholder"}>{placeholder}</span>
@@ -105,6 +109,7 @@ export function Select({
         value={value}
         options={options}
         withAlt={withAlt}
+        lang={i18n.language}
         onChoose={handleChooseOption}
       />
     </div>

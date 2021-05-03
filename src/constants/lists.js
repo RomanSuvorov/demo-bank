@@ -17,7 +17,7 @@ const languageOpts = [
   },
   {
     key: 'ukrainian',
-    value: 'uk',
+    value: 'ua',
     text: '',
     iconUrl: 'https://i.ibb.co/6wqtCb8/ukraine-lang.png',
   },
