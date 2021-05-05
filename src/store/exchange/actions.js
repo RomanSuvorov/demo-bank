@@ -1,455 +1,9 @@
 import Types from './types';
 import { exchangeDirection, exchangeStream } from '../../constants';
-import { getSelectorsData } from '../../sdk/helper';
+import { getSelectorsData, validateValue } from '../../sdk/helper';
 import sdk from '../../sdk';
 
 // <--- MOCK DATA ---> //
-const dataFromServer = [
-  {
-    key: 'btc',
-    value: 'btc',
-    text: 'Bitcoin BTC',
-    method: [
-      {
-        key: 'cash',
-        value: 'cash',
-        text: 'Кеш',
-        variants: [
-          {
-            key: 'usd',
-            value: 'usd',
-            text: 'USD',
-            iconUrl: 'https://i.ibb.co/BLK3p4P/usd.png',
-            rules: [
-              { name: 'required', text: 'Field is required' },
-              { name: 'minNumber', value: 0.01, text: 'Min number: 0.01' },
-              { name: 'maxNumber', value: 2, text: 'Max number: 2' },
-            ]
-          },
-          {
-            key: 'uah',
-            value: 'uah',
-            text: 'UAH',
-            iconUrl: 'https://i.ibb.co/BqVfdg7/uah.png',
-          },
-        ],
-      },
-      {
-        key: 'card',
-        value: 'card',
-        text: 'Карта',
-        variants: [
-          {
-            key: 'privat24',
-            value: 'privat24',
-            text: 'Приват24 UAH',
-            iconUrl: 'https://i.ibb.co/8gJGqSB/privat.png',
-          },
-          {
-            key: 'monobank',
-            value: 'monobank',
-            text: 'Монобанк UAH',
-            iconUrl: 'https://i.ibb.co/nRZnsFz/mono.png',
-          },
-          {
-            key: 'raiffeisen',
-            value: 'raiffeisen',
-            text: 'Райффайзен Банк UAH',
-            iconUrl: 'https://i.ibb.co/dGDpx5r/raiffaisen.png',
-          },
-          {
-            key: 'pumb',
-            value: 'pumb',
-            text: 'ПУМБ UAH',
-            iconUrl: 'https://i.ibb.co/yYhDS5L/pumb.png',
-          },
-          {
-            key: 'oschadbank',
-            value: 'oschadbank',
-            text: 'Ощадбанк UAH',
-            iconUrl: 'https://i.ibb.co/mHGkhvW/oshad.png',
-          },
-        ],
-      },
-    ],
-    isCrypto: true,
-  },
-  {
-    key: 'bch',
-    value: 'bch',
-    text: 'Bitcoin Cash BCH',
-    method: [
-      {
-        key: 'card',
-        value: 'card',
-        text: 'Карта',
-        variants: [
-          {
-            key: 'privat24',
-            value: 'privat24',
-            text: 'Приват24 UAH',
-            iconUrl: 'https://i.ibb.co/8gJGqSB/privat.png',
-          },
-          {
-            key: 'monobank',
-            value: 'monobank',
-            text: 'Монобанк UAH',
-            iconUrl: 'https://i.ibb.co/nRZnsFz/mono.png',
-          },
-        ],
-      },
-    ],
-    isCrypto: true,
-  },
-  {
-    key: 'xrp',
-    value: 'xrp',
-    text: 'Ripple XRP',
-    method: [
-      {
-        key: 'card',
-        value: 'card',
-        text: 'Карта',
-        variants: [
-          {
-            key: 'privat24',
-            value: 'privat24',
-            text: 'Приват24 UAH',
-            iconUrl: 'https://i.ibb.co/8gJGqSB/privat.png',
-          },
-          {
-            key: 'monobank',
-            value: 'monobank',
-            text: 'Монобанк UAH',
-            iconUrl: 'https://i.ibb.co/nRZnsFz/mono.png',
-          },
-        ],
-      },
-    ],
-    isCrypto: true,
-  },
-  {
-    key: 'ltc',
-    value: 'ltc',
-    text: 'Litecoin LTC',
-    method: [
-      {
-        key: 'card',
-        value: 'card',
-        text: 'Карта',
-        variants: [
-          {
-            key: 'privat24',
-            value: 'privat24',
-            text: 'Приват24 UAH',
-            iconUrl: 'https://i.ibb.co/8gJGqSB/privat.png',
-          },
-          {
-            key: 'monobank',
-            value: 'monobank',
-            text: 'Монобанк UAH',
-            iconUrl: 'https://i.ibb.co/nRZnsFz/mono.png',
-          },
-        ],
-      },
-    ],
-    isCrypto: true,
-  },
-  {
-    key: 'usdt_trc20',
-    value: 'usdt_trc20',
-    text: 'USDT (TRC-20) USDT',
-    method: [
-      {
-        key: 'card',
-        value: 'card',
-        text: 'Карта',
-        variants: [
-          {
-            key: 'privat24',
-            value: 'privat24',
-            text: 'Приват24 UAH',
-            iconUrl: 'https://i.ibb.co/8gJGqSB/privat.png',
-          },
-          {
-            key: 'monobank',
-            value: 'monobank',
-            text: 'Монобанк UAH',
-            iconUrl: 'https://i.ibb.co/nRZnsFz/mono.png',
-          },
-        ],
-      },
-    ],
-    isCrypto: true,
-  },
-  {
-    key: 'usdt_erc20',
-    value: 'usdt_erc20',
-    text: 'USDT (ERC-20) USDT',
-    method: [
-      {
-        key: 'card',
-        value: 'card',
-        text: 'Карта',
-        variants: [
-          {
-            key: 'privat24',
-            value: 'privat24',
-            text: 'Приват24 UAH',
-            iconUrl: 'https://i.ibb.co/8gJGqSB/privat.png',
-          },
-          {
-            key: 'monobank',
-            value: 'monobank',
-            text: 'Монобанк UAH',
-            iconUrl: 'https://i.ibb.co/nRZnsFz/mono.png',
-          },
-        ],
-      },
-    ],
-    isCrypto: true,
-  },
-  {
-    key: 'eth',
-    value: 'eth',
-    text: 'Ethereum ETH',
-    method: [
-      {
-        key: 'cash',
-        value: 'cash',
-        text: 'Кеш',
-        variants: [
-          {
-            key: 'usd',
-            value: 'usd',
-            text: 'USD',
-            iconUrl: 'https://i.ibb.co/BLK3p4P/usd.png',
-          },
-        ],
-      },
-      {
-        key: 'card',
-        value: 'card',
-        text: 'Карта',
-        variants: [
-          {
-            key: 'privat24',
-            value: 'privat24',
-            text: 'Приват24 UAH',
-            iconUrl: 'https://i.ibb.co/8gJGqSB/privat.png',
-          },
-          {
-            key: 'monobank',
-            value: 'monobank',
-            text: 'Монобанк UAH',
-            iconUrl: 'https://i.ibb.co/nRZnsFz/mono.png',
-          },
-        ],
-      },
-    ],
-    isCrypto: true,
-  },
-  {
-    key: 'cash',
-    value: 'cash',
-    text: 'Кеш',
-    method: [
-      {
-        key: 'btc',
-        value: 'btc',
-        text: 'Bitcoin BTC',
-        variants: [
-          {
-            key: 'usd',
-            value: 'usd',
-            text: 'USD',
-            iconUrl: 'https://i.ibb.co/BLK3p4P/usd.png',
-          },
-          {
-            key: 'uah',
-            value: 'uah',
-            text: 'UAH',
-            iconUrl: 'https://i.ibb.co/BqVfdg7/uah.png',
-          },
-        ],
-      },
-      {
-        key: 'usdt',
-        value: 'usdt',
-        text: 'TetherUS (USDT) USDT',
-        variants: [
-          {
-            key: 'usd',
-            value: 'usd',
-            text: 'USD',
-            iconUrl: 'https://i.ibb.co/BLK3p4P/usd.png',
-          },
-        ],
-      },
-    ],
-    isCrypto: false,
-  },
-  {
-    key: 'card',
-    value: 'card',
-    text: 'Карта',
-    method: [
-      {
-        key: 'btc',
-        value: 'btc',
-        text: 'Bitcoin BTC',
-        variants: [
-          {
-            key: 'privat24',
-            value: 'privat24',
-            text: 'Приват24 UAH',
-            iconUrl: 'https://i.ibb.co/8gJGqSB/privat.png',
-          },
-          {
-            key: 'monobank',
-            value: 'monobank',
-            text: 'Монобанк UAH',
-            iconUrl: 'https://i.ibb.co/nRZnsFz/mono.png',
-          },
-          {
-            key: 'raiffeisen',
-            value: 'raiffeisen',
-            text: 'Райффайзен Банк UAH',
-            iconUrl: 'https://i.ibb.co/dGDpx5r/raiffaisen.png',
-          },
-          {
-            key: 'pumb',
-            value: 'pumb',
-            text: 'ПУМБ UAH',
-            iconUrl: 'https://i.ibb.co/yYhDS5L/pumb.png',
-          },
-          {
-            key: 'oschadbank',
-            value: 'oschadbank',
-            text: 'Ощадбанк UAH',
-            iconUrl: 'https://i.ibb.co/mHGkhvW/oshad.png',
-          },
-        ]
-      },
-      {
-        key: 'bch',
-        value: 'bch',
-        text: 'Bitcoin Cash BCH',
-        variants: [
-          {
-            key: 'privat24',
-            value: 'privat24',
-            text: 'Приват24 UAH',
-            iconUrl: 'https://i.ibb.co/8gJGqSB/privat.png',
-          },
-          {
-            key: 'monobank',
-            value: 'monobank',
-            text: 'Монобанк UAH',
-            iconUrl: 'https://i.ibb.co/nRZnsFz/mono.png',
-          },
-        ]
-      },
-      {
-        key: 'xrp',
-        value: 'xrp',
-        text: 'Ripple XRP',
-        variants: [
-          {
-            key: 'privat24',
-            value: 'privat24',
-            text: 'Приват24 UAH',
-            iconUrl: 'https://i.ibb.co/8gJGqSB/privat.png',
-          },
-          {
-            key: 'monobank',
-            value: 'monobank',
-            text: 'Монобанк UAH',
-            iconUrl: 'https://i.ibb.co/nRZnsFz/mono.png',
-          },
-        ]
-      },
-      {
-        key: 'ltc',
-        value: 'ltc',
-        text: 'Litecoin LTC',
-        variants: [
-          {
-            key: 'privat24',
-            value: 'privat24',
-            text: 'Приват24 UAH',
-            iconUrl: 'https://i.ibb.co/8gJGqSB/privat.png',
-          },
-          {
-            key: 'monobank',
-            value: 'monobank',
-            text: 'Монобанк UAH',
-            iconUrl: 'https://i.ibb.co/nRZnsFz/mono.png',
-          },
-        ]
-      },
-      {
-        key: 'usdt_trc20',
-        value: 'usdt_trc20',
-        text: 'USDT (TRC-20) USDT',
-        variants: [
-          {
-            key: 'privat24',
-            value: 'privat24',
-            text: 'Приват24 UAH',
-            iconUrl: 'https://i.ibb.co/8gJGqSB/privat.png',
-          },
-          {
-            key: 'monobank',
-            value: 'monobank',
-            text: 'Монобанк UAH',
-            iconUrl: 'https://i.ibb.co/nRZnsFz/mono.png',
-          },
-        ]
-      },
-      {
-        key: 'usdt_erc20',
-        value: 'usdt_erc20',
-        text: 'USDT (ERC-20) USDT',
-        variants: [
-          {
-            key: 'privat24',
-            value: 'privat24',
-            text: 'Приват24 UAH',
-            iconUrl: 'https://i.ibb.co/8gJGqSB/privat.png',
-          },
-          {
-            key: 'monobank',
-            value: 'monobank',
-            text: 'Монобанк UAH',
-            iconUrl: 'https://i.ibb.co/nRZnsFz/mono.png',
-          },
-        ]
-      },
-      {
-        key: 'eth',
-        value: 'eth',
-        text: 'Ethereum ETH',
-        variants: [
-          {
-            key: 'privat24',
-            value: 'privat24',
-            text: 'Приват24 UAH',
-            iconUrl: 'https://i.ibb.co/8gJGqSB/privat.png',
-          },
-          {
-            key: 'monobank',
-            value: 'monobank',
-            text: 'Монобанк UAH',
-            iconUrl: 'https://i.ibb.co/nRZnsFz/mono.png',
-          },
-        ]
-      },
-    ],
-    isCrypto: false,
-  },
-];
-
 const deliverList = [
   {
     value: 'russian_federation',
@@ -483,19 +37,37 @@ const deliverList = [
 
 // <--- ---> //
 
+async function updatePriceAction(crypto, currency, dispatch, callback) {
+  dispatch({ type: Types.LOAD_PRICE_START });
+  try {
+    const { price } = await sdk.api.getPrice(crypto, currency);
+    await dispatch({ type: Types.LOAD_PRICE_SUCCESS, payload: price });
+    if (!!callback && typeof callback === 'function') {
+      callback();
+    }
+  } catch (e) {
+    console.error(e);
+    dispatch({ type: Types.LOAD_DATA_ERROR, payload: e });
+  } finally {
+    dispatch({ type: Types.LOAD_PRICE_FINISH });
+  }
+}
+
 export const loadExchangeData = () => async (dispatch, getState) => {
   const store = getState();
-  const { direction } = store.exchange;
+  const direction = store.exchange.direction;
 
   dispatch({ type: Types.LOAD_DATA_START });
 
   try {
+    // countryIndexes
     const { countryIndexes } = await sdk.api.getCountryIndexes();
-    dispatch({ type: Types.LOAD_COUNTRIES_INDEXES_SUCCESS, payload: countryIndexes })
-    // TODO: await from server;
-    const data = dataFromServer;
+    dispatch({ type: Types.LOAD_COUNTRIES_INDEXES_SUCCESS, payload: countryIndexes });
 
-    const giveList = data.filter(item => (direction === exchangeDirection.CRYPTO_SELL) ? item.isCrypto : !item.isCrypto);
+    // currencies
+    const { currencies } = await sdk.api.getCurrencies();
+
+    const giveList = currencies.filter(item => (direction === exchangeDirection.CRYPTO_SELL) ? item.isCrypto : !item.isCrypto);
     const {
       giveSelected,
       getList,
@@ -503,6 +75,8 @@ export const loadExchangeData = () => async (dispatch, getState) => {
       variantList,
       variantSelected,
     } = getSelectorsData(giveList, undefined, 1);
+
+    await updatePriceAction(giveSelected.curr, variantSelected.curr, dispatch);
 
     let streamExchange;
     if (direction === exchangeDirection.CRYPTO_SELL) {
@@ -528,7 +102,7 @@ export const loadExchangeData = () => async (dispatch, getState) => {
 
     const result = {
       streamExchange: streamExchange,
-      exchangeData: data,
+      currencies: currencies,
       giveList: giveList,
       giveSelected: giveSelected,
       getList: getList,
@@ -545,6 +119,212 @@ export const loadExchangeData = () => async (dispatch, getState) => {
     dispatch({ type: Types.LOAD_DATA_ERROR, payload: e });
   } finally {
     dispatch({ type: Types.LOAD_DATA_FINISH });
+  }
+};
+
+export const changeDirection = (direction) => async (dispatch, getState) => {
+  const store = getState();
+  const currencies = store.exchange.currencies;
+  const newDirection = direction === exchangeDirection.CRYPTO_SELL
+    ? exchangeDirection.CRYPTO_BUY
+    : exchangeDirection.CRYPTO_SELL;
+
+  // first select
+  const giveList = currencies.filter(item => (newDirection === exchangeDirection.CRYPTO_SELL) ? item.isCrypto : !item.isCrypto);
+  const {
+    giveSelected,
+    getList,
+    getSelected,
+    variantList,
+    variantSelected,
+  } = getSelectorsData(giveList, undefined, 1);
+
+
+  let streamExchange;
+  if (newDirection === exchangeDirection.CRYPTO_SELL) {
+    streamExchange = getList[0].value === 'cash' ? exchangeStream.SELL_BY_CASH : exchangeStream.SELL_BY_CARD;
+  } else if (newDirection === exchangeDirection.CRYPTO_BUY) {
+    streamExchange = giveList[0].value === 'cash' ? exchangeStream.BUY_BY_CASH : exchangeStream.BUY_BY_CARD;
+  }
+
+  const payload = {
+    direction: newDirection,
+    giveList: giveList,
+    giveSelected: giveSelected,
+    getList: getList,
+    getSelected: getSelected,
+    variantList: variantList,
+    variantSelected: variantSelected,
+    streamExchange: streamExchange,
+  };
+
+  dispatch({ type: Types.CHANGE_DIRECTION, payload });
+
+  if (newDirection === exchangeDirection.CRYPTO_SELL) {
+    await updatePriceAction(giveSelected.curr, variantSelected.curr, dispatch);
+  } else {
+    await updatePriceAction(getSelected.curr, variantSelected.curr, dispatch);
+  }
+};
+
+export const changeGiveOption = (value) => async (dispatch, getState) => {
+  const store = getState();
+  const direction = store.exchange.direction;
+  const giveList = store.exchange.giveList;
+  const giveAmount = store.exchange.giveAmount;
+  const giveError = store.exchange.giveError;
+
+  const {
+    giveSelected,
+    getList,
+    getSelected,
+    variantList,
+    variantSelected,
+  } = getSelectorsData(giveList, value, 1);
+
+  let streamExchange;
+  if (direction === exchangeDirection.CRYPTO_SELL) {
+    streamExchange = getSelected.value === 'cash' ? exchangeStream.SELL_BY_CASH : exchangeStream.SELL_BY_CARD;
+  } else if (direction === exchangeDirection.CRYPTO_BUY) {
+    streamExchange = giveSelected.value === 'cash' ? exchangeStream.BUY_BY_CASH : exchangeStream.BUY_BY_CARD;
+  }
+
+  const payload = {
+    giveSelected: giveSelected,
+    getList: getList,
+    getSelected: getSelected,
+    variantList: variantList,
+    variantSelected: variantSelected,
+    streamExchange: streamExchange,
+  };
+
+  if (variantSelected && giveAmount) {
+    const { isValid, errorText } = validateValue({ value: giveAmount, rules: variantSelected.rules });
+
+    if (giveError && isValid) {
+      payload.giveError = null;
+    } else {
+      payload.giveError = errorText;
+    }
+  }
+
+  dispatch({ type: Types.CHOOSE_GIVE_OPTION, payload });
+
+  await updatePriceAction(
+    direction === exchangeDirection.CRYPTO_SELL ? giveSelected.curr : getSelected.curr,
+    variantSelected.curr,
+    dispatch,
+    () => dispatch({ type: Types.CHANGE_GIVE_AMOUNT, payload: giveAmount }),
+  );
+};
+
+export const changeGetOption = (value) => async (dispatch, getState) => {
+  const store = getState();
+  const direction = store.exchange.direction;
+  const giveSelected = store.exchange.giveSelected;
+  const getList = store.exchange.getList;
+  const giveAmount = store.exchange.giveAmount;
+  const giveError = store.exchange.giveError;
+
+  const {
+    getSelected,
+    variantList,
+    variantSelected,
+  } = getSelectorsData(getList, value, 2);
+
+  let streamExchange;
+  if (direction === exchangeDirection.CRYPTO_SELL) {
+    streamExchange = getSelected.value === 'cash' ? exchangeStream.SELL_BY_CASH : exchangeStream.SELL_BY_CARD;
+  } else if (direction === exchangeDirection.CRYPTO_BUY) {
+    streamExchange = giveSelected.value === 'cash' ? exchangeStream.BUY_BY_CASH : exchangeStream.BUY_BY_CARD;
+  }
+
+  const payload = {
+    getSelected: getSelected,
+    variantList: variantList,
+    variantSelected: variantSelected,
+    streamExchange: streamExchange,
+  };
+
+  if (variantSelected && giveAmount) {
+    const { isValid, errorText } = validateValue({ value: giveError, rules: variantSelected.rules });
+
+    if (giveError && isValid) {
+      payload.giveError = null;
+    } else {
+      payload.giveError = errorText;
+    }
+  }
+
+  dispatch({ type: Types.CHOOSE_GET_OPTION, payload });
+
+  await updatePriceAction(
+    direction === exchangeDirection.CRYPTO_BUY ? getSelected.curr : giveSelected.curr,
+    variantSelected.curr,
+    dispatch,
+    () => dispatch({ type: Types.CHANGE_GIVE_AMOUNT, payload: giveAmount })
+  );
+};
+
+export const changeVariantOption = (value) => async (dispatch, getState) => {
+  const store = getState();
+  const direction = store.exchange.direction;
+  const giveSelected = store.exchange.giveSelected;
+  const getSelected = store.exchange.getSelected;
+  const variantList = store.exchange.variantList;
+  const giveAmount = store.exchange.giveAmount;
+  const giveError = store.exchange.giveError;
+
+  const { variantSelected } = getSelectorsData(variantList, value, 3);
+
+  const payload = {
+    variantSelected: variantSelected,
+  };
+
+  if (variantSelected && giveAmount) {
+    const { isValid, errorText } = validateValue({ value: giveAmount, rules: variantSelected.rules });
+
+    if (giveError && isValid) {
+      payload.giveError = null;
+    } else {
+      payload.giveError = errorText;
+    }
+  }
+
+  dispatch({ type: Types.CHOOSE_VARIANT_OPTION, payload });
+
+  if (direction === exchangeDirection.CRYPTO_SELL) {
+    await updatePriceAction(
+      giveSelected.curr,
+      variantSelected.curr,
+      dispatch,
+      () => dispatch({ type: Types.CHANGE_GIVE_AMOUNT, payload: giveAmount }),
+    );
+  } else {
+    await updatePriceAction(
+      getSelected.curr,
+      variantSelected.curr,
+      dispatch,
+      () => dispatch({ type: Types.CHANGE_GIVE_AMOUNT, payload: giveAmount }),
+    );
+  }
+
+};
+
+export const changeCountryPercentAccount = (value) => async (dispatch, getState) => {
+  const store = getState();
+  const direction = store.exchange.direction;
+  const countryList = store.exchange.countryList;
+  const giveAmount = store.exchange.giveAmount;
+  const getAmount = store.exchange.getAmount;
+
+  const countrySelected = countryList.find(country => country.value === value);
+  await dispatch({ type: Types.CHANGE_COUNTRY_PERCENT, payload: countrySelected });
+
+  if (direction === exchangeDirection.CRYPTO_SELL) {
+    await dispatch({ type: Types.CHANGE_GIVE_AMOUNT, payload: giveAmount });
+  } else {
+    await dispatch({ type: Types.CHANGE_GET_AMOUNT, payload: getAmount });
   }
 };
 

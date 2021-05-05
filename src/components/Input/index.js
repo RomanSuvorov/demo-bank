@@ -14,6 +14,7 @@ export function Input({
   Icon,
   iconHandler,
   readOnly = false,
+  loading = false,
   ...props
 }) {
   return (
@@ -28,30 +29,32 @@ export function Input({
           </label>
         )
       }
-      {
-        type === 'textarea' ? (
-          <textarea
-            className={`input_field ${error ? 'input_field__error' : ''} ${Icon ? 'withIcon' : ''}`}
-            id={name}
-            value={value ? value : ''}
-            placeholder={placeholder}
-            readOnly={readOnly}
-            onChange={e => onChange(e.target.value)}
-            {...props}
-          />
-        ) : (
-          <input
-            className={`input_field ${error ? 'input_field__error' : ''} ${Icon ? 'withIcon' : ''}`}
-            id={name}
-            value={value ? value : ''}
-            placeholder={placeholder}
-            type={type}
-            readOnly={readOnly}
-            onChange={e => onChange(e.target.value)}
-            {...props}
-          />
-        )
-      }
+      <div className={`input_field__container ${loading ? 'load' : ''}`}>
+        {
+          type === 'textarea' ? (
+            <textarea
+              className={`input_field ${error ? 'input_field__error' : ''} ${Icon ? 'withIcon' : ''}`}
+              id={name}
+              value={value ? value : ''}
+              placeholder={placeholder}
+              readOnly={readOnly || loading}
+              onChange={e => onChange(e.target.value)}
+              {...props}
+            />
+          ) : (
+            <input
+              className={`input_field ${error ? 'input_field__error' : ''} ${Icon ? 'withIcon' : ''}`}
+              id={name}
+              value={value ? value : ''}
+              placeholder={placeholder}
+              type={type}
+              readOnly={readOnly || loading}
+              onChange={e => onChange(e.target.value)}
+              {...props}
+            />
+          )
+        }
+      </div>
 
       {
         Icon && (

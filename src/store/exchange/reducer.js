@@ -6,7 +6,6 @@ const getAmount = (action, percent, fractionDigits) => {
   return (action + ((action * (+percent)) / 100)).toFixed(fractionDigits);
 }
 
-const price = 28000;
 
 const initialStore = {
   countryList: [],
@@ -15,7 +14,9 @@ const initialStore = {
   // 1st step
   direction: exchangeDirection.CRYPTO_SELL,
   streamExchange: null,
-  exchangeData: [],
+  currencies: [],
+  price: null,
+  priceLoading: true,
   giveList: [],
   getList: [],
   variantList: [],
@@ -69,7 +70,7 @@ const reducer = {
     draft.streamExchange = payload.streamExchange;
 
     // selectors
-    draft.exchangeData = payload.exchangeData;
+    draft.currencies = payload.currencies;
     draft.giveList = payload.giveList;
     draft.giveSelected = payload.giveSelected;
     draft.getList = payload.getList;
@@ -89,135 +90,64 @@ const reducer = {
     draft.deliverCitySelected = payload.deliverCitySelected ? payload.deliverCitySelected : draft.deliverCitySelected;
   },
 
+  [Types.LOAD_PRICE_START]: draft => draft.priceLoading = true,
+
+  [Types.LOAD_PRICE_SUCCESS]: (draft, payload) => {
+    draft.price = payload;
+  },
+
+  [Types.LOAD_PRICE_FINISH]: draft => draft.priceLoading = false,
+
   [Types.LOAD_DATA_ERROR]: (draft, payload) => draft.error = payload,
 
   [Types.LOAD_DATA_FINISH]: draft => draft.loading = false,
 
-  [Types.CHANGE_COUNTRY_PERCENT]: (draft, payload) => {
-    draft.countrySelected = draft.countryList.find(country => country.value === payload);
-  },
+  [Types.CHANGE_COUNTRY_PERCENT]: (draft, payload) => draft.countrySelected = payload,
 
-  [Types.CHANGE_DIRECTION]: draft => {
-    const newDirection = draft.direction === exchangeDirection.CRYPTO_SELL ? exchangeDirection.CRYPTO_BUY : exchangeDirection.CRYPTO_SELL;
-    draft.direction = newDirection;
-
-    // first select
-    const giveList = draft.exchangeData.filter(item => (newDirection === exchangeDirection.CRYPTO_SELL) ? item.isCrypto : !item.isCrypto);
-    const {
-      giveSelected,
-      getList,
-      getSelected,
-      variantList,
-      variantSelected,
-    } = getSelectorsData(giveList, undefined, 1);
-
-    draft.giveList = giveList;
-    draft.giveSelected = giveSelected;
-    draft.getList = getList;
-    draft.getSelected = getSelected;
-    draft.variantList = variantList;
-    draft.variantSelected = variantSelected;
-
-    let streamExchange;
-    if (newDirection === exchangeDirection.CRYPTO_SELL) {
-      streamExchange = getList[0].value === 'cash' ? exchangeStream.SELL_BY_CASH : exchangeStream.SELL_BY_CARD;
-    } else if (newDirection === exchangeDirection.CRYPTO_BUY) {
-      streamExchange = giveList[0].value === 'cash' ? exchangeStream.BUY_BY_CASH : exchangeStream.BUY_BY_CARD;
-    }
-    draft.streamExchange = streamExchange;
-
-    // inputs
+  [Types.CHANGE_DIRECTION]: (draft, payload) => {
+    draft.direction = payload.direction;
+    draft.giveList = payload.giveList;
+    draft.giveSelected = payload.giveSelected;
+    draft.getList = payload.getList;
+    draft.getSelected = payload.getSelected;
+    draft.variantList = payload.variantList;
+    draft.variantSelected = payload.variantSelected;
+    draft.streamExchange = payload.streamExchange;
     draft.giveAmount = null;
     draft.getAmount = null;
     draft.giveError = null;
   },
 
-  [Types.CHOSE_GIVE_OPTION]: (draft, payload) => {
-    const {
-      giveSelected,
-      getList,
-      getSelected,
-      variantList,
-      variantSelected,
-    } = getSelectorsData(draft.giveList, payload, 1);
-
-    draft.giveSelected = giveSelected;
-    draft.getList = getList;
-    draft.getSelected = getSelected;
-    draft.variantList = variantList;
-    draft.variantSelected = variantSelected;
-
-    let streamExchange;
-    if (draft.direction === exchangeDirection.CRYPTO_SELL) {
-      streamExchange = getSelected.value === 'cash' ? exchangeStream.SELL_BY_CASH : exchangeStream.SELL_BY_CARD;
-    } else if (draft.direction === exchangeDirection.CRYPTO_BUY) {
-      streamExchange = giveSelected.value === 'cash' ? exchangeStream.BUY_BY_CASH : exchangeStream.BUY_BY_CARD;
-    }
-    draft.streamExchange = streamExchange;
-
-    if (variantSelected && draft.giveAmount) {
-      const { isValid, errorText } = validateValue({ value: draft.giveAmount, rules: variantSelected.rules });
-
-      if (draft.giveError && isValid) {
-        draft.giveError = null;
-      } else {
-        draft.giveError = errorText;
-      }
-    }
+  [Types.CHOOSE_GIVE_OPTION]: (draft, payload) => {
+    draft.giveSelected = payload.giveSelected;
+    draft.getList = payload.getList;
+    draft.getSelected = payload.getSelected;
+    draft.variantList = payload.variantList;
+    draft.variantSelected = payload.variantSelected;
+    draft.streamExchange = payload.streamExchange;
+    draft.giveError = payload.giveError;
   },
 
-  [Types.CHOSE_GET_OPTION]: (draft, payload) => {
-    const {
-      getSelected,
-      variantList,
-      variantSelected,
-    } = getSelectorsData(draft.getList, payload, 2);
-
-    draft.getSelected = getSelected;
-    draft.variantList = variantList;
-    draft.variantSelected = variantSelected;
-
-    let streamExchange;
-    if (draft.direction === exchangeDirection.CRYPTO_SELL) {
-      streamExchange = getSelected.value === 'cash' ? exchangeStream.SELL_BY_CASH : exchangeStream.SELL_BY_CARD;
-    } else if (draft.direction === exchangeDirection.CRYPTO_BUY) {
-      streamExchange = draft.giveSelected.value === 'cash' ? exchangeStream.BUY_BY_CASH : exchangeStream.BUY_BY_CARD;
-    }
-    draft.streamExchange = streamExchange;
-
-    if (variantSelected && draft.giveAmount) {
-      const { isValid, errorText } = validateValue({ value: draft.giveError, rules: variantSelected.rules });
-
-      if (draft.giveError && isValid) {
-        draft.giveError = null;
-      } else {
-        draft.giveError = errorText;
-      }
-    }
+  [Types.CHOOSE_GET_OPTION]: (draft, payload) => {
+    draft.getSelected = payload.getSelected;
+    draft.variantList = payload.variantList;
+    draft.variantSelected = payload.variantSelected;
+    draft.streamExchange = payload.streamExchange;
+    draft.giveError = payload.giveError;
   },
 
   [Types.CHOOSE_VARIANT_OPTION]: (draft, payload) => {
-    const { variantSelected } = getSelectorsData(draft.variantList, payload, 3);
-    draft.variantSelected = variantSelected;
-
-    if (variantSelected && draft.giveAmount) {
-      const { isValid, errorText } = validateValue({ value: draft.giveAmount, rules: variantSelected.rules });
-
-      if (draft.giveError && isValid) {
-        draft.giveError = null;
-      } else {
-        draft.giveError = errorText;
-      }
-    }
+    draft.variantSelected = payload.variantSelected;
+    draft.giveError = payload.giveError;
   },
 
   [Types.CHANGE_GIVE_AMOUNT]: (draft, payload) => {
     draft.giveAmount = payload;
 
     if (draft.direction === exchangeDirection.CRYPTO_SELL) {
-      draft.getAmount = getAmount((payload * price), draft.countrySelected.sellPercent, 3);
+      draft.getAmount = getAmount((payload * draft.price), draft.countrySelected.sellPercent, 3);
     } else {
-      draft.getAmount = getAmount((payload / price), draft.countrySelected.buyPercent, 8);
+      draft.getAmount = getAmount((payload / draft.price), draft.countrySelected.buyPercent, 8);
     }
 
     const { isValid, errorText } = validateValue({ value: payload, rules: draft.variantSelected.rules });
@@ -229,9 +159,9 @@ const reducer = {
 
     let giveAmount;
     if (draft.direction === exchangeDirection.CRYPTO_SELL) {
-      giveAmount = getAmount((payload / price), draft.countrySelected.sellPercent, 8);
+      giveAmount = getAmount((payload / draft.price), draft.countrySelected.sellPercent, 8);
     } else {
-      giveAmount = getAmount((payload * price), draft.countrySelected.buyPercent, 3);
+      giveAmount = getAmount((payload * draft.price), draft.countrySelected.buyPercent, 3);
     }
 
     draft.giveAmount = giveAmount;
@@ -396,7 +326,7 @@ const reducer = {
         draft.walletValue = null;
         draft.walletError = null;
         draft.deliverCountrySelected = null;
-        draft.deliverCountryList = [];
+        draft.deliverCityList = [];
         draft.deliverCitySelected = null;
       }
     }
@@ -408,7 +338,7 @@ const reducer = {
     draft.countrySelected = draft.countryList[0];
     draft.direction = initialStore.direction;
 
-    const giveList = draft.exchangeData.filter(item => item.isCrypto);
+    const giveList = draft.currencies.filter(item => item.isCrypto);
     draft.giveList = giveList;
     const {
       giveSelected,

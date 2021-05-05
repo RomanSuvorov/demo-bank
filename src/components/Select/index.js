@@ -4,38 +4,35 @@ import { useTranslation } from 'react-i18next';
 import { ArrowSmallDownIcon, ArrowSmallUpIcon } from '../../assets/icons';
 import './index.css';
 
-function Option({ selected, id, value, text, Icon, iconUrl, withAlt, onClick }) {
-  const isSelected = selected === value;
-  return (
-    <div
-      title={(withAlt && text) ? text : null}
-      className={`select_option${isSelected ? " select_option__selected" : ""}`}
-      onClick={() => isSelected ? {} : onClick(value)}
-    >
-      {Icon && <Icon id={id} />}
-      {iconUrl && <img className={"select_option_logoImg"} src={iconUrl} alt={value} />}
-      <span className={`select_option__text ${(Icon || iconUrl) ? 'withIcon' : ''}`}>{text ? text : ''}</span>
-    </div>
-  );
-}
-
 function DropdownList({ show, value, options, withAlt, lang, onChoose }) {
   return (
     <div className={`select_list ${show ? 'show' : ''}`}>
       {
-        options.map(option => (
-          <Option
-            selected={value}
-            key={option.value}
-            id={option.value}
-            value={option.value}
-            text={option.translation && option.translation[lang] ? option.translation[lang] : null}
-            Icon={option.Icon}
-            iconUrl={option.iconUrl}
-            withAlt={withAlt}
-            onClick={onChoose}
-          />
-        ))
+        options.map(option => {
+          const isSelected = option.value === value;
+          let text = '';
+
+          if (option.translation && option.translation[lang]) {
+            text = option.translation[lang];
+          } else if (option.text) {
+            text = option.text;
+          } else {
+            text = '';
+          }
+
+          return (
+            <div
+              key={option.value}
+              title={(withAlt && text) ? text : null}
+              className={`select_option${isSelected ? " select_option__selected" : ""}`}
+              onClick={() => isSelected ? {} : onChoose(option.value)}
+            >
+              {option.Icon && <option.Icon id={option.id} />}
+              {option.iconUrl && <img className={"select_option_logoImg"} src={option.iconUrl} alt={option.value} />}
+              <span className={`select_option__text ${(option.Icon || option.iconUrl) ? 'withIcon' : ''}`}>{text ? text : ''}</span>
+            </div>
+          );
+        })
       }
     </div>
   )
@@ -77,6 +74,17 @@ export function Select({
     setSelectListVisibility(!showSelectList)
   }
 
+  let initialOptText = '';
+  if (!!initialOpt) {
+    if (initialOpt.translation && initialOpt.translation[i18n.language]) {
+      initialOptText = initialOpt.translation[i18n.language];
+    } else if (initialOpt.text) {
+      initialOptText = initialOpt.text;
+    } else {
+      initialOptText = '';
+    }
+  }
+
   return (
     <div
       ref={selectRef}
@@ -85,7 +93,7 @@ export function Select({
     >
       <div
         className="select_selected"
-        title={(withAlt && initialOpt && initialOpt.translation && initialOpt.translation[i18n.language]) ? initialOpt.translation[i18n.language] : null}
+        title={(withAlt && !!initialOptText) ? initialOptText : null}
       >
         {
           initialOpt ? (
@@ -93,7 +101,7 @@ export function Select({
               {initialOpt.Icon && <initialOpt.Icon />}
               {initialOpt.iconUrl && <img className={"select_selected__logoImg"} src={initialOpt.iconUrl} alt={initialOpt.value} />}
               <span className={`select_selected__text ${initialOpt.Icon || initialOpt.iconUrl ? 'withIcon' : ''}`}>
-                {initialOpt && initialOpt.translation && initialOpt.translation[i18n.language] ? initialOpt.translation[i18n.language] : null}
+                {!!initialOptText ? initialOptText : null}
               </span>
             </>
           ) : (

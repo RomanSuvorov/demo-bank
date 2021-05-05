@@ -10,7 +10,7 @@ import { Loading }  from '../../Loading';
 import { ErrorBlock } from '../../ErrorBlock';
 import { Select }  from '../../Select';
 import { exchangeDirection, exchangeStepList } from '../../../constants';
-import Types from '../../../store/exchange/types';
+import { changeCountryPercentAccount } from '../../../store/exchange/actions';
 import './index.css';
 
 export function ExchangeBlock() {
@@ -50,7 +50,7 @@ export function ExchangeBlock() {
     }
   };
 
-  const handleChangeCountry = value => dispatch({ type: Types.CHANGE_COUNTRY_PERCENT, payload: value });
+  const handleChangeCountry = value => dispatch(changeCountryPercentAccount(value));
 
   if (error) {
     return (

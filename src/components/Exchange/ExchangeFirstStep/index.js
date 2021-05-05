@@ -9,6 +9,12 @@ import { Tooltip } from '../../Tooltip';
 import { HelpSign } from '../../HelpSign';
 import { exchangeDirection } from '../../../constants';
 import { DirectionIcon } from '../../../assets/icons';
+import {
+  changeGiveOption,
+  changeDirection,
+  changeGetOption,
+  changeVariantOption,
+} from '../../../store/exchange/actions';
 import Types from '../../../store/exchange/types';
 import './index.css';
 
@@ -23,20 +29,24 @@ export function FirstStep() {
   const variantSelected = useSelector(state => state.exchange.variantSelected);
   const giveAmount = useSelector(state => state.exchange.giveAmount);
   const getAmount = useSelector(state => state.exchange.getAmount);
+  const priceLoading = useSelector(state => state.exchange.priceLoading);
   const dispatch = useDispatch();
   const { t } = useTranslation('exchange');
 
-  const handleChangeExchangeDirection = () => dispatch({ type: Types.CHANGE_DIRECTION });
+  const handleChangeExchangeDirection = () => {
+    if (priceLoading) return;
+    dispatch(changeDirection(direction));
+  };
 
-  const handleChooseGiveOption = value => dispatch({ type: Types.CHOSE_GIVE_OPTION, payload: value });
+  const handleChooseGiveOption = value => dispatch(changeGiveOption(value));
 
-  const handleChooseGetOption = value => dispatch({ type: Types.CHOSE_GET_OPTION, payload: value });
+  const handleChooseGetOption = value => dispatch(changeGetOption(value));
 
   const handleChangeGiveAmount = value => dispatch({ type: Types.CHANGE_GIVE_AMOUNT, payload: value });
 
   const handleChangeGetAmount = value => dispatch({ type: Types.CHANGE_GET_AMOUNT, payload: value });
 
-  const handleChooseFromVariantList = value => dispatch({ type: Types.CHOOSE_VARIANT_OPTION, payload: value });
+  const handleChooseFromVariantList = value => dispatch(changeVariantOption(value));
 
   const handleSubmit = () => dispatch({ type: Types.NEXT_STEP });
 
@@ -56,6 +66,7 @@ export function FirstStep() {
         <Select
           className={"firstStep_row__left"}
           value={giveSelected.value}
+          disable={priceLoading}
           options={giveList}
           onChange={handleChooseGiveOption}
         />
@@ -63,6 +74,7 @@ export function FirstStep() {
         <Select
           className={"firstStep_row__right"}
           value={getSelected.value}
+          disable={priceLoading}
           options={getList}
           onChange={handleChooseGetOption}
         />
@@ -78,6 +90,7 @@ export function FirstStep() {
             type={"number"}
             value={giveAmount}
             min={0}
+            loading={priceLoading}
             error={giveError}
             placeholder={direction === exchangeDirection.CRYPTO_SELL ? '0.00000000' : '0.000'}
             onChange={handleChangeGiveAmount}
@@ -97,6 +110,7 @@ export function FirstStep() {
             type={"number"}
             value={getAmount}
             min={0}
+            loading={priceLoading}
             placeholder={direction === exchangeDirection.CRYPTO_SELL ? '0.000' : '0.00000000'}
             onChange={handleChangeGetAmount}
           />
@@ -116,6 +130,7 @@ export function FirstStep() {
           className={"firstStep_selectBox__select"}
           value={variantSelected.value}
           options={variantList}
+          disable={priceLoading}
           onChange={handleChooseFromVariantList}
         />
       </div>

@@ -9,6 +9,8 @@ class DemobankSDK {
       GET_STATUS_API: `${this.config.demobankApi}/status`,
       // exchange
       GET_COUNTRY_INDEXES: `${this.config.demobankApi}/countryIndexes`,
+      GET_CURRENCIES: `${this.config.demobankApi}/currencies`,
+      GET_PRICE: `${this.config.demobankApi}/price`,
       // charts
       GET_CHARTS_DATA: `${this.config.demobankApi}/charts`,
       // faq
@@ -29,6 +31,14 @@ class DemobankSDK {
       // exchange
       getCountryIndexes: async () => await this._fetchServer(
         this.urls.GET_COUNTRY_INDEXES,
+        'get',
+      ),
+      getCurrencies: async () => await this._fetchServer(
+        this.urls.GET_CURRENCIES,
+        'get',
+      ),
+      getPrice: async (crypto, currency) => await this._fetchServer(
+        `${this.urls.GET_PRICE}?crypto=${crypto}&currency=${currency}`,
         'get',
       ),
       // charts
