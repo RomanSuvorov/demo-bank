@@ -11,6 +11,8 @@ class DemobankSDK {
       GET_COUNTRY_INDEXES: `${this.config.demobankApi}/countryIndexes`,
       GET_CURRENCIES: `${this.config.demobankApi}/currencies`,
       GET_PRICE: `${this.config.demobankApi}/price`,
+      CREATE_REQUEST: `${this.config.demobankApi}/exchangeRequestCreate`,
+      CANCEL_REQUEST: `${this.config.demobankApi}/exchangeRequestCancel/`,
       // charts
       GET_CHARTS_DATA: `${this.config.demobankApi}/charts`,
       // faq
@@ -24,55 +26,64 @@ class DemobankSDK {
 
     this.api = {
       // status
-      getStatusApi: async () => await this._fetchServer(
-        this.urls.GET_STATUS_API,
-        'get',
-      ),
+      getStatusApi: async () => await this._fetchServer({
+        url: this.urls.GET_STATUS_API,
+        method: 'get',
+      }),
       // exchange
-      getCountryIndexes: async () => await this._fetchServer(
-        this.urls.GET_COUNTRY_INDEXES,
-        'get',
-      ),
-      getCurrencies: async () => await this._fetchServer(
-        this.urls.GET_CURRENCIES,
-        'get',
-      ),
-      getPrice: async (crypto, currency) => await this._fetchServer(
-        `${this.urls.GET_PRICE}?crypto=${crypto}&currency=${currency}`,
-        'get',
-      ),
+      getCountryIndexes: async () => await this._fetchServer({
+        url: this.urls.GET_COUNTRY_INDEXES,
+        method: 'get',
+      }),
+      getCurrencies: async () => await this._fetchServer({
+        url: this.urls.GET_CURRENCIES,
+        method: 'get',
+      }),
+      getPrice: async (crypto, currency) => await this._fetchServer({
+        url: `${this.urls.GET_PRICE}?crypto=${crypto}&currency=${currency}`,
+        method: 'get',
+      }),
+      createExchangeRequest: async (request) => await this._fetchServer({
+        url: this.urls.CREATE_REQUEST,
+        method: 'post',
+        body: request,
+      }),
+      cancelRequest: async (requestId) => await this._fetchServer({
+        url: this.urls.CANCEL_REQUEST + requestId,
+        method: 'put',
+      }),
       // charts
-      getChartsData: async () => await this._fetchServer(
-        this.urls.GET_CHARTS_DATA,
-        'get',
-      ),
+      getChartsData: async () => await this._fetchServer({
+        url: this.urls.GET_CHARTS_DATA,
+        method: 'get',
+      }),
       // faq
-      getFaqData: async () => await this._fetchServer(
-        this.urls.GET_FAQ_DATA,
-        'get',
-      ),
-      getFaqListByAmount: async (count) => await this._fetchServer(
-        this.urls.GET_FAQ_LIST_BY_AMOUNT + count,
-        'get',
-      ),
+      getFaqData: async () => await this._fetchServer({
+        url: this.urls.GET_FAQ_DATA,
+        method: 'get',
+      }),
+      getFaqListByAmount: async (count) => await this._fetchServer({
+        url: this.urls.GET_FAQ_LIST_BY_AMOUNT + count,
+        method: 'get',
+      }),
       // reviews
-      getReviewsData: async () => await this._fetchServer(
-        this.urls.GET_REVIEWS_DATA,
-        'get',
-      ),
-      getReviewsListByAmount: async (count) => await this._fetchServer(
-        this.urls.GET_REVIEWS_LIST_BY_AMOUNT + count,
-        'get',
-      ),
-      createReview: async (review) => await this._fetchServer(
-        this.urls.CREATE_REVIEW,
-        'post',
-        review,
-      ),
+      getReviewsData: async () => await this._fetchServer({
+        url: this.urls.GET_REVIEWS_DATA,
+        method: 'get',
+      }),
+      getReviewsListByAmount: async (count) => await this._fetchServer({
+        url: this.urls.GET_REVIEWS_LIST_BY_AMOUNT + count,
+        method: 'get',
+      }),
+      createReview: async (review) => await this._fetchServer({
+        url: this.urls.CREATE_REVIEW,
+        method: 'post',
+        body: review,
+      }),
     };
   };
 
-  _fetchServer(url, method = 'get', body = undefined) {
+  _fetchServer({ url = '', method = 'get', body = undefined }) {
     const Header = new Headers({ 'Content-Type': 'application/json' });
 
     const Params = {

@@ -6,10 +6,13 @@ import { Tooltip } from '../../Tooltip'
 import { HelpSign } from '../../HelpSign';
 import { Select }  from '../../Select';
 import { Input } from '../../Input';
-import { Checkbox } from '../../Checkbox'
-import { Button } from '../../Button'
+import { Checkbox } from '../../Checkbox';
+import { Button } from '../../Button';
+import { Loading } from '../../Loading';
+import { ErrorBlock } from '../../ErrorBlock';
 import ExchangeTypes from '../../../store/exchange/types';
 import AppTypes from '../../../store/app/types';
+import { createExchangeRequest, validateSecondStep } from '../../../store/exchange/actions';
 import { exchangeDirection, exchangeStream } from '../../../constants';
 import './index.css';
 
@@ -31,6 +34,9 @@ export function SecondStep() {
   const deliverValue = useSelector(state => state.exchange.deliverValue);
   const privacyValue = useSelector(state => state.exchange.privacyValue);
   const forgetInputsValue = useSelector(state => state.exchange.forgetInputsValue);
+  const requestLoading = useSelector(state => state.exchange.requestLoading);
+  const requestError = useSelector(state => state.exchange.requestError);
+  const requestMessage = useSelector(state => state.exchange.requestMessage);
   const isCardMode = !!((streamExchange === exchangeStream.SELL_BY_CARD) || (streamExchange === exchangeStream.BUY_BY_CARD));
   const dispatch = useDispatch();
   const { t } = useTranslation('exchange');
@@ -71,7 +77,19 @@ export function SecondStep() {
 
   const handleGoBack = () => dispatch({ type: ExchangeTypes.PREVIOUS_STEP });
 
-  const handleSend = () => dispatch({ type: ExchangeTypes.NEXT_STEP });
+  const handleSend = async () => {
+    const isStepValid = await dispatch(validateSecondStep(
+      streamExchange,
+      direction,
+      accountValue,
+      cardValue,
+      walletValue,
+    ));
+
+    if (isStepValid) {
+      await dispatch(createExchangeRequest());
+    }
+  }
 
   const getInputs = () => {
     if (direction === exchangeDirection.CRYPTO_BUY) {
@@ -107,6 +125,51 @@ export function SecondStep() {
         );
       }
     }
+  }
+
+  if (requestError || requestLoading || requestMessage) {
+    return (
+      <div className={"secondStep"}>
+        {
+          requestMessage && (
+            <div className={"secondStep_requestSuccess"}>
+              <span>Поздравляем! Заявка успешно создана!</span>
+            </div>
+          )
+        }
+
+        <div className={"secondStep_loadingBox"}>
+          {
+            requestError ? (
+              <ErrorBlock error={requestError} />
+            ) : (
+              <Loading text={requestLoading ? "Sending request" : "Prepare finish step"} withDots />
+            )
+          }
+        </div>
+
+        {
+          !requestMessage && (
+            <div className={"secondStep_buttonBox"}>
+              <Button
+                className={"secondStep_button"}
+                disabled={requestLoading}
+                onClick={handleGoBack}
+              >
+                Назад
+              </Button>
+              <Button
+                className={"secondStep_button"}
+                disabled={true}
+                onClick={handleSend}
+              >
+                Отправить
+              </Button>
+            </div>
+          )
+        }
+      </div>
+    );
   }
 
   return (

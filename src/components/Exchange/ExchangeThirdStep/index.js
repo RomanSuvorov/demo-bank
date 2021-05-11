@@ -11,13 +11,14 @@ import { Button } from '../../Button'
 import { CopyIcon, ErrorIcon, SuccessIcon } from '../../../assets/icons';
 import { exchangeStream, transactionProcess } from '../../../constants';
 import ExchangeTypes from '../../../store/exchange/types';
-import { preventSendingByUser } from '../../../store/exchange/actions';
+import { cancelRequest } from '../../../store/exchange/actions';
 import './index.css';
 
 export function ThirdStep() {
   const streamExchange = useSelector(state => state.exchange.streamExchange);
   const transactionData = useSelector(state => state.exchange.transactionData);
   const transactionStatus = useSelector(state => state.exchange.transactionStatus);
+  const requestId = useSelector(state => state.exchange.requestId);
   const dispatch = useDispatch();
   const { t } = useTranslation('exchange');
 
@@ -37,10 +38,10 @@ export function ThirdStep() {
     };
 
     switch (transactionStatus) {
-      case transactionProcess.AWAITING:
+      case transactionProcess.PENDING:
         _startTimer();
         break;
-      case transactionProcess.SUCCESSFUL:
+      case transactionProcess.COMPLETED:
         clearInterval(timer);
         timeout = setTimeout(() => {
           dispatch({ type: ExchangeTypes.FINISH_STEP, payload: true });
@@ -82,20 +83,17 @@ export function ThirdStep() {
 
   const handleCopySystemData = () => setCopied();
 
-  const handleGoBack = async () => {
-    await dispatch(preventSendingByUser());
-    dispatch({ type: ExchangeTypes.PREVIOUS_STEP });
-  };
+  const handleGoBack = async () => await dispatch(cancelRequest(requestId));
 
   const getProcessBlock = () => {
     let title = '', Component = <div />;
 
     switch (transactionStatus) {
-      case transactionProcess.AWAITING:
+      case transactionProcess.PENDING:
         Component = <LoaderBall />;
         title = 'Ожидает подтверждения';
         break;
-      case transactionProcess.SUCCESSFUL:
+      case transactionProcess.COMPLETED:
         Component = (<div className={"thirdStep_successfulBox"}>
           <SuccessIcon />
         </div>);
@@ -122,7 +120,7 @@ export function ThirdStep() {
             <span>{title}</span>
           </div>
           {
-            (transactionStatus === transactionProcess.AWAITING) && (
+            (transactionStatus === transactionProcess.PENDING) && (
               <div className={"thirdStep_process__subtitle"}>
                 <span>Время ожидания:&nbsp;</span>
                 <span className={"thirdStep_process__timeLeft"}>
@@ -167,7 +165,7 @@ export function ThirdStep() {
       </div>
 
       {
-        (transactionStatus !== transactionProcess.SUCCESSFUL) && (
+        (transactionStatus !== transactionProcess.COMPLETED) && (
           <div className={"thirdStep_buttonBox"}>
             <Button
               className={"thirdStep_button"}

@@ -4,6 +4,29 @@
     flex: 1;
 }
 
+.secondStep_boxForMessage {
+    align-items: center;
+    justify-content: center;
+}
+
+.secondStep_requestSuccess {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.secondStep_requestSuccess span {
+    color: var(--color-primaryText);
+    font-size: 18px;
+}
+
+.secondStep_loadingBox {
+    position: relative;
+    flex: 3;
+    width: 100%;
+}
+
 .secondStep_title {
     display: flex;
     flex-direction: row;

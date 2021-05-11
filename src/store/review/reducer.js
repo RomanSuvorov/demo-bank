@@ -28,8 +28,8 @@ const reducer = {
   [Types.CREATE_REVIEW_START]: draft => draft.createLoading = true,
 
   [Types.CREATE_REVIEW_SUCCESS]: (draft, payload) => {
-    draft.createError = undefined;
     draft.reviewArray = [payload, ...draft.reviewArray];
+    draft.createError = undefined;
   },
 
   [Types.CREATE_REVIEW_ERROR]: (draft, payload) => draft.createError = payload,

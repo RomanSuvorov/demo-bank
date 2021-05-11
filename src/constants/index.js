@@ -14,8 +14,8 @@ const exchangeStream = {
 };
 
 const transactionProcess = {
-  AWAITING: 'AWAITING',
-  SUCCESSFUL: 'SUCCESSFUL',
+  PENDING: 'PENDING',
+  COMPLETED: 'COMPLETED',
   CANCELED: 'CANCELED',
 };
 

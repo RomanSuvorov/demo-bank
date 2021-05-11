@@ -44,9 +44,7 @@ const initialStore = {
 
   // 3rd step
   transactionData: "0000   0000   0000   0000",
-  transactionStatus: transactionProcess.AWAITING,
-
-  // finish step
+  transactionStatus: transactionProcess.PENDING,
 
   // navigation
   step: exchangeStepList[0].index,
@@ -55,6 +53,12 @@ const initialStore = {
   // state of process
   loading: false,
   error: undefined,
+
+  // request
+  requestMessage: null,
+  requestError: undefined,
+  requestLoading: false,
+  requestId: null,
 };
 
 const reducer = {
@@ -77,6 +81,7 @@ const reducer = {
     draft.getSelected = payload.getSelected;
     draft.variantList = payload.variantList;
     draft.variantSelected = payload.variantSelected;
+    draft.error = undefined;
 
     draft.deliverCountryList = payload.deliverCountryList;
     draft.forgetInputsValue = (payload.hasOwnProperty('forgetInputsValue')) ? payload.forgetInputsValue : draft.forgetInputsValue;
@@ -172,9 +177,15 @@ const reducer = {
 
   [Types.CHANGE_CARD_VALUE]: (draft, payload) => draft.cardValue = payload,
 
+  [Types.VALIDATE_CARD_VALUE]: (draft, payload) => draft.cardError = payload,
+
   [Types.CHANGE_WALLET_VALUE]: (draft, payload) => draft.walletValue = payload,
 
+  [Types.VALIDATE_WALLET_VALUE]: (draft, payload) => draft.walletError = payload,
+
   [Types.CHANGE_ACCOUNT_VALUE]: (draft, payload) => draft.accountValue = payload,
+
+  [Types.VALIDATE_ACCOUNT_VALUE]: (draft, payload) => draft.accountError = payload,
 
   [Types.CHANGE_DELIVER_COUNTY_OPTION]: (draft, payload) => {
     const deliverCountrySelected = draft.deliverCountryList.find(country => country.value === payload);
@@ -198,119 +209,67 @@ const reducer = {
     draft.transactionStatus = payload;
   },
 
+  [Types.CREATE_REQUEST_START]: draft => draft.requestLoading = true,
+
+  [Types.CREATE_REQUEST_SUCCESS]: (draft, payload) => {
+    draft.requestMessage = payload.message;
+    draft.requestId = payload.requestId;
+    draft.error = undefined;
+  },
+
+  [Types.CREATE_REQUEST_ERROR]: (draft, payload) => {
+    draft.requestError = payload;
+    draft.requestLoading = false;
+  },
+
+  [Types.CREATE_REQUEST_FINISH]: draft => draft.requestLoading = false,
+
   [Types.NEXT_STEP]: draft => {
     const currentStep = draft.step;
 
     if (currentStep === 2) {
-      const { isValid: isAccountValid, errorText: accountErrorText } = validateValue({
-        value: draft.accountValue,
-        rules: [
-          {
-            name: 'required',
-            text: 'Field is required',
-          },
-          {
-            name: 'isPhoneOrAccount',
-            text: 'Incorrect phone number or account',
-          },
-        ],
-      });
-
-      const cardRules = [
-        {
-          name: 'required',
-          text: 'Field is required',
-        },
-        {
-          name: 'isCard',
-          text: `Incorrect card number`
-        },
-      ];
-      const walletRules = [
-        {
-          name: 'required',
-          text: 'Field is required',
-        },
-        {
-          name: 'isWallet',
-          text: `Incorrect wallet address`
-        },
-      ]
-
-      let inputValidate = {};
-      if (!draft.streamExchange === exchangeStream.SELL_BY_CASH) {
-        inputValidate = validateValue({
-          value: draft.direction === exchangeDirection.CRYPTO_SELL ? draft.cardValue : draft.walletValue,
-          rules: draft.direction === exchangeDirection.CRYPTO_SELL ? cardRules : walletRules,
-        });
-      } else {
-        inputValidate.isValid = true;
-        inputValidate.errorText = null;
-      }
-
-      if (isAccountValid && inputValidate.isValid) {
-        draft.accountError = null;
+      draft.requestMessage = null;
+      // store user info in browser LS
+      let localUserData = JSON.parse(localStorage.getItem('second_step'));
+      if (draft.forgetInputsValue && localUserData) {
+        if ((draft.streamExchange === exchangeStream.SELL_BY_CASH) || (draft.streamExchange === exchangeStream.BUY_BY_CASH)) {
+          delete localUserData.deliverCountrySelected;
+          delete localUserData.deliverCitySelected;
+          delete localUserData.deliverValue;
+        }
 
         if (draft.direction === exchangeDirection.CRYPTO_SELL) {
-          draft.cardError = null;
+          delete localUserData.cardValue;
         } else {
-          draft.walletError = null;
+          delete localUserData.walletValue;
         }
 
-
-        if (draft.streamExchange === exchangeStream.BUY_BY_CASH) {
-          draft.showFinishStep = true;
-        } else {
-          draft.step = currentStep + 1;
-        }
-
-        let localUserData = JSON.parse(localStorage.getItem('second_step'));
-        if (draft.forgetInputsValue && localUserData) {
-          if ((draft.streamExchange === exchangeStream.SELL_BY_CASH) || (draft.streamExchange === exchangeStream.BUY_BY_CASH)) {
-            delete localUserData.deliverCountrySelected;
-            delete localUserData.deliverCitySelected;
-            delete localUserData.deliverValue;
-          }
-
-          if (draft.direction === exchangeDirection.CRYPTO_SELL) {
-            delete localUserData.cardValue;
-          } else {
-            delete localUserData.walletValue;
-          }
-
-          delete localUserData.accountValue;
-        } else {
-          localUserData = {
-            ...localUserData,
-            accountValue: draft.accountValue,
-          };
-
-          if ((draft.streamExchange === exchangeStream.SELL_BY_CASH) || (draft.streamExchange === exchangeStream.BUY_BY_CASH)) {
-            localUserData.deliverCountrySelected = draft.deliverCountrySelected;
-            localUserData.deliverCitySelected = draft.deliverCitySelected;
-            localUserData.deliverValue = draft.deliverValue;
-          }
-
-          if (draft.direction === exchangeDirection.CRYPTO_SELL) {
-            localUserData.cardValue = draft.cardValue;
-          } else {
-            localUserData.walletValue = draft.walletValue;
-          }
-        }
-
-        localUserData.forgetInputsValue = draft.forgetInputsValue;
-        localStorage.setItem('second_step', JSON.stringify(localUserData));
+        delete localUserData.accountValue;
       } else {
-        draft.accountError = accountErrorText;
+        localUserData = {
+          ...localUserData,
+          accountValue: draft.accountValue,
+        };
+
+        if ((draft.streamExchange === exchangeStream.SELL_BY_CASH) || (draft.streamExchange === exchangeStream.BUY_BY_CASH)) {
+          localUserData.deliverCountrySelected = draft.deliverCountrySelected;
+          localUserData.deliverCitySelected = draft.deliverCitySelected;
+          localUserData.deliverValue = draft.deliverValue;
+        }
+
         if (draft.direction === exchangeDirection.CRYPTO_SELL) {
-          draft.cardError = inputValidate.errorText;
+          localUserData.cardValue = draft.cardValue;
         } else {
-          draft.walletError = inputValidate.errorText;
+          localUserData.walletValue = draft.walletValue;
         }
       }
-    } else {
-      draft.step = currentStep + 1;
+
+      localUserData.forgetInputsValue = draft.forgetInputsValue;
+      localStorage.setItem('second_step', JSON.stringify(localUserData));
+      if (draft.streamExchange === exchangeStream.BUY_BY_CASH) return draft.showFinishStep = true;
     }
+
+    draft.step = currentStep + 1;
   },
 
   [Types.PREVIOUS_STEP]: draft => {
@@ -331,6 +290,8 @@ const reducer = {
       }
     }
 
+    draft.requestError = undefined;
+    draft.error = undefined;
     draft.step = currentStep - 1;
   },
 

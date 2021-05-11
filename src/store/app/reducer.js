@@ -78,6 +78,7 @@ const reducer = {
 
   [Types.SOCKET_CONNECTING_SUCCESS]: (draft, payload) => {
     draft.socket = payload;
+    draft.socketError = undefined;
     draft.socketLoading = false;
   },
 
@@ -119,7 +120,10 @@ const reducer = {
   // map
   [Types.LOAD_PIN_START]: draft => draft.pinLoading = true,
 
-  [Types.LOAD_PIN_SUCCESS]: (draft, payload) => draft.pinList = payload,
+  [Types.LOAD_PIN_SUCCESS]: (draft, payload) => {
+    draft.pinList = payload;
+    draft.pinError = undefined;
+  },
 
   [Types.LOAD_PIN_ERROR]: (draft, payload) => draft.pinError = payload,
 
@@ -132,7 +136,8 @@ const reducer = {
     draft.banner = {
       ...draft.banner,
       ...payload,
-    }
+    };
+    draft.bannerError = undefined;
   },
 
   [Types.LOAD_BANNER_ERROR]: (draft, payload) => draft.bannerError = payload,
@@ -155,6 +160,8 @@ const reducer = {
 
     draft.chart.activeCheckbox = checkboxes[0];
     draft.chart.activePeriod = periods[0].value;
+
+    draft.chartError = undefined;
   },
 
   [Types.LOAD_CHART_DATASET_UPDATE]: draft => draft.chart.dataset = {},

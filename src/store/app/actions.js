@@ -99,6 +99,11 @@ export const socketConnect = () => async (dispatch) => {
     console.log('updateCountriesIndexes', data);
     dispatch({ type: ExchangeTypes.UPDATE_COUNTRIES_INDEXES, payload: data });
   });
+
+  socket.on('updateRequestStatus', data => {
+    console.log('updateRequestStatus', data);
+    dispatch({ type: ExchangeTypes.CHANGE_TRANSACTION_STATUS, payload: data });
+  });
 }
 
 export const socketDisconnect = () => async (dispatch, getState) => {

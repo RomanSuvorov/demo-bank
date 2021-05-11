@@ -1,5 +1,5 @@
 import Types from './types';
-import { exchangeDirection, exchangeStream } from '../../constants';
+import { exchangeDirection, exchangeStream, transactionProcess } from '../../constants';
 import { getSelectorsData, validateValue } from '../../sdk/helper';
 import sdk from '../../sdk';
 
@@ -52,6 +52,83 @@ async function updatePriceAction(crypto, currency, dispatch, callback) {
     dispatch({ type: Types.LOAD_PRICE_FINISH });
   }
 }
+
+export const validateSecondStep = (streamExchange, direction, accountValue, cardValue, walletValue) => {
+  return async (dispatch) => {
+    const { isValid: isAccountValid, errorText: accountErrorText } = validateValue({
+      value: accountValue,
+      rules: [
+        {
+          name: 'required',
+          text: 'Field is required',
+        },
+        {
+          name: 'isPhoneOrAccount',
+          text: 'Incorrect phone number or account',
+        },
+      ],
+    });
+
+    const cardRules = [
+      {
+        name: 'required',
+        text: 'Field is required',
+      },
+      {
+        name: 'isCard',
+        text: `Incorrect card number`
+      },
+    ];
+    const walletRules = [
+      {
+        name: 'required',
+        text: 'Field is required',
+      },
+      {
+        name: 'isWallet',
+        text: `Incorrect wallet address`
+      },
+    ]
+
+    let inputValidate = {};
+
+    if (streamExchange !== exchangeStream.SELL_BY_CASH) {
+      inputValidate = validateValue({
+        value: direction === exchangeDirection.CRYPTO_SELL ? cardValue : walletValue,
+        rules: direction === exchangeDirection.CRYPTO_SELL ? cardRules : walletRules,
+      });
+    } else {
+      inputValidate.isValid = true;
+      inputValidate.errorText = null;
+    }
+
+    if (isAccountValid && inputValidate.isValid) {
+      dispatch({ type: Types.VALIDATE_ACCOUNT_VALUE, payload: null });
+
+      if (direction === exchangeDirection.CRYPTO_SELL) {
+        dispatch({ type: Types.VALIDATE_CARD_VALUE, payload: null });
+
+      } else {
+        dispatch({ type: Types.VALIDATE_WALLET_VALUE, payload: null });
+
+      }
+    } else {
+      if (!isAccountValid) {
+        dispatch({ type: Types.VALIDATE_ACCOUNT_VALUE, payload: accountErrorText });
+      }
+
+      if (inputValidate.errorText) {
+        if (direction === exchangeDirection.CRYPTO_SELL) {
+          dispatch({ type: Types.VALIDATE_CARD_VALUE, payload: inputValidate.errorText });
+        } else {
+          dispatch({ type: Types.VALIDATE_WALLET_VALUE, payload: inputValidate.errorText });
+        }
+      }
+    }
+
+    return !!(isAccountValid && inputValidate.isValid);
+  };
+};
 
 export const loadExchangeData = () => async (dispatch, getState) => {
   const store = getState();
@@ -328,6 +405,88 @@ export const changeCountryPercentAccount = (value) => async (dispatch, getState)
   }
 };
 
-export const preventSendingByUser = () => async (dispatch) => {
-  // TODO: send to bot that user prevent sending money for system;
+export const createExchangeRequest = () => async (dispatch, getState) => {
+  const store = getState();
+  const streamExchange = store.exchange.streamExchange;
+  const giveSelected = store.exchange.giveSelected;
+  const getSelected = store.exchange.getSelected;
+  const variantSelected = store.exchange.variantSelected;
+  const giveAmount = store.exchange.giveAmount;
+  const getAmount = store.exchange.getAmount;
+  const accountValue = store.exchange.accountValue;
+  const deliverCountrySelected = store.exchange.deliverCountrySelected;
+  const deliverCitySelected = store.exchange.deliverCitySelected;
+  const deliverValue = store.exchange.deliverValue;
+  const cardValue = store.exchange.cardValue;
+  const walletValue = store.exchange.walletValue;
+
+  try {
+    dispatch({ type: Types.CREATE_REQUEST_START });
+
+    let request = {
+      stream: streamExchange,
+      giveValue: giveSelected.value,
+      giveText: giveSelected.text,
+      giveAmount: giveAmount,
+      getValue: getSelected.value,
+      getText: getSelected.text,
+      getAmount: getAmount,
+      variantText: variantSelected.text,
+      variantCurr: variantSelected.curr,
+      accountValue: accountValue,
+    };
+
+    if (streamExchange === exchangeStream.SELL_BY_CASH) {
+      request = {
+        ...request,
+        country: deliverCountrySelected.text,
+        city: deliverCitySelected.text,
+        delivery: deliverValue,
+      };
+    } else if (streamExchange === exchangeStream.SELL_BY_CARD) {
+      request = {
+        ...request,
+        card: cardValue,
+      };
+    } else if (streamExchange === exchangeStream.BUY_BY_CASH) {
+      request = {
+        ...request,
+        country: deliverCountrySelected.text,
+        city: deliverCitySelected.text,
+        delivery: deliverValue,
+        wallet: walletValue,
+      };
+    } else if (streamExchange === exchangeStream.BUY_BY_CARD) {
+      request = {
+        ...request,
+        wallet: walletValue,
+      };
+    } else {
+      return null;
+    }
+
+    const { message, requestId } = await sdk.api.createExchangeRequest(request);
+
+    dispatch({ type: Types.CREATE_REQUEST_SUCCESS, payload: { message, requestId } });
+
+    setTimeout(() => {
+      dispatch({ type: Types.NEXT_STEP });
+    }, 5000);
+  } catch (e) {
+    dispatch({ type: Types.CREATE_REQUEST_ERROR, payload: e });
+  } finally {
+    dispatch({ type: Types.CREATE_REQUEST_FINISH });
+  }
+}
+
+export const cancelRequest = (requestId) => async (dispatch) => {
+  try {
+    dispatch({ type: Types.CHANGE_TRANSACTION_STATUS, payload: transactionProcess.PENDING });
+
+    await sdk.api.cancelRequest(requestId);
+
+    dispatch({ type: Types.PREVIOUS_STEP });
+  } catch (e) {
+    dispatch({ type: Types.RESET_EXCHANGE });
+  }
 };
