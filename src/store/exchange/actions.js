@@ -141,10 +141,10 @@ export const loadExchangeData = () => async (dispatch, getState) => {
     const { countryIndexes } = await sdk.api.getCountryIndexes();
     dispatch({ type: Types.LOAD_COUNTRIES_INDEXES_SUCCESS, payload: countryIndexes });
 
-    // currencies
-    const { currencies } = await sdk.api.getCurrencies();
+    // units
+    const { units } = await sdk.api.getUnits();
 
-    const giveList = currencies.filter(item => (direction === exchangeDirection.CRYPTO_SELL) ? item.isCrypto : !item.isCrypto);
+    const giveList = units.filter(item => (direction === exchangeDirection.CRYPTO_SELL) ? item.isCrypto : !item.isCrypto);
     const {
       giveSelected,
       getList,
@@ -179,7 +179,7 @@ export const loadExchangeData = () => async (dispatch, getState) => {
 
     const result = {
       streamExchange: streamExchange,
-      currencies: currencies,
+      units: units,
       giveList: giveList,
       giveSelected: giveSelected,
       getList: getList,
@@ -201,13 +201,13 @@ export const loadExchangeData = () => async (dispatch, getState) => {
 
 export const changeDirection = (direction) => async (dispatch, getState) => {
   const store = getState();
-  const currencies = store.exchange.currencies;
+  const units = store.exchange.units;
   const newDirection = direction === exchangeDirection.CRYPTO_SELL
     ? exchangeDirection.CRYPTO_BUY
     : exchangeDirection.CRYPTO_SELL;
 
   // first select
-  const giveList = currencies.filter(item => (newDirection === exchangeDirection.CRYPTO_SELL) ? item.isCrypto : !item.isCrypto);
+  const giveList = units.filter(item => (newDirection === exchangeDirection.CRYPTO_SELL) ? item.isCrypto : !item.isCrypto);
   const {
     giveSelected,
     getList,

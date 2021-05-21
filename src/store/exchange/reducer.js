@@ -14,7 +14,7 @@ const initialStore = {
   // 1st step
   direction: exchangeDirection.CRYPTO_SELL,
   streamExchange: null,
-  currencies: [],
+  units: [],
   price: null,
   priceLoading: true,
   giveList: [],
@@ -74,7 +74,7 @@ const reducer = {
     draft.streamExchange = payload.streamExchange;
 
     // selectors
-    draft.currencies = payload.currencies;
+    draft.units = payload.units;
     draft.giveList = payload.giveList;
     draft.giveSelected = payload.giveSelected;
     draft.getList = payload.getList;
@@ -299,7 +299,7 @@ const reducer = {
     draft.countrySelected = draft.countryList[0];
     draft.direction = initialStore.direction;
 
-    const giveList = draft.currencies.filter(item => item.isCrypto);
+    const giveList = draft.units.filter(item => item.isCrypto);
     draft.giveList = giveList;
     const {
       giveSelected,
