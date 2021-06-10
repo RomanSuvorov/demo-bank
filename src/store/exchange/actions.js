@@ -139,19 +139,22 @@ export const loadExchangeData = () => async (dispatch, getState) => {
   try {
     // countryIndexes
     const { countryIndexes } = await sdk.api.getCountryIndexes();
+
+    if (!countryIndexes || !Array.isArray(countryIndexes) || !countryIndexes.length) {
+      throw new SyntaxError("Index of countries weren't loaded");
+    }
+
     dispatch({ type: Types.LOAD_COUNTRIES_INDEXES_SUCCESS, payload: countryIndexes });
 
     // units
-    const { units } = await sdk.api.getUnits();
+    const { sellUnits } = await sdk.api.getSellUnits();
 
-    const giveList = units.filter(item => (direction === exchangeDirection.CRYPTO_SELL) ? item.isCrypto : !item.isCrypto);
-    const {
-      giveSelected,
-      getList,
-      getSelected,
-      variantList,
-      variantSelected,
-    } = getSelectorsData(giveList, undefined, 1);
+    const giveList = sellUnits;
+    const giveSelected = getSelectorsData({ list: sellUnits });
+    const getList = giveSelected.methods;
+    const getSelected = getSelectorsData({ list: getList });
+    const variantList = getSelected.variants;
+    const variantSelected = getSelectorsData({ list: variantList });
 
     await updatePriceAction(giveSelected.curr, variantSelected.curr, dispatch);
 
@@ -179,7 +182,6 @@ export const loadExchangeData = () => async (dispatch, getState) => {
 
     const result = {
       streamExchange: streamExchange,
-      units: units,
       giveList: giveList,
       giveSelected: giveSelected,
       getList: getList,
@@ -199,23 +201,24 @@ export const loadExchangeData = () => async (dispatch, getState) => {
   }
 };
 
-export const changeDirection = (direction) => async (dispatch, getState) => {
-  const store = getState();
-  const units = store.exchange.units;
+export const changeDirection = (direction) => async (dispatch) => {
   const newDirection = direction === exchangeDirection.CRYPTO_SELL
     ? exchangeDirection.CRYPTO_BUY
     : exchangeDirection.CRYPTO_SELL;
+  let data;
 
-  // first select
-  const giveList = units.filter(item => (newDirection === exchangeDirection.CRYPTO_SELL) ? item.isCrypto : !item.isCrypto);
-  const {
-    giveSelected,
-    getList,
-    getSelected,
-    variantList,
-    variantSelected,
-  } = getSelectorsData(giveList, undefined, 1);
+  if (newDirection === exchangeDirection.CRYPTO_BUY) {
+    data = await sdk.api.getBuyUnits();
+  } else {
+    data = await sdk.api.getSellUnits();
+  }
 
+  const giveList = (newDirection === exchangeDirection.CRYPTO_BUY) ? data.buyUnits : data.sellUnits;
+  const giveSelected = getSelectorsData({ list: giveList });
+  const getList = (newDirection === exchangeDirection.CRYPTO_BUY) ? giveSelected.units : giveSelected.methods;
+  const getSelected = getSelectorsData({ list: getList });
+  const variantList = getSelected.variants;
+  const variantSelected = getSelectorsData({ list: variantList });
 
   let streamExchange;
   if (newDirection === exchangeDirection.CRYPTO_SELL) {
@@ -251,13 +254,11 @@ export const changeGiveOption = (value) => async (dispatch, getState) => {
   const giveAmount = store.exchange.giveAmount;
   const giveError = store.exchange.giveError;
 
-  const {
-    giveSelected,
-    getList,
-    getSelected,
-    variantList,
-    variantSelected,
-  } = getSelectorsData(giveList, value, 1);
+  const giveSelected = getSelectorsData({ list: giveList, value: value });
+  const getList = (direction === exchangeDirection.CRYPTO_BUY) ? giveSelected.units : giveSelected.methods;
+  const getSelected = getSelectorsData({ list: getList });
+  const variantList = getSelected.variants;
+  const variantSelected = getSelectorsData({ list: variantList });
 
   let streamExchange;
   if (direction === exchangeDirection.CRYPTO_SELL) {
@@ -303,11 +304,9 @@ export const changeGetOption = (value) => async (dispatch, getState) => {
   const giveAmount = store.exchange.giveAmount;
   const giveError = store.exchange.giveError;
 
-  const {
-    getSelected,
-    variantList,
-    variantSelected,
-  } = getSelectorsData(getList, value, 2);
+  const getSelected = getSelectorsData({ list: getList, value: value });
+  const variantList = getSelected.variants;
+  const variantSelected = getSelectorsData({ list: variantList });
 
   let streamExchange;
   if (direction === exchangeDirection.CRYPTO_SELL) {
@@ -352,11 +351,9 @@ export const changeVariantOption = (value) => async (dispatch, getState) => {
   const giveAmount = store.exchange.giveAmount;
   const giveError = store.exchange.giveError;
 
-  const { variantSelected } = getSelectorsData(variantList, value, 3);
+  const variantSelected = getSelectorsData({ list: variantList, value: value });
 
-  const payload = {
-    variantSelected: variantSelected,
-  };
+  const payload = { variantSelected: variantSelected };
 
   if (variantSelected && giveAmount) {
     const { isValid, errorText } = validateValue({ value: giveAmount, rules: variantSelected.rules });
@@ -405,7 +402,7 @@ export const changeCountryPercentAccount = (value) => async (dispatch, getState)
   }
 };
 
-export const createExchangeRequest = () => async (dispatch, getState) => {
+export const createExchangeRequest = (language) => async (dispatch, getState) => {
   const store = getState();
   const streamExchange = store.exchange.streamExchange;
   const giveSelected = store.exchange.giveSelected;
@@ -426,12 +423,12 @@ export const createExchangeRequest = () => async (dispatch, getState) => {
     let request = {
       stream: streamExchange,
       giveValue: giveSelected.value,
-      giveText: giveSelected.text,
+      giveText: giveSelected.translation[language],
       giveAmount: giveAmount,
       getValue: getSelected.value,
-      getText: getSelected.text,
+      getText: getSelected.translation[language],
       getAmount: getAmount,
-      variantText: variantSelected.text,
+      variantText: variantSelected.translation[language],
       variantCurr: variantSelected.curr,
       accountValue: accountValue,
     };

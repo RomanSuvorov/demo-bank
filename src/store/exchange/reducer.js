@@ -150,7 +150,7 @@ const reducer = {
     draft.giveAmount = payload;
 
     if (draft.direction === exchangeDirection.CRYPTO_SELL) {
-      draft.getAmount = getAmount((payload * draft.price), draft.countrySelected.sellPercent, 3);
+      draft.getAmount = getAmount((payload * draft.price), draft.countrySelected.sellPercent, 2);
     } else {
       draft.getAmount = getAmount((payload / draft.price), draft.countrySelected.buyPercent, 8);
     }
@@ -166,7 +166,7 @@ const reducer = {
     if (draft.direction === exchangeDirection.CRYPTO_SELL) {
       giveAmount = getAmount((payload / draft.price), draft.countrySelected.sellPercent, 8);
     } else {
-      giveAmount = getAmount((payload * draft.price), draft.countrySelected.buyPercent, 3);
+      giveAmount = getAmount((payload * draft.price), draft.countrySelected.buyPercent, 2);
     }
 
     draft.giveAmount = giveAmount;

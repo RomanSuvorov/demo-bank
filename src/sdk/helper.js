@@ -61,58 +61,10 @@ function _configureStore(reducers) {
   );
 }
 
-export function getSelectorsData(data, payload, selectorsLvl) {
-  const getFirstLvl = (array, value) => {
-    let giveSelected;
-
-    if (!value) {
-      giveSelected = array[0];
-    } else {
-      giveSelected = array.find(item => item.value === value);
-    }
-
-    const getList = giveSelected.method;
-    const { getSelected, variantList, variantSelected } = getSecondLvl(giveSelected.method)
-
-    return { giveSelected, getList, getSelected, variantList, variantSelected };
-  };
-
-  const getSecondLvl = (array, value) => {
-    let getSelected;
-
-    if (!value) {
-      getSelected = array[0];
-    } else {
-      getSelected = array.find(item => item.value === value);
-    }
-
-    const variantList = getSelected.variants;
-    const { variantSelected } = getThirdLvl(getSelected.variants)
-
-    return { getSelected, variantList, variantSelected };
-  };
-
-  const getThirdLvl = (array, value) => {
-    let variantSelected;
-
-    if (!value) {
-      variantSelected = array[0];
-    } else {
-      variantSelected = array.find(item => item.value === value);
-    }
-
-    return { variantSelected };
-  };
-
-  if (selectorsLvl === 1) {
-    return getFirstLvl(data, payload);
-  } else if (selectorsLvl === 2) {
-    return getSecondLvl(data, payload);
-  } else if (selectorsLvl === 3) {
-    return getThirdLvl(data, payload);
-  }
-
+export function getSelectorsData({ list, value = undefined }) {
+  return value ? list.find(item => item.value === value) : list[0];
 }
+
 
 export function validateValue({ value, rules, address }) {
   let isValid = false, errorText = null;

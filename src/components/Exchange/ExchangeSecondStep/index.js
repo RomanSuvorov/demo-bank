@@ -39,7 +39,7 @@ export function SecondStep() {
   const requestMessage = useSelector(state => state.exchange.requestMessage);
   const isCardMode = !!((streamExchange === exchangeStream.SELL_BY_CARD) || (streamExchange === exchangeStream.BUY_BY_CARD));
   const dispatch = useDispatch();
-  const { t } = useTranslation('exchange');
+  const { t, i18n } = useTranslation('exchange');
   let sendDisable;
 
   if (streamExchange === exchangeStream.SELL_BY_CARD) {
@@ -87,7 +87,7 @@ export function SecondStep() {
     ));
 
     if (isStepValid) {
-      await dispatch(createExchangeRequest());
+      await dispatch(createExchangeRequest(i18n.language));
     }
   }
 
