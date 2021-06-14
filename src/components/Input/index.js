@@ -17,6 +17,10 @@ export function Input({
   loading = false,
   ...props
 }) {
+  const handleOnChange = (e) => {
+    onChange(e.target.value);
+  };
+
   return (
     <div className={`input ${className}`}>
       {
@@ -38,7 +42,7 @@ export function Input({
               value={value ? value : ''}
               placeholder={placeholder}
               readOnly={readOnly || loading}
-              onChange={e => onChange(e.target.value)}
+              onChange={handleOnChange}
               {...props}
             />
           ) : (
@@ -49,7 +53,7 @@ export function Input({
               placeholder={placeholder}
               type={type}
               readOnly={readOnly || loading}
-              onChange={e => onChange(e.target.value)}
+              onChange={handleOnChange}
               {...props}
             />
           )

@@ -278,3 +278,15 @@ export function throttle(func, ms) {
 
   return wrapper;
 }
+
+export function numberWithCommas(value) {
+  if (!value) return "";
+  const str = value.replace(/[^0-9.+\-]/g, '');
+
+  return str.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, " ");
+}
+
+export function removeFormatting(value) {
+  if (!value) return "";
+  return value.toString().replace(/[^0-9.+\-]/g, '');
+}
