@@ -15,7 +15,7 @@ import {
   changeGetOption,
   changeVariantOption,
 } from '../../../store/exchange/actions';
-import { numberWithCommas, removeFormatting } from '../../../sdk/helper';
+import { clearAmount, formattedAmount } from '../../../sdk/helper';
 import Types from '../../../store/exchange/types';
 import './index.css';
 
@@ -43,9 +43,9 @@ export function FirstStep() {
 
   const handleChooseGetOption = value => dispatch(changeGetOption(value));
 
-  const handleChangeGiveAmount = value => dispatch({ type: Types.CHANGE_GIVE_AMOUNT, payload: removeFormatting(value) });
+  const handleChangeGiveAmount = value => dispatch({ type: Types.CHANGE_GIVE_AMOUNT, payload: clearAmount(value) });
 
-  const handleChangeGetAmount = value => dispatch({ type: Types.CHANGE_GET_AMOUNT, payload: removeFormatting(value) });
+  const handleChangeGetAmount = value => dispatch({ type: Types.CHANGE_GET_AMOUNT, payload: clearAmount(value) });
 
   const handleChooseFromVariantList = value => dispatch(changeVariantOption(value));
 
@@ -88,7 +88,7 @@ export function FirstStep() {
         >
           <Input
             className={"firstStep_form__input"}
-            value={numberWithCommas(giveAmount)}
+            value={formattedAmount(giveAmount)}
             min={0}
             loading={priceLoading}
             error={giveError}
@@ -107,7 +107,7 @@ export function FirstStep() {
         <form className={"firstStep_row__left firstStep_form"}>
           <Input
             className={"firstStep_form__input"}
-            value={numberWithCommas(getAmount)}
+            value={formattedAmount(getAmount)}
             min={0}
             loading={priceLoading}
             placeholder={direction === exchangeDirection.CRYPTO_SELL ? '0.000' : '0.00000000'}

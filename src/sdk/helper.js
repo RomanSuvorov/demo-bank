@@ -279,14 +279,22 @@ export function throttle(func, ms) {
   return wrapper;
 }
 
-export function numberWithCommas(value) {
-  if (!value) return "";
-  const str = value.replace(/[^0-9.+\-]/g, '');
+export function clearAmount(value) {
+  let str = value;
+  if (!str) return "";
 
-  return str.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, " ");
+  // if string already has dot -> do not pass new dot to string
+  const isDotExist = str.match(/\./g) && str.match(/\./g).length > 1;
+  if (isDotExist) str = str.slice(0, -1);
+
+  // if user input dot as first symbol, we should add zero before this dot;
+  if (str && str[0] === '.') str = `0${str}`;
+
+  return str.toString().replace(/[^0-9.]/g, '');
 }
 
-export function removeFormatting(value) {
-  if (!value) return "";
-  return value.toString().replace(/[^0-9.+\-]/g, '');
+export function formattedAmount(value) {
+  const str = clearAmount(value);
+
+  return str.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, " ");
 }

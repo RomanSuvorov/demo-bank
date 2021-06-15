@@ -1,6 +1,6 @@
 import Types from './types';
 import { exchangeDirection, exchangeStream, transactionProcess } from '../../constants';
-import { getSelectorsData, validateValue, numberWithCommas } from '../../sdk/helper';
+import { getSelectorsData, validateValue, formattedAmount } from '../../sdk/helper';
 import sdk from '../../sdk';
 
 // <--- MOCK DATA ---> //
@@ -424,10 +424,10 @@ export const createExchangeRequest = (language) => async (dispatch, getState) =>
       stream: streamExchange,
       giveValue: giveSelected.value,
       giveText: giveSelected.translation[language],
-      giveAmount: numberWithCommas(giveAmount),
+      giveAmount: formattedAmount(giveAmount),
       getValue: getSelected.value,
       getText: getSelected.translation[language],
-      getAmount: numberWithCommas(getAmount),
+      getAmount: formattedAmount(getAmount),
       variantText: variantSelected.translation[language],
       variantCurr: variantSelected.curr,
       accountValue: accountValue,
